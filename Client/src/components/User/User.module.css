@@ -1,0 +1,7 @@
+.userContainer {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  justify-content: space-between;
+  width: 20rem;
+}
