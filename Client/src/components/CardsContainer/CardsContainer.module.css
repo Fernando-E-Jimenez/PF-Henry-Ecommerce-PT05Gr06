@@ -1,0 +1,13 @@
+.cardsContainer {
+  background-color: #dcd7c9;
+  padding: 2rem 0rem;
+}
+
+.boxContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 2rem;
+  max-width: 100rem;
+  margin: auto;
+}

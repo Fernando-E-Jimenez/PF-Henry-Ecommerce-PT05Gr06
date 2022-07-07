@@ -1,0 +1,44 @@
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: #a27b5c;
+  width: 30rem;
+  margin: auto;
+  border-radius: 1rem;
+}
+
+.imagen {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.count {
+  display: flex;
+  align-items: center;
+  width: 15rem;
+  margin: auto;
+  justify-content: space-evenly;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.button {
+  margin: 0.5rem 0rem;
+  width: 15rem;
+  border: none;
+  border-radius: 10px;
+  padding: 0.8rem 0.5rem;
+}
