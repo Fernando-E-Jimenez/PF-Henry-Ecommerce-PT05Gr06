@@ -5,15 +5,15 @@ export const User = () => {
     <div className={styles.userContainer}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="icon icon-tabler icon-tabler-user"
+        className="icon icon-tabler icon-tabler-user"
         width="33"
         height="33"
         viewBox="0 0 24 24"
-        stroke-width="1.5"
+        strokeWidth="1.5"
         stroke="#ffffff"
         fill="none"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       >
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
         <circle cx="12" cy="7" r="4" />
@@ -22,15 +22,15 @@ export const User = () => {
       <p>Nombre Usuario</p>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="icon icon-tabler icon-tabler-arrow-down"
+        className="icon icon-tabler icon-tabler-arrow-down"
         width="33"
         height="33"
         viewBox="0 0 24 24"
-        stroke-width="1.5"
+        strokeWidth="1.5"
         stroke="#ffffff"
         fill="none"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       >
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
         <line x1="12" y1="5" x2="12" y2="19" />

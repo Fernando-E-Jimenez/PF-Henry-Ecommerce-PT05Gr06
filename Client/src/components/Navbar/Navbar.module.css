@@ -13,10 +13,17 @@
 }
 
 .logoContainer {
-  width: 10rem;
-  text-align: center;
+  width: 30rem;
+  text-decoration: none;
+  color: white;
 }
 
 .searchBarContainer {
   width: 40rem;
+}
+
+.userContainer {
+  width: 30rem;
+  display: flex;
+  justify-content: space-around;
 }

@@ -9,3 +9,8 @@ html {
   line-height: 2;
   margin: 0;
 }
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #e2e2e2;
+}

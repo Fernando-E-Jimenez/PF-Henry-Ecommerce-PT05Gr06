@@ -1,10 +1,17 @@
 .cardContainer {
   display: flex;
   flex-direction: column;
-  background-color: #a27b5c;
+  background-color: white;
   width: 30rem;
   margin: auto;
   border-radius: 1rem;
+  text-decoration: none;
+}
+
+.cardContainer:hover {
+  cursor: pointer;
+  transition: ease-in-out 300ms;
+  box-shadow: rgb(0 0 0 / 15%) 5px 5px 5px;
 }
 
 .imagen {
@@ -12,17 +19,22 @@
   border-top-right-radius: 1rem;
   width: 100%;
   height: 100%;
+  max-width: 30rem;
+  max-height: 30rem;
   background-repeat: no-repeat;
   background-size: cover;
+  object-fit: contain;
+  background: white;
 }
 
 .detail {
+  border-top: 1px solid #e2e2e2;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
   font-size: 1.5rem;
-  color: white;
+  color: gray;
 }
 
 .count {
@@ -32,7 +44,7 @@
   margin: auto;
   justify-content: space-evenly;
   font-size: 1.5rem;
-  color: white;
+  color: gray;
 }
 
 .button {
@@ -41,4 +53,7 @@
   border: none;
   border-radius: 10px;
   padding: 0.8rem 0.5rem;
+  background: #3f4e4f;
+  color: white;
+  margin-bottom: 1rem;
 }

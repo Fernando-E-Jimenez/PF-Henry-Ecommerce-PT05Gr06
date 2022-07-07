@@ -1,0 +1,76 @@
+.detailContainer {
+  display: flex;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  background-color: white;
+  width: 120rem;
+  height: 70rem;
+  margin: auto;
+  margin-top: 5rem;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px rgb(0 0 0 / 15%);
+  align-items: center;
+}
+
+.imgContainer {
+  display: flex;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 40rem;
+  height: 40rem;
+  margin: auto;
+}
+
+.detailBox {
+  width: 60rem;
+  height: 50rem;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+}
+
+.count {
+  display: flex;
+  align-items: center;
+  width: 15rem;
+  margin: 5rem auto;
+  justify-content: space-evenly;
+  font-size: 1.5rem;
+  color: gray;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  margin: 1rem 0.5rem;
+  width: 25rem;
+  border: none;
+  border-radius: 10px;
+  padding: 0.8rem 0.5rem;
+  background: #3f4e4f;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 3rem;
+
+  margin-bottom: 2rem;
+}
+
+.price {
+  font-size: 4rem;
+}
+
+.cantidad {
+  font-size: 3rem;
+}
+
+.stock {
+  font-size: 1.5rem;
+  margin-top: 3rem;
+}
