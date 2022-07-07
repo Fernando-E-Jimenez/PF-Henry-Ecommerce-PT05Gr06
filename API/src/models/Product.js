@@ -28,13 +28,13 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
         image: {
-            type: DataTypes.ARRAY,
+            type: DataTypes.STRING,
             allowNull: false,
         },
     },
         {
-            timestamps: true,
-            createdAt: true,
+            timestamps: false,
+            createdAt: false,
         }
     );
 }

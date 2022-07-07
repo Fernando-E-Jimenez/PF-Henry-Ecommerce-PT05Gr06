@@ -20,12 +20,8 @@
 const server = require('./src/app.js');
 const { conn } = require('./src/db.js');
 
-
-
 // Syncing all the models at once.
 conn.sync({ force: true }).then(() => {
-  //CARGAMOS LOS TEMPERAMENTOS Y LOS GUARDAMOS EN NUESTRA BASE DE DATOS
-  //LEVANTAMOS EL SERVIDOR EN EL PUERTO 3001
   server.listen(3001, () => {
     console.log('%s listening at 3001'); // eslint-disable-line no-console
   });

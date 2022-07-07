@@ -6,7 +6,7 @@ const {
   DB_USER, DB_PASSWORD, DB_HOST,
 } = process.env;
 
-const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/dogs`, {
+const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/vinos`, {
   logging: false, // set to console.log to see the raw SQL queries
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 });
@@ -30,34 +30,31 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { Category, Order, Product, Reviews, Rol, User } = sequelize.models;
+const { Category, Order, Product, Review, Rol, User  } = sequelize.models;
 
 // Aca vendrian las relaciones
-// User - Rol;
+// Product.hasMany(Reviews);
 
 User.hasOne(Rol);
-Rol.belongsToMany(User);
+Rol.hasMany(User);
 
 // Product - Category;
 
-Product.belongsToMany(Category,{through:'productXcategory'});
-Category.belongsToMany(Product,{through:'productXcategory'});
+ Product.belongsToMany(Category,{through:'productXcategory'});
+ Category.belongsToMany(Product,{through:'productXcategory'});
 
-// Product - Reviews;
-Reviews.hasOne(Product);
-Product.belongsToMany(Reviews);
+// // Product - Reviews;
+  Review.hasOne(Product);
+  Product.hasMany(Review);
 
 //Order - User
-Order.hasOne(User);
-User.belongsToMany(Order);
+ Order.hasOne(User);
+ User.hasMany(Order);
 
 
 // order - product
-Product.belongsToMany(Order,{through:'productXorder'});
-Order.belongsToMany(Product,{through:'productXorder'});
-
-
-
+ Product.belongsToMany(Order,{through:'productXorder'});
+ Order.belongsToMany(Product,{through:'productXorder'});
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
   conn: sequelize,     // para importart la conexión { conn } = require('./db.js');
