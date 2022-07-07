@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Cart } from "../Cart/Cart";
 import { SearchBar } from "../SearchBar/SearchBar";
 import { User } from "../User/User";
@@ -7,16 +8,14 @@ export const Navbar = () => {
   return (
     <div className={styles.navbarContainer}>
       <div className={styles.navbarBox}>
-        <div className={styles.logoContainer}>
+        <Link to="/" className={styles.logoContainer}>
           <h1>Logo</h1>
-        </div>
+        </Link>
         <div className={styles.searchBarContainer}>
           <SearchBar />
         </div>
-        <div>
+        <div className={styles.userContainer}>
           <Cart />
-        </div>
-        <div>
           <User />
         </div>
       </div>
