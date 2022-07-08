@@ -61,6 +61,11 @@ router.post('/', upload.array('image'), async (req, res, next) => {
     if (!price) return res.status(400).send("Faltan datos necesarios (price).");
     if (!stock) return res.status(400).send("Faltan datos necesarios (stock).");
     if (!category) return res.status(400).send("Faltan datos necesarios (category).");
+    if (isNaN(parseInt(stock))) return res.status(400).send("Formato de datos invalido (stock) debe ser un numero.");
+    if (isNaN(parseInt(price))) return res.status(400).send("Formato de datos invalido (price) debe ser un numero.");
+    if (!isNaN(parseInt(name))) return res.status(400).send("Formato de datos invalido (name) debe ser una cadena texto.");
+    if (!isNaN(parseInt(description))) return res.status(400).send("Formato de datos invalido (description) debe ser una cadena de texto.");
+
     let imagenes = image.map(i => i.path);
     let product = await Product.create({
       name,
@@ -77,11 +82,10 @@ router.post('/', upload.array('image'), async (req, res, next) => {
 
     const catego = await product.getCategories();
 
-    res.status(200).json({...product.dataValues, category: catego});
-    // res.status(200).json({ name, description, price, stock, category, imagenes });
+    return res.status(201).json({...product.dataValues, category: catego});
   }
   catch (e) {
-    res.status(400).send("Error: " + e);
+    return res.status(400).send("Error: " + e);
   }
 });
 
