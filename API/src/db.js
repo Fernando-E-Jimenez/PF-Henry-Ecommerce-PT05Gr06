@@ -44,7 +44,6 @@ Rol.hasMany(User);
  Category.belongsToMany(Product,{through:'productXcategory'});
 
 // // Product - Reviews;
-  Review.hasOne(Product);
   Product.hasMany(Review);
 
 //Order - User
