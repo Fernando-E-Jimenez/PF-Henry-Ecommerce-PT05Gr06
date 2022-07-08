@@ -13,10 +13,9 @@ export const CardDetail = () => {
     dispatch(productDetail(id));
   }, [dispatch, id]);
 
-  console.log(product[0]);
-
   return (
     <div className={styles.bgPage}>
+      {product[0]?
       <div className={styles.detailContainer}>
         <div className={styles.imgContainer}>
           <img src={product[0].image} alt={product[0]} />
@@ -64,6 +63,7 @@ export const CardDetail = () => {
           <p className={styles.stock}>Stock Disponible: {product[0].stock}</p>
         </div>
       </div>
+      :'Cargando...'}
     </div>
   );
 };
