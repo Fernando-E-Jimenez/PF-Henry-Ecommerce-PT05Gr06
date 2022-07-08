@@ -1,9 +1,24 @@
 import styles from "./SearchBar.module.css";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { getProductsFilter } from "../../redux/actions";
 
 export const SearchBar = () => {
+  const dispatch = useDispatch();
+  const [drink, setDrink] = useState('');
+
   return (
-    <form className={styles.searchContainer}>
-      <input className={styles.searchBar} placeholder="Search" />
+    <form className={styles.searchContainer} onSubmit={(e) => {
+      e.preventDefault();
+      dispatch(getProductsFilter(drink))
+      setDrink('')
+    }}>
+      <input 
+        className={styles.searchBar} 
+        placeholder="Search" 
+        value={drink}
+        onChange={e => setDrink(e.target.value)}
+      />
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="icon icon-tabler icon-tabler-search"
