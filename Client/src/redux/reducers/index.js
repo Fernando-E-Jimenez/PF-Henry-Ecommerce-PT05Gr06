@@ -1,8 +1,9 @@
-import { GET_PRODUCTS, PRODUCT_DETAIL, GET_PRODUCTS_FILTER } from "../types";
+import { GET_PRODUCTS, PRODUCT_DETAIL, GET_PRODUCTS_FILTER, POST_REVIEW } from "../types";
 
 const initialState = {
   products: [],
   detail: {},
+  resultPost: {}
 };
 
 const reducer = (state = initialState, action) => {
@@ -25,6 +26,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         products: action.payload
+      }
+    }
+
+    case POST_REVIEW: {
+      return {
+        ...state,
+        resultPost: action.payload
       }
     }
 
