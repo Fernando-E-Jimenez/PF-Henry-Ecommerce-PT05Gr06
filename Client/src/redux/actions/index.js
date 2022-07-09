@@ -1,5 +1,5 @@
 import { products } from "../../../dbPrueba";
-import { GET_PRODUCTS, PRODUCT_DETAIL, GET_PRODUCTS_FILTER } from "../types";
+import { GET_PRODUCTS, PRODUCT_DETAIL, GET_PRODUCTS_FILTER, POST_REVIEW } from "../types";
 
 const URLAPI = 'http://localhost:3001/'
 
@@ -46,6 +46,29 @@ const getProductsFilter = (name) => {
   }
 }
 
+const postReview = (review, id) => {
+  return function(dispatch) {
+    try {
+        /* fetch( `${URLAPI}?id=${id}`, { // verificar como se envia el id por parametro
+          method: 'POST',
+          body: JSON.stringify(review),
+          headers:{
+              'Content-Type': 'application/json'
+          },
+          mode: 'cors'
+        })
+        .then(response => response.json())
+        .then(json => {
+          dispatch({ type: POST_REVIEW, payload: json})
+        }) */
+        const product = products.filter(p => p.id == id);
+        product[0].reviews.push(review)
+        return dispatch({ type: POST_REVIEW, payload: product})
+    } catch (error) {
+      dispatch({ type: POST_REVIEW, payload: error });
+    }
+  }
+}
 
 
-export { getProducts, productDetail, getProductsFilter };
+export { getProducts, productDetail, getProductsFilter, postReview };

@@ -9,6 +9,7 @@ export const products = [
     image:
       "https://http2.mlstatic.com/D_NQ_NP_774996-MLA44839718966_022021-W.webp",
     category: ["Cervezas"],
+    reviews: [{description: "es muy buena", star: 4}]
   },
   {
     id: 2,
@@ -19,6 +20,7 @@ export const products = [
     image:
       "https://http2.mlstatic.com/D_NQ_NP_850935-MLA44839812040_022021-W.webp",
     category: ["Cervezas"],
+    reviews: [{description: "no me gusta", star: 2}]
   },
   {
     id: 3,
@@ -29,6 +31,7 @@ export const products = [
     image:
       "https://http2.mlstatic.com/D_NQ_NP_810097-MLA44839765447_022021-W.webp",
     category: ["Cervezas"],
+    reviews: [{description: "no me gusta", star: 2}]
   },
   {
     id: 4,
@@ -39,6 +42,7 @@ export const products = [
     image:
       "https://http2.mlstatic.com/D_NQ_NP_651020-MLA45296375032_032021-W.webp",
     category: ["Vinos"],
+    reviews: [{description: "no me gusta", star: 2}]
   },
   {
     id: 5,
@@ -50,6 +54,7 @@ export const products = [
     image:
       "https://http2.mlstatic.com/D_NQ_NP_915236-MLA43940631830_102020-W.webp",
     category: ["Vinos"],
+    reviews: [{description: "no me gusta", star: 2}]
   },
   {
     id: 6,
@@ -61,6 +66,7 @@ export const products = [
     image:
       "https://http2.mlstatic.com/D_NQ_NP_913260-MLA43940691122_102020-W.webp",
     category: ["Vinos"],
+    reviews: [{description: "no me gusta", star: 2}]
   },
   {
     id: 7,
@@ -71,6 +77,7 @@ export const products = [
     image:
       "https://http2.mlstatic.com/D_NQ_NP_712680-MLA44850207740_022021-W.webp",
     category: ["Bebidas Blancas", "Whiskies"],
+    reviews: [{description: "no me gusta", star: 2}]
   },
   {
     id: 8,
@@ -81,6 +88,7 @@ export const products = [
     image:
       "https://http2.mlstatic.com/D_NQ_NP_864189-MLA44850209746_022021-W.webp",
     category: ["Bebidas Blancas", "Whiskies"],
+    reviews: [{description: "no me gusta", star: 2}]
   },
   {
     id: 9,
@@ -91,5 +99,6 @@ export const products = [
     image:
       "https://http2.mlstatic.com/D_NQ_NP_607103-MLA50056333219_052022-W.webp",
     category: ["Bebidas Blancas", "Whiskies"],
+    reviews: [{description: "no me gusta", star: 2}]
   },
 ];
