@@ -1,5 +1,6 @@
 .detailContainer {
     display: flex;
+    flex-direction: column;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     background-color: white;
@@ -12,7 +13,43 @@
     align-items: center;
   }
 
+.reviewsContainer {
+  align-self: flex-start;
+  margin: 2rem 2rem;
+}
+
+.newReviewContainer {
+  align-self: flex-start;
+  margin: 2rem 2rem;
+}
+
+.cardsReviews {
+  /* ACA VA A IR EL CODE DE LAS CARDS DE REVIEW */
+}
+
 .title {
     font-size: 3rem;
     margin-bottom: 2rem;
 }
+
+.optionButton{
+    margin: 1rem 0.5rem;
+    margin-bottom: 1rem;
+    width: 20rem;
+    border: none;
+    border-radius: 10px;
+    padding: 0.8rem 0.5rem;
+    background: #3f4e4f;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.input {
+  margin: 1rem 0.5rem;
+  margin-bottom: 1rem;
+  width: 20rem;
+  border-radius: 10px;
+  padding: 0.8rem 0.5rem;
+}
+
+/* ---------- */
