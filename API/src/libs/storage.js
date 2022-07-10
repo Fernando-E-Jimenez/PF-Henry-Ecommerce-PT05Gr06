@@ -33,4 +33,4 @@ const upload = multer({
   limits: { fileSize: 3000000 }
 });
 
-module.exports = upload;
+module.exports = {upload, cloudinary};
