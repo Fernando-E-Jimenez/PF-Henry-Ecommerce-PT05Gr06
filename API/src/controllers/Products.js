@@ -1,5 +1,5 @@
-const { Product, Category, Review, Order } = require("../db");
-const upload = require('../libs/storage');
+const { Product } = require("../db");
+const {upload, cloudinary} = require('../libs/storage');
 const { Router } = require('express');
 const router = Router();
 
