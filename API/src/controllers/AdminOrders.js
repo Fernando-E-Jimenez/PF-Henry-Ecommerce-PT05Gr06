@@ -8,7 +8,7 @@ const orderDB = async () => {
       return await Order.findAll({
         include: {
           model: Product,
-          attributes: ['name'],
+          attributes: ['name','description','stock','price'],
           through: {
             attributes: []
           }
@@ -17,15 +17,6 @@ const orderDB = async () => {
     } catch (e) {
       return e
     }
-  }
-
-  const Revie = async () => {
-    try {
-      return await Review.findAll()
-    } catch (e) {
-      return e
-    }
-  
   }
   
 // Admin ...poder ver una lista de todas las ordenes, para poder ver y revisar las ordenes.
@@ -58,19 +49,18 @@ const orderDB = async () => {
     try {
       const { id } = req.params;
       if (id) {
-        const all = await DB();
-        const r = await Revie();
+        const all = await orderDB();
         const productNew = all.filter((e) => e.id == id)
         let categoryNew = productNew[0].categories.map((e) => { return e.dataValues.name })
         const reviewNew = r.filter((f) => f.productId == id)
         var resultado = {
-          name: productNew[0].name,
-          description: productNew[0].description,
-          price: productNew[0].price,
-          stock: productNew[0].stock,
-          image: productNew[0].image,
-          review: reviewNew,
-          category: categoryNew
+          id: productNew[0].id,
+          cant: productNew[0].cant,
+          // price: productNew[0].price,
+          // stock: productNew[0].stock,
+          // image: productNew[0].image,
+          // review: reviewNew,
+          // category: categoryNew
         }
       }
       res.status(200).send(resultado);

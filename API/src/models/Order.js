@@ -11,10 +11,6 @@ module.exports = (sequelize) => {
             primaryKey: true,
             allowNull: false
         },
-        cant:{
-            type: DataTypes.INTEGER,
-            allowNull:false,
-        },
         state: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -22,6 +18,10 @@ module.exports = (sequelize) => {
         address: {
             type: DataTypes.STRING,
             allowNull: true,
+        },
+        mont: {
+            type: DataTypes.STRING,
+            allowNull: false,
         }
     },
         {
