@@ -1,9 +1,11 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import AddCategory from "./components/AddCategory/AddCategory";
 import AddProduct from "./components/AddProduct/AddProduct";
 import Admin from "./components/Admin/Admin";
 import { CardDetail } from "./components/CardDetail/CardDetail";
 import { Home } from "./components/Home/Home";
 import { Navbar } from "./components/Navbar/Navbar";
+import { ViewCategories } from "./components/ViewCategories/ViewCategories";
 import { ViewProducts } from "./components/ViewProducts/ViewProducts";
 
 export const App = () => {
@@ -16,6 +18,8 @@ export const App = () => {
         <Route path="/admin" element={<Admin />}>
           <Route path="new-product" element={<AddProduct />} />
           <Route path="view-products" element={<ViewProducts />} />
+          <Route path="new-category" element={<AddCategory />} />
+          <Route path="view-categories" element={<ViewCategories />} />
         </Route>
       </Routes>
     </>
