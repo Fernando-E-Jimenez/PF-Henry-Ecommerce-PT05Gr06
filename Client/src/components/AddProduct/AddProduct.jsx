@@ -70,21 +70,27 @@ export default function AddProduct() {
 
   return (
     <div>
-      <h1>Complete todos los campos</h1>
-      <form onSubmit={(e) => handleSubmit(e)}>
-        <div>
-          <label>Nombre</label>
+      <h1 className="text-center text-3xl">Complete todos los campos</h1>
+      <hr />
+      <form onSubmit={(e) => handleSubmit(e)} className="md:w-1/2 m-auto py-6">
+        <div className="mb-5">
+          <label className="text-gray-700 font-bold text-2xl">Nombre</label>
           <input
+            className="border w-full p-2 mt-2 placeholder-gray-400 rounded-md text-xl"
             type="text"
             value={post.name}
             name="name"
+            placeholder="Ingrese el nombre del producto"
             onChange={(e) => handleInputChange(e)}
           />
           {errors.name && <p>{errors.name}</p>}
         </div>
-        <div>
-          <label>Descripción</label>
+        <div className="mb-5">
+          <label className="text-gray-700 font-bold text-2xl">
+            Descripción
+          </label>
           <input
+            className="border w-full p-2 mt-2 placeholder-gray-400 rounded-md text-xl"
             type="text"
             value={post.summary}
             name="summary"
@@ -92,9 +98,10 @@ export default function AddProduct() {
           />
           {errors.summary && <p>{errors.summary}</p>}
         </div>
-        <div>
-          <label>Imagen</label>
+        <div className="mb-5">
+          <label className="text-gray-700 font-bold text-2xl">Imagen</label>
           <input
+            className="border w-full p-2 mt-2 placeholder-gray-400 rounded-md text-xl"
             type="text"
             value={post.image}
             name="image"
@@ -102,9 +109,10 @@ export default function AddProduct() {
           />
           {errors.image && <p>{errors.image}</p>}
         </div>
-        <div>
-          <label>Precio</label>
+        <div className="mb-5">
+          <label className="text-gray-700 font-bold text-2xl">Precio</label>
           <input
+            className="border w-full p-2 mt-2 placeholder-gray-400 rounded-md text-xl"
             type="text"
             value={post.price}
             name="price"
@@ -112,11 +120,28 @@ export default function AddProduct() {
           />
           {errors.price && <p>{errors.price}</p>}
         </div>
-        <button type="submit">Agregar</button>
+        <div className="mb-5">
+          <label className="text-gray-700 font-bold text-2xl">Categoria</label>
+          <input
+            className="border w-full p-2 mt-2 placeholder-gray-400 rounded-md text-xl"
+            type="text"
+            onChange={(e) => handleInputChange(e)}
+          />
+        </div>
+        <button
+          className="bg-primary-color mt-10 w-full p-3 font-bold text-white rounded cursor-pointer hover:bg-sky-700 transition-colors"
+          type="submit"
+        >
+          Agregar
+        </button>
       </form>
-      <Link to="/home">
-        <button>Volver</button>
-      </Link>
+      <div className="flex w-full align-middle justify-center">
+        <Link to="/home">
+          <button className="bg-red-400 px-20 mt-20 p-3 font-bold text-white rounded cursor-pointer hover:bg-sky-700 transition-colors">
+            Volver
+          </button>
+        </Link>
+      </div>
     </div>
   );
 }

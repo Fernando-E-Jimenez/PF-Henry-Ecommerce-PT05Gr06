@@ -1,9 +1,17 @@
-import { GET_PRODUCTS, PRODUCT_DETAIL, GET_PRODUCTS_FILTER, POST_REVIEW } from "../types";
+import {
+  GET_PRODUCTS,
+  PRODUCT_DETAIL,
+  GET_PRODUCTS_FILTER,
+  POST_REVIEW,
+  NEW_CATEGORY,
+  GET_CATEGORIES,
+} from "../types";
 
 const initialState = {
   products: [],
   detail: {},
-  resultPost: {}
+  resultPost: {},
+  categories: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -25,15 +33,22 @@ const reducer = (state = initialState, action) => {
     case GET_PRODUCTS_FILTER: {
       return {
         ...state,
-        products: action.payload
-      }
+        products: action.payload,
+      };
     }
 
     case POST_REVIEW: {
       return {
         ...state,
-        resultPost: action.payload
-      }
+        resultPost: action.payload,
+      };
+    }
+    case GET_CATEGORIES:
+    case NEW_CATEGORY: {
+      return {
+        ...state,
+        categories: action.payload,
+      };
     }
 
     default:
