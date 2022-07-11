@@ -56,10 +56,15 @@ router.post("/:id/order/:idorder", async (req, res) => {
         } = req.body;
         const order = await Order.findByPk(parseInt(idorder));
         const prod = await Product.findByPk(parseInt(id));
+        let priceProd = prod.dataValues.price
+        let priceA= cant * priceProd
+        let montOrder = order.dataValues.mont
+        montOrder = parseInt(montOrder) + parseInt(priceA)
+        console.log(montOrder)
+        const newPrice = await Order.update({mont: montOrder} , { where:{id: order.dataValues.id}})
         await order.addProducts(prod);
-
         await order.addProduct(prod ,{ through: { cant: cant }}) 
-        res.status(200).send("cambiado");
+        res.status(200).send(newPrice);
     }catch (e) {
     res.status(400).send("Error: " + e)
   }
