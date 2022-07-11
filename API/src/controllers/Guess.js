@@ -1,5 +1,7 @@
 const { Product, Category, Review } = require("../db");
 const { Router } = require('express');
+const { Op } = require('sequelize');
+const paginate = require('./Paginate');
 const router = Router();
 
 const DB = async () => {
@@ -20,13 +22,24 @@ const DB = async () => {
 }
 
 const Revie = async () => {
-    try {
-      return await Review.findAll()
-    } catch (e) {
-      return e
-    }
-  
+  try {
+    return await Review.findAll()
+  } catch (e) {
+    return e
   }
+}
+
+const getCategory = async (id) => {
+  try {
+    let prod = await Product.findByPk(id);
+    const cat = await prod.getCategories();
+    prod = { ...prod.dataValues, categories: cat.map(c => { return { name: c.name } }) };
+    return prod
+  } catch (e) {
+    return e
+  }
+}
+
 /*..ver la lista completa de productos (catálogo), para ver todo lo disponible para 
 comprar.
 
@@ -36,15 +49,43 @@ comprar.
 
 router.get("/", async (req, res) => {
   try {
-    const { name } = req.query;
-    const total = await DB();
+    const { name, page, order_direction, category } = req.query;
+    let search = {}
+    let order = [];
+    let filter = {};
+    let pageLimit = 20;
     if (name) {
-      const nameProduct = total.filter(d => d.name.toLowerCase().includes(name.toLowerCase()));
-      console.log(nameProduct)
-      nameProduct.length ? res.status(200).send(nameProduct) : res.status(400).send("El vino descrito no se encuentra guardado");
-    } else {
-      res.status(200).send(total);
+      if (!isNaN(parseInt(name))) return res.status(400).send("Formato de datos invalido (name) debe ser una cadena texto.");
+      search = {
+        where: {
+          name: {
+            [Op.like]: `%${name}%`
+          }
+        }
+      }
     }
+    if (category) {
+      if (isNaN(parseInt(category))) return res.status(400).send("Formato de datos invalido (category) debe ser un numero.");
+      filter = category;
+    }
+    if (order_direction) {
+      if (order_direction === 'DESC' || order_direction === 'ASC') {
+        order.push([['name', order_direction]])
+      } else {
+        return res.status(400).send("Datos invalidos (order_direction) permitidos: DESC o ASC.");
+      }
+    }
+
+    let data = await paginate(Product, page, pageLimit, search, order, filter);
+    if (category) {
+      let data2 = []
+      await Promise.all(data.data.map(async (p) => {
+        data2.push(await getCategory(p.id));
+      }))
+      data = { ...data, data: data2 };
+    }
+    data.data.length ? res.status(200).json(data) : res.status(400).send("El vino descrito no se encuentra guardado");
+
   } catch (e) {
     res.status(400).send("Error: " + e)
   }
@@ -54,29 +95,29 @@ router.get("/", async (req, res) => {
 reviews, etc...), asi puede determinar si quiero ese producto o no.  */
 
 router.get("/:id", async (req, res) => {
-    try {
-      const { id } = req.params;
-      if (id) {
-        const all = await DB();
-        const r = await Revie();
-        const productNew = all.filter((e) => e.id == id)
-        let categoryNew = productNew[0].categories.map((e) => { return e.dataValues.name })
-        const reviewNew = r.filter((f) => f.productId == id)
-        var resultado = {
-          name: productNew[0].name,
-          description: productNew[0].description,
-          price: productNew[0].price,
-          stock: productNew[0].stock,
-          image: productNew[0].image,
-          review: reviewNew,
-          category: categoryNew
-        }
+  try {
+    const { id } = req.params;
+    if (id) {
+      const all = await DB();
+      const r = await Revie();
+      const productNew = all.filter((e) => e.id == id)
+      let categoryNew = productNew[0].categories.map((e) => { return e.dataValues.name })
+      const reviewNew = r.filter((f) => f.productId == id)
+      var resultado = {
+        name: productNew[0].name,
+        description: productNew[0].description,
+        price: productNew[0].price,
+        stock: productNew[0].stock,
+        image: productNew[0].image,
+        review: reviewNew,
+        category: categoryNew
       }
-      res.status(200).send(resultado);
     }
-    catch (e) {
-      res.status(400).send("Error: " + e)
-    }
-  });
+    res.status(200).send(resultado);
+  }
+  catch (e) {
+    res.status(400).send("Error: " + e)
+  }
+});
 
 module.exports = router

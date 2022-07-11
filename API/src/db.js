@@ -58,8 +58,16 @@ Order.hasOne(User);
 User.hasMany(Order);
 
 // order - product
-Product.belongsToMany(Order, { through: "productXorder" });
-Order.belongsToMany(Product, { through: "productXorder" });
+
+ const productXorder = sequelize.define('productXorder', {
+  cant: Sequelize.INTEGER
+})
+
+Product.belongsToMany(Order, { through: productXorder })
+Order.belongsToMany(Product, { through: productXorder }) 
+
+
+
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
   conn: sequelize, // para importart la conexión { conn } = require('./db.js');
