@@ -1,42 +1,77 @@
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import Admin from "../Admin/Admin";
 import styles from "./User.module.css";
 
 export const User = () => {
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
+
   return (
-    <div className={styles.userContainer}>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="icon icon-tabler icon-tabler-user"
-        width="33"
-        height="33"
-        viewBox="0 0 24 24"
-        strokeWidth="1.5"
-        stroke="#ffffff"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-        <circle cx="12" cy="7" r="4" />
-        <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-      </svg>
-      <p>Nombre Usuario</p>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="icon icon-tabler icon-tabler-arrow-down"
-        width="33"
-        height="33"
-        viewBox="0 0 24 24"
-        strokeWidth="1.5"
-        stroke="#ffffff"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-        <line x1="12" y1="5" x2="12" y2="19" />
-        <line x1="18" y1="13" x2="12" y2="19" />
-        <line x1="6" y1="13" x2="12" y2="19" />
-      </svg>
-    </div>
+    <>
+      <div className="relative inline-block text-left">
+        <div>
+          <button
+            onClick={handleClick}
+            type="button"
+            className="inline-flex justify-center w-60 rounded-md border shadow-sm px-4 py-2 bg-white text-xl font-medium text-gray-700 hover:bg-gray-50  "
+            id="menu-button"
+            ariaexpanded="true"
+            ariahaspopup="true"
+          >
+            Administrador
+            <svg
+              className="-mr-1 ml-2 h-8 w-8"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              ariahidden="true"
+            >
+              <path
+                fillRule="evenodd"
+                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </button>
+        </div>
+
+        {open && (
+          <div
+            className="origin-top-right absolute right-0 mt-2 w-60 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+            role="menu"
+            ariaorientation="vertical"
+            arialabelledby="menu-button"
+            tabndex="-1"
+          >
+            <div className="py-1" role="none">
+              <Link
+                to="/admin"
+                className="text-gray-700 block px-4 py-2 text-md"
+                role="menuitem"
+                tabIndex="-1"
+                id="menu-item-0"
+              >
+                Cuenta
+              </Link>
+              <hr />
+
+              <a
+                href="#"
+                className="text-gray-700 block px-4 py-2 text-md"
+                role="menuitem"
+                tabIndex="-1"
+                id="menu-item-2"
+              >
+                Salir
+              </a>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
