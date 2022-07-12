@@ -49,34 +49,39 @@ comprar.
 
 router.get("/", async (req, res) => {
   try {
-    const { name, page, order_direction, category } = req.query;
+    const { name, page, order_direction, order_by, category, page_limit } = req.query;
     let search = {}
     let order = [];
     let filter = {};
-    let pageLimit = 20;
     if (name) {
-      if (!isNaN(parseInt(name))) return res.status(400).send("Formato de datos invalido (name) debe ser una cadena texto.");
+      if (!isNaN(parseInt(name))) return res.status(400).json({ message: "Formato de datos invalido (name) debe ser una cadena texto." });
       search = {
         where: {
           name: {
-            [Op.like]: `%${name}%`
+            [Op.like]: `%${name.toLowerCase()}%`
           }
         }
       }
     }
     if (category) {
-      if (isNaN(parseInt(category))) return res.status(400).send("Formato de datos invalido (category) debe ser un numero.");
+      if (isNaN(parseInt(category))) return res.status(400).json({ message: "Formato de datos invalido (category) debe ser un numero." });
       filter = category;
     }
     if (order_direction) {
       if (order_direction === 'DESC' || order_direction === 'ASC') {
         order.push([['name', order_direction]])
+        if (order_by) {
+          if (order_by.toLowerCase() === 'price') {
+            order.pop();
+            order.push([['price', order_direction]])
+          }
+        }
       } else {
-        return res.status(400).send("Datos invalidos (order_direction) permitidos: DESC o ASC.");
+        return res.status(400).json({ message: "Datos invalidos (order_direction) permitidos: DESC o ASC." });
       }
     }
 
-    let data = await paginate(Product, page, pageLimit, search, order, filter);
+    let data = await paginate(Product, page, page_limit, search, order, filter);
     if (category) {
       let data2 = []
       await Promise.all(data.data.map(async (p) => {
@@ -84,10 +89,11 @@ router.get("/", async (req, res) => {
       }))
       data = { ...data, data: data2 };
     }
-    data.data.length ? res.status(200).json(data) : res.status(400).send("El vino descrito no se encuentra guardado");
+
+    data.data.length ? res.status(200).json(data) : res.status(400).send({ message: "El vino descrito no se encuentra guardado" });
 
   } catch (e) {
-    res.status(400).send("Error: " + e)
+    res.status(400).send({ message: "Error: " + e })
   }
 })
 
@@ -116,7 +122,7 @@ router.get("/:id", async (req, res) => {
     res.status(200).send(resultado);
   }
   catch (e) {
-    res.status(400).send("Error: " + e)
+    res.status(400).send({ message: "Error: " + e })
   }
 });
 
