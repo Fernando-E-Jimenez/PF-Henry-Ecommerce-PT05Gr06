@@ -22,15 +22,15 @@ router.post('/', upload.array('image'), async (req, res, next) => {
 
     let imagenes = image.map(i => i.path);
     let product = await Product.create({
-      name,
+      name : name.toLowerCase(),
       description,
       price,
       stock,
-      image: imagenes ? imagenes : ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRj69dz8tM7tixlt4hTLPnGwVPavHB1QYeGtA&usqp=CAU"],
+      image: imagenes.length ? imagenes : ["https://res.cloudinary.com/jdmoreno/image/upload/v1657596154/AppVinos/Default_hi3ylt.png"],
     });
 
-    const cat = category.split(",");
-    await Promise.all(cat.map(async c => {
+    // const cat = category.split(",");
+    await Promise.all(category.map(async c => {
       await product.addCategories(c);
     }));
 
@@ -66,24 +66,40 @@ router.put('/', upload.array('image'), async (req, res, next) => {
 
     let imagenes = image.map(i => i.path);
     const prod = await Product.findByPk(parseInt(id));
-    await prod.setCategories(category);
-    prod.image.map(async i => {
-      let m = i.split('/')[8].split('.')[0];
-      console.log(m);
-      await cloudinary.api.delete_resources('AppVinos/' + m, function (error, result) {
-        console.log(result, error)
+
+    await prod.setCategories(category.split(","));
+    if (imagenes.length) {
+      prod.image.map(async i => {
+        let m = i.split('/')[8].split('.')[0];
+        console.log(m);
+        await cloudinary.api.delete_resources('AppVinos/' + m, function (error, result) {
+          console.log(result, error)
+        });
       });
-    });
-    const product = await Product.update(
-      { name, description, price, stock, image: imagenes },
-      {
-        where: {
-          id: id
+    }
+    if (imagenes.length) {
+      const product = await Product.update(
+        { name: name.toLowerCase(), description, price, stock, image: imagenes },
+        {
+          where: {
+            id: id
+          }
         }
-      }
-    );
-    if (product) return res.status(200).send('Producto actualizado.');
-    return res.status(400).send('Error al actualizar el producto.');
+      );
+      if (product) return res.status(200).send('Producto actualizado.');
+      return res.status(400).send('Error al actualizar el producto.');
+    }else{
+      const product = await Product.update(
+        { name, description, price, stock },
+        {
+          where: {
+            id: id
+          }
+        }
+      );
+      if (product) return res.status(200).send('Producto actualizado.');
+      return res.status(400).send('Error al actualizar el producto.');
+    }
   } catch (error) {
     return res.status(400).send("Error: " + error);
   }
