@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-// import {} from "../actions";
+import {createProduct} from "../actions";
 import styles from "./newProduct.module.css";
 
 function validate(post) {
@@ -50,7 +50,7 @@ export default function AddProduct() {
     if (Object.values(errors).length > 0)
       alert("Por favor no deje campos vacios");
     else {
-      dispatch(postProduct(post)); //depende de como lo llamemos
+      dispatch(createProduct(post)); //depende de como lo llamemos
       alert("Producto agregado con exito");
     }
   }
