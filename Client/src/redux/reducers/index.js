@@ -6,6 +6,7 @@ import {
   NEW_CATEGORY,
   GET_CATEGORIES,
   CHANGE_ORDER,
+  NEW_PRODUCT
 } from "../types";
 
 const initialState = {
