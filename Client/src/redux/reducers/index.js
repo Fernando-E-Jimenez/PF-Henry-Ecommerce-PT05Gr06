@@ -5,6 +5,8 @@ import {
   POST_REVIEW,
   NEW_CATEGORY,
   GET_CATEGORIES,
+  CHANGE_ORDER,
+  NEW_PRODUCT
 } from "../types";
 
 const initialState = {
@@ -12,6 +14,10 @@ const initialState = {
   detail: {},
   resultPost: {},
   categories: [],
+  order: {
+    type: '',
+    by: ''
+  }
 };
 
 const reducer = (state = initialState, action) => {
@@ -27,6 +33,16 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         detail: action.payload,
+      };
+    }
+
+    case CHANGE_ORDER: {
+      return {
+        ...state,
+        order: {
+          type: action.payload.type,
+          by: action.payload.by
+        }
       };
     }
 

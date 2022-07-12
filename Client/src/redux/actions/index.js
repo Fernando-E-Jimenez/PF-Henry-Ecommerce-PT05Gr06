@@ -7,20 +7,22 @@ import {
   NEW_CATEGORY,
   GET_CATEGORIES,
   NEW_PRODUCT,
+  CHANGE_ORDER
 } from "../types";
 import axios from "axios";
 
 const URLAPI = "http://localhost:3001/";
 
-const getProducts = () => {
-  return async (dispatch) => {
+const getProducts = (page, order, by) => {
+  return (dispatch) => {
     try {
-      return dispatch({
-        type: GET_PRODUCTS,
-        payload: products,
-      });
+      return fetch(`${URLAPI}guess/product?page=${page}&order_direction=${order}&order_by=${by}`)
+        .then(response => response.json())
+        .then(json => {
+          dispatch({ type: GET_PRODUCTS, payload: json})
+        })
     } catch (error) {
-      console.log(error);
+      dispatch({type: GET_PRODUCTS, payload: error})
     }
   };
 };
@@ -28,13 +30,13 @@ const getProducts = () => {
 const productDetail = (id) => {
   return function (dispatch) {
     try {
-      const product = products.filter((p) => p.id == id);
-      return dispatch({
-        type: PRODUCT_DETAIL,
-        payload: product,
-      });
+      return fetch(`${URLAPI}guess/product/${id}`)
+        .then(response => response.json())
+        .then(json => {
+          dispatch({ type: PRODUCT_DETAIL , payload: json})
+        })
     } catch (error) {
-      console.log(error);
+      dispatch({type: PRODUCT_DETAIL, payload: error})
     }
   };
 };
@@ -42,15 +44,11 @@ const productDetail = (id) => {
 const getProductsFilter = (name) => {
   return function (dispatch) {
     try {
-      /* fetch(`${URLAPI}?name=${name}`)
+      return fetch(`${URLAPI}guess/product?name=${name}`)
         .then(response => response.json())
         .then(json => {
           dispatch({ type: GET_PRODUCTS_FILTER, payload: json})
-        }) */
-      const product = products.filter((d) =>
-        d.name.toLowerCase().includes(name.toLowerCase())
-      );
-      return dispatch({ type: GET_PRODUCTS_FILTER, payload: product });
+        })
     } catch (error) {
       dispatch({ type: GET_PRODUCTS_FILTER, payload: error });
     }
@@ -60,7 +58,7 @@ const getProductsFilter = (name) => {
 const postReview = (review, id) => {
   return function (dispatch) {
     try {
-      /* fetch( `${URLAPI}?id=${id}`, { // verificar como se envia el id por parametro
+      return fetch( `${URLAPI}guess/product/${id}`, {
           method: 'POST',
           body: JSON.stringify(review),
           headers:{
@@ -71,10 +69,7 @@ const postReview = (review, id) => {
         .then(response => response.json())
         .then(json => {
           dispatch({ type: POST_REVIEW, payload: json})
-        }) */
-      const product = products.filter((p) => p.id == id);
-      product[0].reviews.push(review);
-      return dispatch({ type: POST_REVIEW, payload: product });
+        })
     } catch (error) {
       dispatch({ type: POST_REVIEW, payload: error });
     }
@@ -140,6 +135,15 @@ const createProduct = (payload) => {
   };
 };
 
+const changeOrder = (type, by) => {
+  return (dispatch) => {
+    try {
+      return dispatch({ type: CHANGE_ORDER, payload: { type, by }})
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
 
 export {
   getProducts,
@@ -149,4 +153,5 @@ export {
   createCategory,
   getCategory,
   createProduct,
+  changeOrder
 };

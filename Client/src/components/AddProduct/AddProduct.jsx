@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import {createProduct} from "../actions";
+import { createProduct } from "../../redux/actions/index";
 import styles from "./newProduct.module.css";
 
 function validate(post) {

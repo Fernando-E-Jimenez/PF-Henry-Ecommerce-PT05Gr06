@@ -16,16 +16,16 @@ export const CardDetail = () => {
 
   return (
     <div>
-      {product[0]?
+      {product?
       <div>
         <div className={styles.bgPage}>
           <div className={styles.detailContainer}>
             <div className={styles.imgContainer}>
-              <img src={product[0].image} alt={product[0]} />
+              <img src={product.image} alt={product} />
             </div>
             <div className={styles.detailBox}>
-              <h3 className={styles.title}>{product[0].name}</h3>
-              <p className={styles.price}>{product[0].price}</p>
+              <h3 className={styles.title}>{product.name}</h3>
+              <p className={styles.price}>{product.price}</p>
               <div className={styles.count}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +63,7 @@ export const CardDetail = () => {
               <div className={styles.buttonContainer}>
                 <button className={styles.button}>Agregar Carrito</button>
               </div>
-              <p className={styles.stock}>Stock Disponible: {product[0].stock}</p>
+              <p className={styles.stock}>Stock Disponible: {product.stock}</p>
             </div>
           </div>
         </div>
