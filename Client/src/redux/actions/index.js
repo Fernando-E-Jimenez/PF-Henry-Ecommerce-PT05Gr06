@@ -14,7 +14,7 @@ import axios from "axios";
 const URLAPI = "http://localhost:3001/";
 
 const getProducts = (page, order, by) => {
-  return async (dispatch) => {
+  return (dispatch) => {
     try {
       return fetch(`${URLAPI}guess/product?page=${page}&order_direction=${order}&order_by=${by}`)
         .then(response => response.json())
@@ -47,7 +47,7 @@ const getProductsFilter = (name) => {
       return fetch(`${URLAPI}guess/product?name=${name}`)
         .then(response => response.json())
         .then(json => {
-          dispatch({ type: GET_PRODUCTS_FILTER, payload: json.data})
+          dispatch({ type: GET_PRODUCTS_FILTER, payload: json})
         })
     } catch (error) {
       dispatch({ type: GET_PRODUCTS_FILTER, payload: error });
@@ -134,7 +134,6 @@ const createProduct = (payload) => {
     }
   };
 };
-
 
 const changeOrder = (type, by) => {
   return (dispatch) => {
