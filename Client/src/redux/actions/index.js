@@ -6,6 +6,7 @@ import {
   POST_REVIEW,
   NEW_CATEGORY,
   GET_CATEGORIES,
+  NEW_PRODUCT,
   CHANGE_ORDER
 } from "../types";
 import axios from "axios";
@@ -109,6 +110,32 @@ const getCategory = () => {
   };
 };
 
+// const getProductByName = () => {
+//   try {
+//     const product = await axios.get(
+
+//     )
+//   }
+// }
+const createProduct = (payload) => {
+  return async (dispatch) => {
+    try {
+      const product = await axios.post(
+        "http://localhost:3001/admin/product",
+        payload
+      );
+      console.log(product);
+      return dispatch({
+        type: NEW_PRODUCT,
+        payload: product,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+
 const changeOrder = (type, by) => {
   return (dispatch) => {
     try {
@@ -126,5 +153,6 @@ export {
   postReview,
   createCategory,
   getCategory,
+  createProduct,
   changeOrder
 };

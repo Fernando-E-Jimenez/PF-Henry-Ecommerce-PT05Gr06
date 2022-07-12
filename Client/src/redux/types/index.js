@@ -4,4 +4,5 @@ export const GET_PRODUCTS_FILTER = "GET_PRODUCTS_FILTER";
 export const POST_REVIEW = "POST_REVIEW";
 export const NEW_CATEGORY = "NEW_CATEGORY";
 export const GET_CATEGORIES = "GET_CATEGORIES";
-export const CHANGE_ORDER = 'CHANGE_ORDER'
+export const NEW_PRODUCT = "NEW_PRODUCT";
+export const CHANGE_ORDER = 'CHANGE_ORDER';

@@ -5,13 +5,15 @@ const router = Router();
   
   
   // ..sacar items de mi carrito, en caso que decida no quererlos.
-  router.put("/:idorder/:id", async (req, res) => {
+  router.put("/:idorder/product/:id", async (req, res) => {
     try{
-        const {idorder} = req.params;
-        const {x=0} = req.body;
-        const prod = await Order.findByPk(parseInt(idorder));
-        console.log(prod)
-        await prod.setProducts(x)
+        const {idorder, id} = req.params;
+        const order = await Order.findByPk(parseInt(idorder));
+        const prod1 = await Product.findByPk(parseInt(id));
+        let mountProd = prod1.dataValues.price
+        let montOrder = order.dataValues.mont
+        montOrder = parseInt(montOrder) - parseInt(mountProd)
+        await order.removeProducts(prod1)
         // const newCant = await Order.update({cant: cant} , { where:{id: idorder}})
         res.status(200).send("borradooo");
     }catch (e) {

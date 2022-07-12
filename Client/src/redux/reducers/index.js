@@ -66,6 +66,13 @@ const reducer = (state = initialState, action) => {
       };
     }
 
+    case NEW_PRODUCT: {
+      return {
+        ...state,
+        detail: action.payload,
+      }
+    }
+
     default:
       return state;
   }
