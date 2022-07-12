@@ -10,7 +10,6 @@ router.post('/', upload.array('image'), async (req, res, next) => {
   try {
     const { name, description, price, stock, category } = req.body;
     const image = req.files || req.file;
-    if (!image) return res.status(400).send("Faltan datos necesarios (image).");
     if (!name) return res.status(400).send("Faltan datos necesarios (name).");
     if (!description) return res.status(400).send("Faltan datos necesarios (description).");
     if (!price) return res.status(400).send("Faltan datos necesarios (price).");
@@ -102,7 +101,7 @@ router.get("/carga", async (req, res) => {
     Promise.all(arrayProductos.map(async p => {
       const product = await Product.findOrCreate({
         where: {
-          name: p.name,
+          name: p.name.toLowerCase(),
           image: p.image,
           description: p.description,
           price: p.price,
