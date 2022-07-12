@@ -70,7 +70,9 @@ export default function AddProduct() {
     //   dispatch(createProduct(post)); //depende de como lo llamemos
     //   alert("Producto agregado con exito");
     // }
-    dispatch(createProduct(post));
+    const formData = new FormData(e.target);
+    dispatch(createProduct(formData));
+    // dispatch(createProduct(post));
     alert("Producto agregado con exito");
   }
 
@@ -142,14 +144,16 @@ export default function AddProduct() {
             Seleccionar Categorias
           </label>
           <select
+            multiple
             onChange={handleSelect}
             name="category"
             defaultValue={"Select Categoria"}
             className="border w-full p-2 mt-2 placeholder-gray-400 rounded-md text-xl"
+            
           >
             <option disabled>Seleccionar Categoria</option>
             {categories?.map((e) => (
-              <option key={e.id} value={e.name}>
+              <option key={e.id} value={e.id}>
                 {e.name}
               </option>
             ))}
