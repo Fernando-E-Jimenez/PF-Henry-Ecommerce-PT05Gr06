@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postReview } from "../../redux/actions";
+import { productDetail } from "../../redux/actions";
 import { FaStar } from "react-icons/fa"; //probando a ver si puedo ingresar las estrellas
 
 /* Variables para los colores de las estrellas */
@@ -37,29 +38,34 @@ export const Reviews = () => {
     description: "",
     star: 0,
   });
+
   return (
     <div>
       <div className={styles.bgPage}>
         <div className={styles.detailContainer}>
-          <div className={styles.reviewsContainer}>
-            <div>
-              <h3 className={styles.title}>Reviews</h3>
+          {product.review?
+            product.review.length>0?
+            <div className={styles.reviewsContainer}>
+              <div>
+                <h3 className={styles.title}>Reviews</h3>
+              </div>
+              <div className={styles.cardsReviews}>
+                {product.review.map((r, id) => {
+                  return (
+                    <div key={id}>
+                      <div>{r.description}</div>
+                      <div>{r.star}</div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-            <div className={styles.cardsReviews}>
-              {product[0].reviews.map((r, id) => {
-                return (
-                  <div key={id}>
-                    <div>{r.description}</div>
-                    <div>{r.star}</div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+            :'Este producto no cuenta con Reviews'
+          :'Cargando...'}
           <div className={styles.newReviewContainer}>
             <h3 className={styles.title}>New Review</h3>
             <form
-              /* className={pte} */ onSubmit={(e) => {
+                onSubmit={(e) => {
                 e.preventDefault();
                 dispatch(postReview(comment, id));
                 setComment({
@@ -108,7 +114,6 @@ export const Reviews = () => {
                   );
                 })}
               </div>
-
               <button type="submit" className={styles.optionButton}>
                 Post
               </button>
