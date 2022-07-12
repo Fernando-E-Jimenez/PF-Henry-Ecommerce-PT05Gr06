@@ -1,4 +1,3 @@
-import React from "react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProduct } from "../../redux/actions";
@@ -8,21 +7,19 @@ export const ViewProducts = () => {
   const dispatch = useDispatch();
 
   const products = useSelector((state) => state.products);
-  console.log(products);
 
   useEffect(() => {
-    dispatch(getProduct(products));
+    dispatch(getProduct());
   }, [dispatch]);
 
-  console.log(products);
   return (
     <>
       <div className="rounded-lg">
-        {/* {products.length
-          ? products.map((product) => (
+        {products.data?.length
+          ? products.data.map((product) => (
               <CardProduct key={product.id} product={product} />
             ))
-          : ""} */}
+          : ""}
       </div>
     </>
   );

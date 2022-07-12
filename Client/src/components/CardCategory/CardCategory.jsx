@@ -1,6 +1,17 @@
-import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { deleteCategory, getCategory } from "../../redux/actions";
 
 export const CardCategory = ({ category }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleDelete = (id) => {
+    dispatch(deleteCategory(id));
+    alert("Categoria Eliminada");
+    navigate("/admin");
+  };
+
   return (
     <div className="border my-1 rounded-lg text-xl p-5 flex align-middle justify-between">
       <p className="flex w-full align-middle text-2xl">{category.name}</p>
@@ -12,6 +23,7 @@ export const CardCategory = ({ category }) => {
           Editar
         </button>
         <button
+          onClick={() => handleDelete(category.id)}
           className="bg-red-400  w-full p-3 font-bold text-white rounded cursor-pointer hover:bg-sky-700 transition-colors"
           type="submit"
         >

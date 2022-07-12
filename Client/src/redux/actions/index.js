@@ -9,6 +9,7 @@ import {
   NEW_PRODUCT,
   CHANGE_ORDER,
   GET_PRODUCT,
+  DELETE_CATEGORY,
 } from "../types";
 import axios from "axios";
 
@@ -117,12 +118,10 @@ const getCategory = () => {
 const getProduct = () => {
   return async (dispatch) => {
     try {
-      const products = await axios.get(
-        "http://localhost:3001/admin/product/carga"
-      );
+      const products = await axios.get("http://localhost:3001/guess/product");
       return dispatch({
         type: GET_PRODUCT,
-        payload: products,
+        payload: products.data,
       });
     } catch (error) {
       console.log(error);
@@ -165,6 +164,19 @@ const changeOrder = (type, by) => {
   };
 };
 
+const deleteCategory = (id) => {
+  return async (dispatch) => {
+    try {
+      await axios.delete(`http://localhost:3001/admin/category/${id}`);
+      return dispatch({
+        type: DELETE_CATEGORY,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 export {
   getProducts,
   productDetail,
@@ -175,4 +187,5 @@ export {
   createProduct,
   changeOrder,
   getProduct,
+  deleteCategory,
 };

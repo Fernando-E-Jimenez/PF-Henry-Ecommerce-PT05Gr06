@@ -7,3 +7,4 @@ export const GET_CATEGORIES = "GET_CATEGORIES";
 export const NEW_PRODUCT = "NEW_PRODUCT";
 export const CHANGE_ORDER = "CHANGE_ORDER";
 export const GET_PRODUCT = "GET_PRODUCT";
+export const DELETE_CATEGORY = "DELETE_CATEGORY";
