@@ -29,8 +29,8 @@ router.post('/', upload.array('image'), async (req, res, next) => {
       image: imagenes ? imagenes : ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRj69dz8tM7tixlt4hTLPnGwVPavHB1QYeGtA&usqp=CAU"],
     });
 
-    const cat = category.split(",");
-    await Promise.all(cat.map(async c => {
+    // const cat = category.split(",");
+    await Promise.all(category.map(async c => {
       await product.addCategories(c);
     }));
 
