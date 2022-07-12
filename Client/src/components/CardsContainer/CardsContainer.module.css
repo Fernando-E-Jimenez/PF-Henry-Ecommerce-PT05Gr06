@@ -11,3 +11,18 @@
   max-width: 100rem;
   margin: auto;
 }
+
+.button {
+  margin: 1rem 0.5rem;
+  width: 25rem;
+  border: none;
+  border-radius: 10px;
+  padding: 0.8rem 0.5rem;
+  background: #3f4e4f;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.container {
+  text-align: center;
+}
