@@ -7,7 +7,8 @@ import {
   NEW_CATEGORY,
   GET_CATEGORIES,
   NEW_PRODUCT,
-  CHANGE_ORDER
+  CHANGE_ORDER,
+  GET_PRODUCT,
 } from "../types";
 import axios from "axios";
 
@@ -16,13 +17,15 @@ const URLAPI = "http://localhost:3001/";
 const getProducts = (page, order, by) => {
   return (dispatch) => {
     try {
-      return fetch(`${URLAPI}guess/product?page=${page}&order_direction=${order}&order_by=${by}`)
-        .then(response => response.json())
-        .then(json => {
-          dispatch({ type: GET_PRODUCTS, payload: json})
-        })
+      return fetch(
+        `${URLAPI}guess/product?page=${page}&order_direction=${order}&order_by=${by}`
+      )
+        .then((response) => response.json())
+        .then((json) => {
+          dispatch({ type: GET_PRODUCTS, payload: json });
+        });
     } catch (error) {
-      dispatch({type: GET_PRODUCTS, payload: error})
+      dispatch({ type: GET_PRODUCTS, payload: error });
     }
   };
 };
@@ -31,12 +34,12 @@ const productDetail = (id) => {
   return function (dispatch) {
     try {
       return fetch(`${URLAPI}guess/product/${id}`)
-        .then(response => response.json())
-        .then(json => {
-          dispatch({ type: PRODUCT_DETAIL , payload: json})
-        })
+        .then((response) => response.json())
+        .then((json) => {
+          dispatch({ type: PRODUCT_DETAIL, payload: json });
+        });
     } catch (error) {
-      dispatch({type: PRODUCT_DETAIL, payload: error})
+      dispatch({ type: PRODUCT_DETAIL, payload: error });
     }
   };
 };
@@ -45,10 +48,10 @@ const getProductsFilter = (name) => {
   return function (dispatch) {
     try {
       return fetch(`${URLAPI}guess/product?name=${name}`)
-        .then(response => response.json())
-        .then(json => {
-          dispatch({ type: GET_PRODUCTS_FILTER, payload: json})
-        })
+        .then((response) => response.json())
+        .then((json) => {
+          dispatch({ type: GET_PRODUCTS_FILTER, payload: json });
+        });
     } catch (error) {
       dispatch({ type: GET_PRODUCTS_FILTER, payload: error });
     }
@@ -58,18 +61,18 @@ const getProductsFilter = (name) => {
 const postReview = (review, id) => {
   return function (dispatch) {
     try {
-      return fetch( `${URLAPI}guess/product/${id}`, {
-          method: 'POST',
-          body: JSON.stringify(review),
-          headers:{
-              'Content-Type': 'application/json'
-          },
-          mode: 'cors'
-        })
-        .then(response => response.json())
-        .then(json => {
-          dispatch({ type: POST_REVIEW, payload: json})
-        })
+      return fetch(`${URLAPI}guess/product/${id}`, {
+        method: "POST",
+        body: JSON.stringify(review),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode: "cors",
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          dispatch({ type: POST_REVIEW, payload: json });
+        });
     } catch (error) {
       dispatch({ type: POST_REVIEW, payload: error });
     }
@@ -110,6 +113,23 @@ const getCategory = () => {
   };
 };
 
+// Trae todos los productos al admin y los pone en la tabla
+const getProduct = () => {
+  return async (dispatch) => {
+    try {
+      const products = await axios.get(
+        "http://localhost:3001/admin/product/carga"
+      );
+      return dispatch({
+        type: GET_PRODUCT,
+        payload: products,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 // const getProductByName = () => {
 //   try {
 //     const product = await axios.get(
@@ -138,12 +158,12 @@ const createProduct = (payload) => {
 const changeOrder = (type, by) => {
   return (dispatch) => {
     try {
-      return dispatch({ type: CHANGE_ORDER, payload: { type, by }})
+      return dispatch({ type: CHANGE_ORDER, payload: { type, by } });
     } catch (error) {
       console.log(error);
     }
-  }
-}
+  };
+};
 
 export {
   getProducts,
@@ -153,5 +173,6 @@ export {
   createCategory,
   getCategory,
   createProduct,
-  changeOrder
+  changeOrder,
+  getProduct,
 };

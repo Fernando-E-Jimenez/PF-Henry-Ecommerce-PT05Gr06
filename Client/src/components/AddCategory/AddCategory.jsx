@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createCategory } from "../../redux/actions";
 // import {} from "../actions";
 import styles from "./newProduct.module.css";
@@ -13,6 +13,7 @@ const validate = (category) => {
 };
 
 const AddCategory = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories);
   const [errors, setErrors] = useState({});
@@ -42,6 +43,8 @@ const AddCategory = () => {
     //   alert("Producto agregado con exito");
     // }
     dispatch(createCategory(category));
+    alert("Categoria agregada con exito");
+    navigate("/admin/view-categories");
   };
 
   return (
