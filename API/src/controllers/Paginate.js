@@ -4,7 +4,7 @@ const { Category, Product } = require("../db");
 
 const paginate = async (model, pageActual, pageLimit, search = {}, order = [], filter) => {
   try {
-    const limit = parseInt(pageLimit, 10) || 10;
+    const limit = parseInt(pageLimit, 10) || 9;
     const page = parseInt(pageActual, 10) || 1;
 
     // create an options object
@@ -13,12 +13,12 @@ const paginate = async (model, pageActual, pageLimit, search = {}, order = [], f
       limit: limit,
       include: {
         model: Category,
-        as: 'categories',
-        attributes: ['name'],
+        atributes: ['name'],
         through: {
           attributes: []
-        }
-      }
+        }        
+      },
+      distinct: true
     };
 
     // check if the search object is empty
@@ -41,9 +41,10 @@ const paginate = async (model, pageActual, pageLimit, search = {}, order = [], f
     return {
       previousPage: getPreviousPage(page),
       currentPage: page,
-      nextPage: getNextPage(page, limit, rows.length),
-      total: rows.length,
+      nextPage: getNextPage(page, limit, count),
+      total: count,
       limit: limit,
+      totalPages: getTotalPages(limit, count),
       data: rows
     }
   } catch (error) {
@@ -68,6 +69,13 @@ const getPreviousPage = (page) => {
     return null
   }
   return page - 1;
+}
+
+const getTotalPages = (limit, total) => {
+  if (total > limit) {
+    return Math.ceil(total / limit);
+  }
+  return 1;
 }
 
 module.exports = paginate
