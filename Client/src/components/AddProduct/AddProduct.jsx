@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createProduct, getCategory } from "../../redux/actions/index";
 import styles from "./newProduct.module.css";
 
@@ -24,6 +24,8 @@ function validate(post) {
 export default function AddProduct() {
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+
   const categories = useSelector((state) => state.categories);
 
   const [errors, setErrors] = useState({});
@@ -36,6 +38,8 @@ export default function AddProduct() {
     stock: 0,
     category: [],
   });
+
+  console.log(post.category);
 
   useEffect(() => {
     dispatch(getCategory());
@@ -62,6 +66,13 @@ export default function AddProduct() {
     });
   };
 
+  const handleDelete = (e, option) => {
+    setPost({
+      ...post,
+      [option]: post[option].filter((data) => data !== e),
+    });
+  };
+
   function handleSubmit(e) {
     e.preventDefault();
     // if (Object.values(errors).length > 0)
@@ -74,6 +85,7 @@ export default function AddProduct() {
     dispatch(createProduct(formData));
     // dispatch(createProduct(post));
     alert("Producto agregado con exito");
+    navigate("/admin/view-products");
   }
 
   return (
@@ -144,12 +156,10 @@ export default function AddProduct() {
             Seleccionar Categorias
           </label>
           <select
-            multiple
             onChange={handleSelect}
             name="category"
             defaultValue={"Select Categoria"}
             className="border w-full p-2 mt-2 placeholder-gray-400 rounded-md text-xl"
-            
           >
             <option disabled>Seleccionar Categoria</option>
             {categories?.map((e) => (
@@ -159,8 +169,24 @@ export default function AddProduct() {
             ))}
           </select>
           {post.category?.map((e) => (
-            <div key={e}>
-              <div>{e}</div>
+            <div key={e} className="flex text-xl mt-4 justify-center">
+              <div className="w-1/4">{e}</div>
+              <button onClick={() => handleDelete(e, "category")}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={4}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
             </div>
           ))}
           {/* <input

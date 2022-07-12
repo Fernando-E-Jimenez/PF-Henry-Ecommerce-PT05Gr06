@@ -12,7 +12,6 @@ export const ViewCategories = () => {
     dispatch(getCategory());
   }, [dispatch]);
 
-  console.log(categories);
   return (
     <>
       <div className="rounded-lg">

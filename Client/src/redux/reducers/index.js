@@ -8,6 +8,7 @@ import {
   CHANGE_ORDER,
   NEW_PRODUCT,
   GET_PRODUCT,
+  DELETE_CATEGORY,
 } from "../types";
 
 const initialState = {
@@ -78,7 +79,13 @@ const reducer = (state = initialState, action) => {
     case GET_PRODUCT: {
       return {
         ...state,
-        product: action.payload,
+        products: action.payload,
+      };
+    }
+
+    case DELETE_CATEGORY: {
+      return {
+        ...state,
       };
     }
 
