@@ -42,8 +42,10 @@ const { Category, Order, Product, Review, Rol, User } = sequelize.models;
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);
 
-User.hasOne(Rol);
-Rol.hasMany(User);
+
+User.belongsToMany(Rol, { through: "userXrol" });
+Rol.belongsToMany(User, { through: "userXrol" });
+
 
 // Product - Category;
 

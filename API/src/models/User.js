@@ -16,21 +16,21 @@ module.exports = (sequelize) => {
             allowNull: false,
             unique: true
         },
-        pasword: {
+        password: {
             type: DataTypes.STRING,
             allowNull: false,
         },
         name: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         dni: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         email: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
     },
         {
