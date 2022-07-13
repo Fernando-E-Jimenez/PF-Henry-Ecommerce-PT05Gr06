@@ -9,10 +9,14 @@ import {
   NEW_PRODUCT,
   GET_PRODUCT,
   DELETE_CATEGORY,
+  EDIT_CATEGORY,
+  EDIT_PRODUCT,
+  EDIT_PRODUCT_OBTENER,
 } from "../types";
 
 const initialState = {
   products: [],
+  productEdit: null,
   detail: {},
   resultPost: {},
   categories: [],
@@ -21,6 +25,8 @@ const initialState = {
     by: "",
   },
 };
+
+//console.log(initialState.productEdit);
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -86,6 +92,30 @@ const reducer = (state = initialState, action) => {
     case DELETE_CATEGORY: {
       return {
         ...state,
+      };
+    }
+
+    case EDIT_CATEGORY: {
+      let editCategory = state.categories.map((cat) =>
+        cat.id === action.payload.id ? action.payload : cat
+      );
+      return {
+        ...state,
+        categories: editCategory,
+      };
+    }
+
+    case EDIT_PRODUCT_OBTENER: {
+      return {
+        ...state,
+        productEdit: action.payload,
+      };
+    }
+
+    case EDIT_PRODUCT: {
+      return {
+        ...state,
+        productEdit: action.payload,
       };
     }
 

@@ -45,8 +45,8 @@ router.post("/", upload.array("image"), async (req, res, next) => {
       image: imagenes.length
         ? imagenes
         : [
-          "https://res.cloudinary.com/jdmoreno/image/upload/v1657596154/AppVinos/Default_hi3ylt.png",
-        ],
+            "https://res.cloudinary.com/jdmoreno/image/upload/v1657596154/AppVinos/Default_hi3ylt.png",
+          ],
     });
 
     if (typeof category === "string") {

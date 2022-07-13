@@ -10,6 +10,9 @@ import {
   CHANGE_ORDER,
   GET_PRODUCT,
   DELETE_CATEGORY,
+  EDIT_CATEGORY,
+  EDIT_PRODUCT,
+  EDIT_PRODUCT_OBTENER,
 } from "../types";
 import axios from "axios";
 
@@ -177,6 +180,46 @@ const deleteCategory = (id) => {
   };
 };
 
+const editCategory = (data) => {
+  return async (dispatch) => {
+    try {
+      await axios.put();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+const obtainEditProduct = (producto) => {
+  return async (dispatch) => {
+    try {
+      return dispatch({
+        type: EDIT_PRODUCT_OBTENER,
+        payload: producto,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+const editProduct = (id, payload) => {
+  return async (dispatch) => {
+    try {
+      const update = await axios.put(
+        `http://localhost:3001/admin/product/${id}`,
+        payload
+      );
+      return dispatch({
+        type: EDIT_PRODUCT,
+        payload: update.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 export {
   getProducts,
   productDetail,
@@ -188,4 +231,7 @@ export {
   changeOrder,
   getProduct,
   deleteCategory,
+  editCategory,
+  obtainEditProduct,
+  editProduct,
 };
