@@ -6,7 +6,9 @@ import {
   NEW_CATEGORY,
   GET_CATEGORIES,
   CHANGE_ORDER,
-  NEW_PRODUCT
+  NEW_PRODUCT,
+  GET_PRODUCT,
+  DELETE_CATEGORY,
 } from "../types";
 
 const initialState = {
@@ -15,9 +17,9 @@ const initialState = {
   resultPost: {},
   categories: [],
   order: {
-    type: '',
-    by: ''
-  }
+    type: "",
+    by: "",
+  },
 };
 
 const reducer = (state = initialState, action) => {
@@ -41,8 +43,8 @@ const reducer = (state = initialState, action) => {
         ...state,
         order: {
           type: action.payload.type,
-          by: action.payload.by
-        }
+          by: action.payload.by,
+        },
       };
     }
 
@@ -71,7 +73,20 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         detail: action.payload,
-      }
+      };
+    }
+
+    case GET_PRODUCT: {
+      return {
+        ...state,
+        products: action.payload,
+      };
+    }
+
+    case DELETE_CATEGORY: {
+      return {
+        ...state,
+      };
     }
 
     default:

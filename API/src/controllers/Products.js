@@ -1,52 +1,78 @@
 const { Product, Category, Review, Order } = require("../db");
-const { upload, cloudinary } = require('../libs/storage');
-const { arrayProductos, arraycategorias } = require('./Data');
+const { upload, cloudinary } = require("../libs/storage");
+const { arrayProductos, arraycategorias } = require("./Data");
 
-const { Router } = require('express');
+const { Router } = require("express");
 const router = Router();
 
-
-router.post('/', upload.array('image'), async (req, res, next) => {
+router.post("/", upload.array("image"), async (req, res, next) => {
   try {
+    console.log(req.body);
     const { name, description, price, stock, category } = req.body;
     const image = req.files || req.file;
     if (!name) return res.status(400).send("Faltan datos necesarios (name).");
-    if (!description) return res.status(400).send("Faltan datos necesarios (description).");
+    if (!description)
+      return res.status(400).send("Faltan datos necesarios (description).");
     if (!price) return res.status(400).send("Faltan datos necesarios (price).");
     if (!stock) return res.status(400).send("Faltan datos necesarios (stock).");
-    if (!category) return res.status(400).send("Faltan datos necesarios (category).");
-    if (isNaN(parseInt(stock))) return res.status(400).send("Formato de datos invalido (stock) debe ser un numero.");
-    if (isNaN(parseInt(price))) return res.status(400).send("Formato de datos invalido (price) debe ser un numero.");
-    if (!isNaN(parseInt(name))) return res.status(400).send("Formato de datos invalido (name) debe ser una cadena texto.");
-    if (!isNaN(parseInt(description))) return res.status(400).send("Formato de datos invalido (description) debe ser una cadena de texto.");
-
-    let imagenes = image.map(i => i.path);
+    if (!category)
+      return res.status(400).send("Faltan datos necesarios (category).");
+    if (isNaN(parseInt(stock)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (stock) debe ser un numero.");
+    if (isNaN(parseInt(price)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (price) debe ser un numero.");
+    if (!isNaN(parseInt(name)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (name) debe ser una cadena texto.");
+    if (!isNaN(parseInt(description)))
+      return res
+        .status(400)
+        .send(
+          "Formato de datos invalido (description) debe ser una cadena de texto."
+        );
+    // console.log(image)
+    let imagenes = image.map((i) => i.path);
     let product = await Product.create({
-      name : name.toLowerCase(),
-      description,
-      price,
-      stock,
-      image: imagenes.length ? imagenes : ["https://res.cloudinary.com/jdmoreno/image/upload/v1657596154/AppVinos/Default_hi3ylt.png"],
+      name: name.toLowerCase(),
+      description: description,
+      price: price,
+      stock: stock,
+      image: imagenes.length
+        ? imagenes
+        : [
+          "https://res.cloudinary.com/jdmoreno/image/upload/v1657596154/AppVinos/Default_hi3ylt.png",
+        ],
     });
 
-    // const cat = category.split(",");
-    await Promise.all(category.map(async c => {
-      await product.addCategories(c);
-    }));
+    if (typeof category === "string") {
+      const cat = category.split(",");
+      await Promise.all(
+        cat.map(async (c) => {
+          await product.addCategories(c);
+        })
+      );
+    } else {
+      await Promise.all(
+        category.map(async (c) => {
+          await product.addCategories(c);
+        })
+      );
+    }
 
     const catego = await product.getCategories();
 
     return res.status(201).json({ ...product.dataValues, category: catego });
-  }
-  catch (e) {
+  } catch (e) {
     return res.status(400).send("Error: " + e);
   }
 });
 
-
-
-
-router.put('/', upload.array('image'), async (req, res, next) => {
+router.put("/", upload.array("image"), async (req, res, next) => {
   try {
     const image = req.files || req.file;
     const { id, name, description, price, stock, category } = req.body;
@@ -54,86 +80,106 @@ router.put('/', upload.array('image'), async (req, res, next) => {
     // if (!image) return res.status(400).send("Faltan datos necesarios (image).");
     if (!id) return res.status(400).send("Faltan datos necesarios (id).");
     if (!name) return res.status(400).send("Faltan datos necesarios (name).");
-    if (!description) return res.status(400).send("Faltan datos necesarios (description).");
+    if (!description)
+      return res.status(400).send("Faltan datos necesarios (description).");
     if (!price) return res.status(400).send("Faltan datos necesarios (price).");
     if (!stock) return res.status(400).send("Faltan datos necesarios (stock).");
-    if (!category) return res.status(400).send("Faltan datos necesarios (category).");
-    if (isNaN(parseInt(id))) return res.status(400).send("Formato de datos invalido (id) debe ser un numero.");
-    if (isNaN(parseInt(stock))) return res.status(400).send("Formato de datos invalido (stock) debe ser un numero.");
-    if (isNaN(parseInt(price))) return res.status(400).send("Formato de datos invalido (price) debe ser un numero.");
-    if (!isNaN(parseInt(name))) return res.status(400).send("Formato de datos invalido (name) debe ser una cadena texto.");
-    if (!isNaN(parseInt(description))) return res.status(400).send("Formato de datos invalido (description) debe ser una cadena de texto.");
+    if (!category)
+      return res.status(400).send("Faltan datos necesarios (category).");
+    if (isNaN(parseInt(id)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (id) debe ser un numero.");
+    if (isNaN(parseInt(stock)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (stock) debe ser un numero.");
+    if (isNaN(parseInt(price)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (price) debe ser un numero.");
+    if (!isNaN(parseInt(name)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (name) debe ser una cadena texto.");
+    if (!isNaN(parseInt(description)))
+      return res
+        .status(400)
+        .send(
+          "Formato de datos invalido (description) debe ser una cadena de texto."
+        );
 
-    let imagenes = image.map(i => i.path);
+    let imagenes = image.map((i) => i.path);
     const prod = await Product.findByPk(parseInt(id));
-
-    await prod.setCategories(category.split(","));
-    if (imagenes.length) {
-      prod.image.map(async i => {
-        let m = i.split('/')[8].split('.')[0];
-        console.log(m);
-        await cloudinary.api.delete_resources('AppVinos/' + m, function (error, result) {
-          console.log(result, error)
-        });
-      });
-    }
-    if (imagenes.length) {
-      const product = await Product.update(
-        { name: name.toLowerCase(), description, price, stock, image: imagenes },
-        {
-          where: {
-            id: id
-          }
+    await prod.setCategories(category);
+    prod.image.map(async (i) => {
+      let m = i.split("/")[8].split(".")[0];
+      console.log(m);
+      await cloudinary.api.delete_resources(
+        "AppVinos/" + m,
+        function (error, result) {
+          console.log(result, error);
         }
       );
-      if (product) return res.status(200).send('Producto actualizado.');
-      return res.status(400).send('Error al actualizar el producto.');
-    }else{
+    });
+    if (imagenes.length) {
+      const product = await Product.update(
+        { name, description, price, stock, image: imagenes },
+        {
+          where: {
+            id: id,
+          },
+        }
+      );
+      if (product) return res.status(200).send("Producto actualizado.");
+      return res.status(400).send("Error al actualizar el producto.");
+    } else {
       const product = await Product.update(
         { name, description, price, stock },
         {
           where: {
-            id: id
-          }
+            id: id,
+          },
         }
       );
-      if (product) return res.status(200).send('Producto actualizado.');
-      return res.status(400).send('Error al actualizar el producto.');
+      if (product) return res.status(200).send("Producto actualizado.");
+      return res.status(400).send("Error al actualizar el producto.");
     }
   } catch (error) {
     return res.status(400).send("Error: " + error);
   }
 });
 
-
 router.get("/carga", async (req, res) => {
   try {
-    Promise.all(arraycategorias.map(async (c) => {
-      // console.log(c)
-      await Category.findOrCreate({
-        where: { name: c.name }
+    Promise.all(
+      arraycategorias.map(async (c) => {
+        // console.log(c)
+        await Category.findOrCreate({
+          where: { name: c.name },
+        });
       })
-    }))
-    Promise.all(arrayProductos.map(async p => {
-      const product = await Product.findOrCreate({
-        where: {
-          name: p.name.toLowerCase(),
-          image: p.image,
-          description: p.description,
-          price: p.price,
-          stock: p.stock,
-          image: [p.image]
-        }
+    );
+    Promise.all(
+      arrayProductos.map(async (p) => {
+        const product = await Product.findOrCreate({
+          where: {
+            name: p.name.toLowerCase(),
+            image: p.image,
+            description: p.description,
+            price: p.price,
+            stock: p.stock,
+            image: [p.image],
+          },
+        });
+        const prod = await Product.findByPk(product[0].dataValues.id);
+        await prod.setCategories(p.category);
       })
-      const prod = await Product.findByPk(product[0].dataValues.id);
-      await prod.setCategories(p.category);
-    }))
-    return res.status(200).send('Productos Cargados.');
+    );
+    return res.status(200).send("Productos Cargados.");
   } catch (error) {
     return res.status(400).send("Error: " + error);
   }
 });
 
-
-
-module.exports = router
+module.exports = router;
