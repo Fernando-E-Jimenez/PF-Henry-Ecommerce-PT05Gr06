@@ -5,6 +5,31 @@ const { arrayProductos, arraycategorias } = require("./Data");
 const { Router } = require("express");
 const router = Router();
 
+const DB = async () => {
+  try {
+    return await Product.findAll({
+      include: {
+        model: Category,
+        attributes: ['name'],
+        through: {
+          attributes: []
+        }
+      }
+    })
+  } catch (e) {
+    return e
+  }
+
+}
+
+const Revie = async () => {
+  try {
+    return await Review.findAll()
+  } catch (e) {
+    return e
+  }
+}
+
 router.post("/", upload.array("image"), async (req, res, next) => {
   try {
     console.log(req.body);
@@ -150,7 +175,10 @@ router.put("/", upload.array("image"), async (req, res, next) => {
   }
 });
 
-router.get("/carga", async (req, res) => {
+
+router.get("/carga", async (req, res, next) => {
+  const { id } = req.params;
+  if (id) return next();
   try {
     Promise.all(
       arraycategorias.map(async (c) => {
@@ -181,5 +209,34 @@ router.get("/carga", async (req, res) => {
     return res.status(400).send("Error: " + error);
   }
 });
+
+router.get("/:id", async (req, res) => {
+  console.log('Carga')
+  try {
+    const { id } = req.params;
+    if (id) {
+      const all = await DB();
+      if (!all.length) return res.status(400).send({ message: "Error: No hay productos Cargados" })
+      const r = await Revie();
+      const productNew = all.filter((e) => e.id == id)
+      let categoryNew = productNew[0].categories.map((e) => { return e.dataValues.name })
+      const reviewNew = r.filter((f) => f.productId == id)
+      var resultado = {
+        name: productNew[0].name,
+        description: productNew[0].description,
+        price: productNew[0].price,
+        stock: productNew[0].stock,
+        image: productNew[0].image,
+        review: reviewNew,
+        category: categoryNew
+      }
+    }
+    res.status(200).send(resultado);
+  }
+  catch (e) {
+    res.status(400).send({ message: "Error: " + e })
+  }
+});
+
 
 module.exports = router;
