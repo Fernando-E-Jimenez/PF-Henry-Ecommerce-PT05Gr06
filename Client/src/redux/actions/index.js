@@ -18,11 +18,11 @@ import axios from "axios";
 
 const URLAPI = "http://localhost:3001/";
 
-const getProducts = (page, order, by) => {
+const getProducts = (page, order, by, id) => {
   return (dispatch) => {
     try {
       return fetch(
-        `${URLAPI}guess/product?page=${page}&order_direction=${order}&order_by=${by}`
+        `${URLAPI}guess/product?page=${page}&order_direction=${order}&order_by=${by}&category=${id}`
       )
         .then((response) => response.json())
         .then((json) => {
@@ -157,10 +157,10 @@ const createProduct = (payload) => {
   };
 };
 
-const changeOrder = (type, by) => {
+const changeOrder = (type, by, id) => {
   return (dispatch) => {
     try {
-      return dispatch({ type: CHANGE_ORDER, payload: { type, by } });
+      return dispatch({ type: CHANGE_ORDER, payload: { type, by, id } });
     } catch (error) {
       console.log(error);
     }

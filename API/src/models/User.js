@@ -16,22 +16,27 @@ module.exports = (sequelize) => {
             allowNull: false,
             unique: true
         },
-        pasword: {
+        password: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: false
         },
         name: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         dni: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         email: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
+        state: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          defaultValue: "Activo",
+      }
     },
         {
             timestamps: true,

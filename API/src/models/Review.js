@@ -12,10 +12,14 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         description: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             allowNull: false,
         },
         star: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        productId: {
             type: DataTypes.INTEGER,
             allowNull: false,
         }

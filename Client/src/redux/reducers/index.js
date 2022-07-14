@@ -23,6 +23,7 @@ const initialState = {
   order: {
     type: "",
     by: "",
+    id: ''
   },
 };
 
@@ -50,6 +51,7 @@ const reducer = (state = initialState, action) => {
         order: {
           type: action.payload.type,
           by: action.payload.by,
+          id: action.payload.id
         },
       };
     }

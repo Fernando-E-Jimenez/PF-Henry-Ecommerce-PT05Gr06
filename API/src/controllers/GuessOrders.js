@@ -47,4 +47,20 @@ const router = Router();
   }
   })
   
+
+
+  //.poder comprar todos los items de un mi carrito. (checkout) 
+  router.put("/:idorder/checkout", async (req, res) => {
+    try{
+      const {idorder} = req.params;
+      const {
+        name,
+        dni,
+        address,
+      } = req.body
+    }catch (e) {
+    res.status(400).send("Error: " + e)
+}
+})
+
   module.exports = router
