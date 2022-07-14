@@ -6,15 +6,16 @@ const router = Router();
 
 const DB = async () => {
   try {
-    return await Product.findAll({
-      include: {
-        model: Category,
-        attributes: ['name'],
-        through: {
-          attributes: []
+    return await Product.findAll(
+      {
+        include: {
+          model: Category,
+          attributes: ['name'],
+          through: {
+            attributes: []
+          }
         }
-      }
-    })
+      })
   } catch (e) {
     return e
   }
@@ -59,7 +60,8 @@ router.get("/", async (req, res) => {
         where: {
           name: {
             [Op.like]: `%${name.toLowerCase()}%`
-          }
+          },
+          state : 'Activo'
         }
       }
     }
@@ -115,6 +117,7 @@ router.get("/:id", async (req, res) => {
         price: productNew[0].price,
         stock: productNew[0].stock,
         image: productNew[0].image,
+        state: productNew[0].state,
         review: reviewNew,
         category: categoryNew
       }

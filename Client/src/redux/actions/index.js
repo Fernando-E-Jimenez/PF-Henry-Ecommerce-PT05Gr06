@@ -10,16 +10,19 @@ import {
   CHANGE_ORDER,
   GET_PRODUCT,
   DELETE_CATEGORY,
+  EDIT_CATEGORY,
+  EDIT_PRODUCT,
+  EDIT_PRODUCT_OBTENER,
 } from "../types";
 import axios from "axios";
 
 const URLAPI = "http://localhost:3001/";
 
-const getProducts = (page, order, by) => {
+const getProducts = (page, order, by, id) => {
   return (dispatch) => {
     try {
       return fetch(
-        `${URLAPI}guess/product?page=${page}&order_direction=${order}&order_by=${by}`
+        `${URLAPI}guess/product?page=${page}&order_direction=${order}&order_by=${by}&category=${id}`
       )
         .then((response) => response.json())
         .then((json) => {
@@ -154,10 +157,10 @@ const createProduct = (payload) => {
   };
 };
 
-const changeOrder = (type, by) => {
+const changeOrder = (type, by, id) => {
   return (dispatch) => {
     try {
-      return dispatch({ type: CHANGE_ORDER, payload: { type, by } });
+      return dispatch({ type: CHANGE_ORDER, payload: { type, by, id } });
     } catch (error) {
       console.log(error);
     }
@@ -177,6 +180,46 @@ const deleteCategory = (id) => {
   };
 };
 
+const editCategory = (data) => {
+  return async (dispatch) => {
+    try {
+      await axios.put();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+const obtainEditProduct = (producto) => {
+  return async (dispatch) => {
+    try {
+      return dispatch({
+        type: EDIT_PRODUCT_OBTENER,
+        payload: producto,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+const editProduct = (id, payload) => {
+  return async (dispatch) => {
+    try {
+      const update = await axios.put(
+        `http://localhost:3001/admin/product/${id}`,
+        payload
+      );
+      return dispatch({
+        type: EDIT_PRODUCT,
+        payload: update.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 export {
   getProducts,
   productDetail,
@@ -188,4 +231,7 @@ export {
   changeOrder,
   getProduct,
   deleteCategory,
+  editCategory,
+  obtainEditProduct,
+  editProduct,
 };

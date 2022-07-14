@@ -24,7 +24,7 @@ export const CardsContainer = () => {
   }
   
   useEffect(() => {
-    dispatch(getProducts(page, order.type, order.by));
+    dispatch(getProducts(page, order.type, order.by, order.id));
   }, [dispatch, page, order]);
 
   return (
