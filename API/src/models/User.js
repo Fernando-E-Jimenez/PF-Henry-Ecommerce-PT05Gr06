@@ -18,7 +18,7 @@ module.exports = (sequelize) => {
         },
         password: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: false
         },
         name: {
             type: DataTypes.STRING,
@@ -32,6 +32,11 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: true,
         },
+        state: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          defaultValue: "Activo",
+      }
     },
         {
             timestamps: true,
