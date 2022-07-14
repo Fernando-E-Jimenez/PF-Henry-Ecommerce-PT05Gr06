@@ -24,7 +24,13 @@
 }
 
 .cardsReviews {
-  /* ACA VA A IR EL CODE DE LAS CARDS DE REVIEW */
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  width: 30rem;
+  margin: auto;
+  border-radius: 1rem;
+  text-decoration: none;
 }
 
 .title {
@@ -32,16 +38,17 @@
     margin-bottom: 2rem;
 }
 
-.optionButton{
+.postButton{
     margin: 1rem 0.5rem;
     margin-bottom: 1rem;
     width: 20rem;
     border: none;
     border-radius: 10px;
     padding: 0.8rem 0.5rem;
-    background: #3f4e4f;
+    background-color: #3f4e4f !important;
     color: white;
     margin-bottom: 1rem;
+    
 }
 
 .input {
@@ -50,6 +57,10 @@
   width: 20rem;
   border-radius: 10px;
   padding: 0.8rem 0.5rem;
+}
+
+.starts {
+  display: flex;
 }
 
 /* ---------- */
