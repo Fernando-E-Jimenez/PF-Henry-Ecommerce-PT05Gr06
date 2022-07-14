@@ -203,16 +203,18 @@ const obtainEditProduct = (producto) => {
   };
 };
 
-const editProduct = (id, payload) => {
+const editProduct = (payload) => {
+  console.log(payload);
   return async (dispatch) => {
     try {
       const update = await axios.put(
-        `http://localhost:3001/admin/product/${id}`,
+        `http://localhost:3001/admin/product`,
         payload
       );
+      console.log(update);
       return dispatch({
         type: EDIT_PRODUCT,
-        payload: update.data,
+        payload: update,
       });
     } catch (error) {
       console.log(error);

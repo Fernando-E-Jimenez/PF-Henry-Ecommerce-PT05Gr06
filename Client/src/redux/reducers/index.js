@@ -115,7 +115,8 @@ const reducer = (state = initialState, action) => {
     case EDIT_PRODUCT: {
       return {
         ...state,
-        productEdit: action.payload,
+        productEdit: null,
+        products: action.payload,
       };
     }
 

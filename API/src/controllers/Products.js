@@ -77,7 +77,7 @@ router.put("/", upload.array("image"), async (req, res, next) => {
     const image = req.files || req.file;
     const { id, name, description, price, stock, category } = req.body;
 
-    // if (!image) return res.status(400).send("Faltan datos necesarios (image).");
+    if (!image) return res.status(400).send("Faltan datos necesarios (image).");
     if (!id) return res.status(400).send("Faltan datos necesarios (id).");
     if (!name) return res.status(400).send("Faltan datos necesarios (name).");
     if (!description)
