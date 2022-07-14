@@ -250,11 +250,7 @@ router.get("/:id", async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const { name, page, order_direction, order_by, category, page_limit } = req.query;
-    let search = {
-      where: {
-        state: "Activo"
-      }
-    }
+    let search = {}
     let order = [];
     let filter = {};
     if (name) {
@@ -263,8 +259,7 @@ router.get("/", async (req, res) => {
         where: {
           name: {
             [Op.like]: `%${name.toLowerCase()}%`
-          },
-          state: "Activo"
+          }
         }
       }
     }
