@@ -1,6 +1,6 @@
 const { Product, Category, Review, Order } = require("../db");
 const { upload, cloudinary } = require("../libs/storage");
-const { arrayProductos, arraycategorias } = require("./Data");
+const { arrayProductos, arraycategorias, arrayReviews } = require("./Data");
 
 const { Router } = require("express");
 const paginate = require("./Paginate");
@@ -62,8 +62,8 @@ router.post("/", upload.array("image"), async (req, res, next) => {
         .send(
           "Formato de datos invalido (description) debe ser una cadena de texto."
         );
-     console.log(image)
-     
+    console.log(image)
+
     let imagenes = image ? image.map((i) => i.path) : undefined
     let product = await Product.create({
       name: name.toLowerCase(),
@@ -211,6 +211,17 @@ router.get("/carga", async (req, res, next) => {
         });
         const prod = await Product.findByPk(product[0].dataValues.id);
         await prod.setCategories(p.category);
+      })
+    );
+    Promise.all(
+      arrayReviews.map(async (r) => {
+        await Review.findOrCreate({
+          where: { 
+            description: r.description, 
+            star: r.star, 
+            productId: r.productId 
+          },
+        });
       })
     );
     return res.status(200).send("Productos Cargados.");
