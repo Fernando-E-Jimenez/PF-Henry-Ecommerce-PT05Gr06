@@ -34,13 +34,7 @@ module.exports = (sequelize) => {
     state: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: "Activo",
-      set(value) {
-        const stock = this.stock;
-        if (stock === 0) {
-          this.setDataValue('state', 'Agotado');
-        }
-      }
+      defaultValue: "Activo"
     }
   },
     {
