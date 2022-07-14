@@ -38,14 +38,14 @@ router.post("/", upload.array("image"), async (req, res, next) => {
     // console.log(image)
     let imagenes = image.map((i) => i.path);
     let product = await Product.create({
-      name,
-      description,
-      price,
-      stock,
-      image: imagenes
+      name: name.toLowerCase(),
+      description: description,
+      price: price,
+      stock: stock,
+      image: imagenes.length
         ? imagenes
         : [
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRj69dz8tM7tixlt4hTLPnGwVPavHB1QYeGtA&usqp=CAU",
+            "https://res.cloudinary.com/jdmoreno/image/upload/v1657596154/AppVinos/Default_hi3ylt.png",
           ],
     });
 
@@ -122,16 +122,29 @@ router.put("/", upload.array("image"), async (req, res, next) => {
         }
       );
     });
-    const product = await Product.update(
-      { name, description, price, stock, image: imagenes },
-      {
-        where: {
-          id: id,
-        },
-      }
-    );
-    if (product) return res.status(200).send("Producto actualizado.");
-    return res.status(400).send("Error al actualizar el producto.");
+    if (imagenes.length) {
+      const product = await Product.update(
+        { name, description, price, stock, image: imagenes },
+        {
+          where: {
+            id: id,
+          },
+        }
+      );
+      if (product) return res.status(200).send("Producto actualizado.");
+      return res.status(400).send("Error al actualizar el producto.");
+    } else {
+      const product = await Product.update(
+        { name, description, price, stock },
+        {
+          where: {
+            id: id,
+          },
+        }
+      );
+      if (product) return res.status(200).send("Producto actualizado.");
+      return res.status(400).send("Error al actualizar el producto.");
+    }
   } catch (error) {
     return res.status(400).send("Error: " + error);
   }
