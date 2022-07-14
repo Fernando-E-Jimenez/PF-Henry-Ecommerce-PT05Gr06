@@ -1,14 +1,14 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { editProduct, obtainEditProduct } from "../../redux/actions";
+import { obtainEditProduct } from "../../redux/actions";
 
 export const CardProduct = ({ product }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const redirectEdit = (product) => {
     dispatch(obtainEditProduct(product));
-    navigate(`/admin/edit-product/${product.id}`);
+    navigate(`/admin/edit-product`);
   };
 
   return (

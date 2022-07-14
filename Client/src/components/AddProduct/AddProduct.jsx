@@ -82,6 +82,8 @@ export default function AddProduct() {
     //   alert("Producto agregado con exito");
     // }
     const formData = new FormData(e.target);
+
+    console.log(formData);
     dispatch(createProduct(formData));
     // dispatch(createProduct(post));
     alert("Producto agregado con exito");
