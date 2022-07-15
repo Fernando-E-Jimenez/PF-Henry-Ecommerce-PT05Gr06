@@ -56,7 +56,6 @@ const router = Router();
   })
   
 
-
   //.poder comprar todos los items de un mi carrito. (checkout) 
   router.put("/:idorder/checkout", async (req, res) => {
     try{
@@ -66,6 +65,18 @@ const router = Router();
         dni,
         address,
       } = req.body
+      if (!name) return res.status(400).send("Faltan datos necesarios (name).");
+    if (!dni) return res.status(400).send("Faltan datos necesarios (dni).");
+    if (!address) return res.status(400).send("Faltan datos necesarios (address).");
+
+    let userNew = await User.create({
+      name,
+      dni,
+    });
+
+    const order = await Order.findByPk(parseInt(idorder));
+    
+
     }catch (e) {
     res.status(400).send("Error: " + e)
 }

@@ -51,7 +51,6 @@ router.post("/", async (req, res) => {
     if (!password) return res.status(400).send("Faltan datos necesarios (password).");
     if (!email) return res.status(400).send("Faltan datos necesarios (email).");
 
-
     let userNew = await User.create({
       user,
       password,
