@@ -1,0 +1,20 @@
+.searchViewProducts {
+    display: flex;
+    justify-content: space-between;
+}
+
+.searchContainer {
+    display: flex;
+    background: white;
+    padding: 0.5rem 0.8rem;
+    border-radius: 10px;
+}
+
+.searchBar {
+    font-size: 1.5rem;
+    width: 100%;
+    color: #151515;
+    border: none;
+    max-width: 50rem;
+    border-radius: 5px;
+  }
