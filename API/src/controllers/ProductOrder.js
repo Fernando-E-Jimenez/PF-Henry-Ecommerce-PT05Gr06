@@ -17,7 +17,7 @@ router.post("/:id/order/:idorder", async (req, res) => {
             cant,
             state="created",
         } = req.body;
-
+        if (!cant) return res.status(400).send("Faltan datos necesarios (cantidad).");
 
         let prodcutId = await Product.findAll({
             where:{id:id}
@@ -30,6 +30,7 @@ router.post("/:id/order/:idorder", async (req, res) => {
             state,
             mont: cantT
         });
+
         orderNew.addProduct(prodcutId)
          const order = await Order.findByPk(parseInt(idorder));
          const prod = await Product.findByPk(parseInt(id));
@@ -54,6 +55,7 @@ router.post("/:id/order/:idorder", async (req, res) => {
         const {
             cant,
         } = req.body;
+        if (!cant) return res.status(400).send("Faltan datos necesarios (cantidad).");
         const order = await Order.findByPk(parseInt(idorder));
         const prod = await Product.findByPk(parseInt(id));
         let priceProd = prod.dataValues.price

@@ -8,9 +8,9 @@ const orderDB = async () => {
       return await Order.findAll({
         include: {
           model: Product,
-          attributes: ['name','description','stock','price'],
+          attributes: ['id','name','description','stock','price','image', 'state'],
           through: {
-            attributes: []
+            attributes: ['cant']
           }
         }
       })
@@ -23,17 +23,6 @@ const orderDB = async () => {
   router.get("/", async (req, res) => {
     try {
       const total = await orderDB();
-      total.sort(function (a, b) {
-        if (a.id > b.id) {
-            return 1;
-        }
-        if (a.id < b.id) {
-            return -1;
-        }
-        else
-            return 0;
-
-    })
         res.status(200).send(total)
       
     } catch (e) {

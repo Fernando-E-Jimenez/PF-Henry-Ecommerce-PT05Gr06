@@ -34,14 +34,22 @@ const router = Router();
       try{
           const {idorder, id} = req.params;
           const {cant} = req.body;
+          if (!cant) return res.status(400).send("Faltan datos necesarios (cantidad).");
           const order = await Order.findByPk(parseInt(idorder));
           const prod = await Product.findByPk(parseInt(id));
-          let priceProd = prod.dataValues.price
-          let priceA= cant * priceProd
-          const newPrice = await Order.update({mont: priceA} , { where:{id: order.dataValues.id}})
+          let montT = order.dataValues.mont //monto sin actualizar
+          let priceProd = prod.dataValues.price //precio producto
+          let projects = await order.getProducts(); // -
+          const p1 = projects[0];//                    |---- tomar la cantidad del producto y de la orden sin actualizar
+          const x = p1.productXorder.cant //           -
+          let priceB = priceProd * x      // precio que va cambiar
+          let montT1 = montT - priceB          
+          let priceA= cant * priceProd    // cantidad actualizada por el precio del producto
+          let montTF = montT1 + priceA
+          await Order.update({mont: montTF} , { where:{id: order.dataValues.id}})
           
-          await order.addProduct(prod ,{ through: { cant: cant }})
-          res.status(200).send(newPrice);
+          await order.addProducts(prod ,{ through: { cant: cant }})
+          res.status(200).send("actualizado");
       }catch (e) {
       res.status(400).send("Error: " + e)
   }
