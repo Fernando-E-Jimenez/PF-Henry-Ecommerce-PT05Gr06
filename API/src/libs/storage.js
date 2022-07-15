@@ -1,12 +1,9 @@
-const path = require('path');
+const path = require("path");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
-const {
-  CLAUDINARY_CLOUD_NAME, 
-  CLAUDINARY_API_KEY, 
-  CLAUDINARY_API_SECRET
-} = process.env;
+const { CLAUDINARY_CLOUD_NAME, CLAUDINARY_API_KEY, CLAUDINARY_API_SECRET } =
+  process.env;
 
 cloudinary.config({
   cloud_name: CLAUDINARY_CLOUD_NAME,
@@ -21,16 +18,19 @@ const storage = new CloudinaryStorage({
   },
 });
 
-const upload = multer({ 
+const upload = multer({
   storage: storage,
-  fileFilter : function (req, file, cb) {
+  fileFilter: function (req, file, cb) {
     const filetypes = /jpg|png|gif|jpeg/;
     const mimetype = filetypes.test(file.mimetype);
     const extmane = filetypes.test(path.extname(file.originalname));
     if (mimetype && extmane) return cb(null, true);
-    return cb(new Error('Error: Fomato invalido (permitidos; JPG, PNG, GIF y JPEG).'), false);
+    return cb(
+      new Error("Error: Fomato invalido (permitidos; JPG, PNG, GIF y JPEG)."),
+      false
+    );
   },
-  limits: { fileSize: 3000000 }
+  limits: { fileSize: 3000000 },
 });
 
-module.exports = {upload, cloudinary};
+module.exports = { upload, cloudinary };

@@ -28,7 +28,7 @@ router.post("/", async (req, res, next) => {
         .status(400)
         .send(
           "Error: Ya se encuentra registrada una categoria con el nombre: " +
-          name
+            name
         );
     res.status(400).send("Error: " + e);
   }
@@ -41,13 +41,14 @@ router.delete("/:id", async (req, res, next) => {
   try {
     await Category.update(
       {
-        state: "Inactivo"
+        state: "Inactivo",
       },
       {
         where: {
-          id
-        }
-      });
+          id,
+        },
+      }
+    );
     res.status(200).send("Categoria Eliminada");
   } catch (error) {
     console.log(error);
@@ -92,20 +93,22 @@ router.put("/:id", async (req, res) => {
     const category = await Category.update(
       {
         name,
-        state
+        state,
       },
       {
         where: {
-          id
-        }
+          id,
+        },
       }
     );
     if (category[0] !== 0) {
-      console.log(category)
+      console.log(category);
       const cat = await Category.findByPk(id);
       return res.status(200).send(cat);
     } else {
-      return res.status(404).send({ message: "Error: Categoria no encontrada." });
+      return res
+        .status(404)
+        .send({ message: "Error: Categoria no encontrada." });
     }
   } catch (e) {
     return res.status(400).send("Error: " + e);

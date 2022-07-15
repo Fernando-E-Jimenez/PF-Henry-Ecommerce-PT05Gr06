@@ -1,8 +1,14 @@
 const { Op } = require("sequelize");
 const { Category, Product } = require("../db");
 
-
-const paginate = async (model, pageActual, pageLimit, search = {}, order = [], filter) => {
+const paginate = async (
+  model,
+  pageActual,
+  pageLimit,
+  search = {},
+  order = [],
+  filter
+) => {
   try {
     const limit = parseInt(pageLimit, 10) || 9;
     const page = parseInt(pageActual, 10) || 1;
@@ -13,12 +19,12 @@ const paginate = async (model, pageActual, pageLimit, search = {}, order = [], f
       limit: limit,
       include: {
         model: Category,
-        atributes: ['name'],
+        atributes: ["name"],
         through: {
-          attributes: []
-        }        
+          attributes: [],
+        },
       },
-      distinct: true
+      distinct: true,
     };
 
     // check if the search object is empty
@@ -28,7 +34,7 @@ const paginate = async (model, pageActual, pageLimit, search = {}, order = [], f
 
     // check if the order array is empty
     if (order && order.length) {
-      options['order'] = order;
+      options["order"] = order;
     }
 
     if (Object.keys(filter).length) {
@@ -45,37 +51,37 @@ const paginate = async (model, pageActual, pageLimit, search = {}, order = [], f
       total: count,
       limit: limit,
       totalPages: getTotalPages(limit, count),
-      data: rows
-    }
+      data: rows,
+    };
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 const getOffset = (page, limit) => {
-  return (page * limit) - limit;
-}
+  return page * limit - limit;
+};
 
 const getNextPage = (page, limit, total) => {
-  if ((total / limit) > page) {
+  if (total / limit > page) {
     return page + 1;
   }
 
-  return null
-}
+  return null;
+};
 
 const getPreviousPage = (page) => {
   if (page <= 1) {
-    return null
+    return null;
   }
   return page - 1;
-}
+};
 
 const getTotalPages = (limit, total) => {
   if (total > limit) {
     return Math.ceil(total / limit);
   }
   return 1;
-}
+};
 
-module.exports = paginate
+module.exports = paginate;
