@@ -141,20 +141,23 @@ router.put("/", upload.array("image"), async (req, res, next) => {
         .send(
           "Formato de datos invalido (description) debe ser una cadena de texto."
         );
-
+    
     const prod = await Product.findByPk(parseInt(id));
+    console.log(category)
     await prod.setCategories(category);
-    if (image) {
+    if (image.length) {
       let imagenes = image.map((i) => i.path);
       prod.image.map(async (i) => {
-        let m = i.split("/")[8].split(".")[0];
-        console.log(m);
-        await cloudinary.api.delete_resources(
-          "AppVinos/" + m,
-          function (error, result) {
-            console.log(result, error);
-          }
-        );
+        if (i.includes('AppVinos')) {
+          let m = i.split("/")[8].split(".")[0];
+          console.log(m);
+          await cloudinary.api.delete_resources(
+            "AppVinos/" + m,
+            function (error, result) {
+              console.log(result, error);
+            }
+          );
+        }
       });
       const product = await Product.update(
         { name, description, price, stock, image: imagenes, state: state },
@@ -164,8 +167,9 @@ router.put("/", upload.array("image"), async (req, res, next) => {
           },
         }
       );
-      const prod = await Product.findByPk(id);
-      if (product) return res.status(200).json(prod);
+      const produ = await Product.findByPk(id);
+      const cat = await prod.getCategories();
+      if (product[0] === 1) return res.status(200).json({...prod.dataValues, categories: cat});
       return res.status(400).send("Error al actualizar el producto.");
     } else {
       const product = await Product.update(
@@ -177,7 +181,8 @@ router.put("/", upload.array("image"), async (req, res, next) => {
         }
       );
       const prod = await Product.findByPk(id);
-      if (product) return res.status(200).json(prod);
+      const cat = await prod.getCategories();
+      if (product[0] === 1) return res.status(200).json({...prod.dataValues, categories: cat});
       return res.status(400).send("Error al actualizar el producto.");
     }
   } catch (error) {
