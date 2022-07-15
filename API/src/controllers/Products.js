@@ -12,25 +12,24 @@ const DB = async () => {
     return await Product.findAll({
       include: {
         model: Category,
-        attributes: ['name'],
+        attributes: ["name"],
         through: {
-          attributes: []
-        }
-      }
-    })
+          attributes: [],
+        },
+      },
+    });
   } catch (e) {
-    return e
+    return e;
   }
-
-}
+};
 
 const Revie = async () => {
   try {
-    return await Review.findAll()
+    return await Review.findAll();
   } catch (e) {
-    return e
+    return e;
   }
-}
+};
 
 router.post("/", upload.array("image"), async (req, res, next) => {
   try {
@@ -62,9 +61,9 @@ router.post("/", upload.array("image"), async (req, res, next) => {
         .send(
           "Formato de datos invalido (description) debe ser una cadena de texto."
         );
-    console.log(image)
+    console.log(image);
 
-    let imagenes = image ? image.map((i) => i.path) : undefined
+    let imagenes = image ? image.map((i) => i.path) : undefined;
     let product = await Product.create({
       name: name.toLowerCase(),
       description: description,
@@ -104,7 +103,7 @@ router.put("/", upload.array("image"), async (req, res, next) => {
   try {
     const image = req.files || req.file;
     const { id, name, description, price, stock, category, state } = req.body;
-    
+
     // if (!image) return res.status(400).send("Faltan datos necesarios (image).");
     if (!id) return res.status(400).send("Faltan datos necesarios (id).");
     if (!name) return res.status(400).send("Faltan datos necesarios (name).");
@@ -141,14 +140,14 @@ router.put("/", upload.array("image"), async (req, res, next) => {
         .send(
           "Formato de datos invalido (description) debe ser una cadena de texto."
         );
-    
+
     const prod = await Product.findByPk(parseInt(id));
-    console.log(category)
+    console.log(category);
     await prod.setCategories(category);
     if (image.length) {
       let imagenes = image.map((i) => i.path);
       prod.image.map(async (i) => {
-        if (i.includes('AppVinos')) {
+        if (i.includes("AppVinos")) {
           let m = i.split("/")[8].split(".")[0];
           console.log(m);
           await cloudinary.api.delete_resources(
@@ -169,7 +168,8 @@ router.put("/", upload.array("image"), async (req, res, next) => {
       );
       const produ = await Product.findByPk(id);
       const cat = await prod.getCategories();
-      if (product[0] === 1) return res.status(200).json({...prod.dataValues, categories: cat});
+      if (product[0] === 1)
+        return res.status(200).json({ ...prod.dataValues, categories: cat });
       return res.status(400).send("Error al actualizar el producto.");
     } else {
       const product = await Product.update(
@@ -182,14 +182,14 @@ router.put("/", upload.array("image"), async (req, res, next) => {
       );
       const prod = await Product.findByPk(id);
       const cat = await prod.getCategories();
-      if (product[0] === 1) return res.status(200).json({...prod.dataValues, categories: cat});
+      if (product[0] === 1)
+        return res.status(200).json({ ...prod.dataValues, categories: cat });
       return res.status(400).send("Error al actualizar el producto.");
     }
   } catch (error) {
     return res.status(400).send("Error: " + error);
   }
 });
-
 
 router.get("/carga", async (req, res, next) => {
   const { id } = req.params;
@@ -222,10 +222,10 @@ router.get("/carga", async (req, res, next) => {
     Promise.all(
       arrayReviews.map(async (r) => {
         await Review.findOrCreate({
-          where: { 
-            description: r.description, 
-            star: r.star, 
-            productId: r.productId 
+          where: {
+            description: r.description,
+            star: r.star,
+            productId: r.productId,
           },
         });
       })
@@ -241,11 +241,16 @@ router.get("/:id", async (req, res) => {
     const { id } = req.params;
     if (id) {
       const all = await DB();
-      if (!all.length) return res.status(400).send({ message: "Error: No hay productos Cargados" })
+      if (!all.length)
+        return res
+          .status(400)
+          .send({ message: "Error: No hay productos Cargados" });
       const r = await Revie();
-      const productNew = all.filter((e) => e.id == id)
-      let categoryNew = productNew[0].categories.map((e) => { return e.dataValues.name })
-      const reviewNew = r.filter((f) => f.productId == id)
+      const productNew = all.filter((e) => e.id == id);
+      let categoryNew = productNew[0].categories.map((e) => {
+        return e.dataValues.name;
+      });
+      const reviewNew = r.filter((f) => f.productId == id);
       var resultado = {
         name: productNew[0].name,
         description: productNew[0].description,
@@ -254,65 +259,85 @@ router.get("/:id", async (req, res) => {
         image: productNew[0].image,
         state: productNew[0].state,
         review: reviewNew,
-        category: categoryNew
-      }
+        category: categoryNew,
+      };
     }
     res.status(200).send(resultado);
-  }
-  catch (e) {
-    res.status(400).send({ message: "Error: " + e })
+  } catch (e) {
+    res.status(400).send({ message: "Error: " + e });
   }
 });
 
 router.get("/", async (req, res) => {
   try {
-    const { name, page, order_direction, order_by, category, page_limit } = req.query;
-    let search = {}
+    const { name, page, order_direction, order_by, category, page_limit } =
+      req.query;
+    let search = {};
     let order = [];
     let filter = {};
     if (name) {
-      if (!isNaN(parseInt(name))) return res.status(400).json({ message: "Formato de datos invalido (name) debe ser una cadena texto." });
+      if (!isNaN(parseInt(name)))
+        return res
+          .status(400)
+          .json({
+            message:
+              "Formato de datos invalido (name) debe ser una cadena texto.",
+          });
       search = {
         where: {
           name: {
-            [Op.like]: `%${name.toLowerCase()}%`
-          }
-        }
-      }
+            [Op.like]: `%${name.toLowerCase()}%`,
+          },
+        },
+      };
     }
     if (category) {
-      if (isNaN(parseInt(category))) return res.status(400).json({ message: "Formato de datos invalido (category) debe ser un numero." });
+      if (isNaN(parseInt(category)))
+        return res
+          .status(400)
+          .json({
+            message: "Formato de datos invalido (category) debe ser un numero.",
+          });
       filter = category;
     }
     if (order_direction) {
-      if (order_direction === 'DESC' || order_direction === 'ASC') {
-        order.push([['name', order_direction]])
+      if (order_direction === "DESC" || order_direction === "ASC") {
+        order.push([["name", order_direction]]);
         if (order_by) {
-          if (order_by.toLowerCase() === 'price') {
+          if (order_by.toLowerCase() === "price") {
             order.pop();
-            order.push([['price', order_direction]])
+            order.push([["price", order_direction]]);
           }
         }
       } else {
-        return res.status(400).json({ message: "Datos invalidos (order_direction) permitidos: DESC o ASC." });
+        return res
+          .status(400)
+          .json({
+            message:
+              "Datos invalidos (order_direction) permitidos: DESC o ASC.",
+          });
       }
     }
 
     let data = await paginate(Product, page, page_limit, search, order, filter);
     if (category) {
-      let data2 = []
-      await Promise.all(data.data.map(async (p) => {
-        data2.push(await getCategory(p.id));
-      }))
+      let data2 = [];
+      await Promise.all(
+        data.data.map(async (p) => {
+          data2.push(await getCategory(p.id));
+        })
+      );
       data = { ...data, data: data2 };
     }
 
-    data.data.length ? res.status(200).json(data) : res.status(400).send({ message: "El vino descrito no se encuentra guardado" });
-
+    data.data.length
+      ? res.status(200).json(data)
+      : res
+          .status(400)
+          .send({ message: "El vino descrito no se encuentra guardado" });
   } catch (e) {
-    res.status(400).send({ message: "Error: " + e })
+    res.status(400).send({ message: "Error: " + e });
   }
-})
-
+});
 
 module.exports = router;
