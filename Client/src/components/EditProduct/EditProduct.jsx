@@ -8,9 +8,7 @@ export const EditProduct = () => {
   const navigate = useNavigate();
 
   const productEdit = useSelector((state) => state.productEdit);
-  const categoriesState = useSelector((state) => state.categories);
-
-  //console.log(productEdit);
+  const categoriesState = useSelector((state) => state.categories); 
 
   const categoriesName = productEdit.categories.map((e) => e.id);
 
@@ -24,9 +22,9 @@ export const EditProduct = () => {
     category: categoriesName,
   });
 
-  useEffect(() => {
-    dispatch(getCategory());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getCategory());
+  // }, [dispatch]);
 
   // Leo los datos del formulario
   const handleChange = (e) => {
@@ -44,21 +42,27 @@ export const EditProduct = () => {
   };
 
   const handleSelect = (e) => {
-    if (product.categories.includes(e.target.value)) return;
+    if (product.category.find(c => c === parseInt(e.target.value))) return;
     setProduct({
       ...product,
-      [e.target.name]: [...product[e.target.name], e.target.value],
+      category: product.category.concat(parseInt(e.target.value)),
     });
-    console.log(categories);
+    console.log(product.category);
   };
 
-  const { name, description, image, price, stock, category } = product;
+  const { id, name, description, image, price, stock, category } = product;
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+    formData.append('id', id)
+    formData.append('state', 'Activo')
+    for (let i = 0; i < category.length - 1; i++) {
+      formData.append('category', category[i]);
+    }
+
     dispatch(editProduct(formData));
-    console.log(product);
+    console.log(category);
 
     alert("Producto editado con exito");
   };
@@ -68,7 +72,7 @@ export const EditProduct = () => {
       <h1 className="text-center text-3xl">
         Editar - Complete todos los campos
       </h1>
-      <form onSubmit={handleSubmit} className="md:w-1/2 m-auto py-6">
+      <form onSubmit={handleSubmit} className="md:w-1/2 m-auto py-6" encType="multipart/form-data">
         <div className="mb-5">
           <label className="text-gray-700 font-bold text-2xl">Nombre</label>
           <input
@@ -93,15 +97,14 @@ export const EditProduct = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="mb-5">
+         <div className="mb-5">
           <label className="text-gray-700 font-bold text-2xl">Imagen</label>
           <input
             className="border w-full p-2 mt-2 placeholder-gray-400 rounded-md text-xl"
             type="file"
-            value={image}
             name="image"
             placeholder="Ingrese la descripcion del producto"
-            onChange={handleChange}
+
           />
         </div>
         <div className="mb-5">
@@ -144,14 +147,14 @@ export const EditProduct = () => {
           </select>
           {category?.map((e) => (
             <div key={e} className="flex text-xl mt-4 justify-center">
-              <div className="w-1/4">{e}</div>
+              <div className="w-1/4">{ categoriesState?.find(c => c.id === e).name }</div>
               <button onClick={() => handleDelete(e, "category")}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke="currentColor"
+                  stroke="currentColor" 
                   strokeWidth={4}
                 >
                   <path
