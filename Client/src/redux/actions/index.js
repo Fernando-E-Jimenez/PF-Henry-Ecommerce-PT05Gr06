@@ -65,7 +65,7 @@ const getProductsFilter = (name) => {
 const postReview = (review, id) => {
   return function (dispatch) {
     try {
-      return fetch(`${URLAPI}guess/product/${id}`, {
+      return fetch(`${URLAPI}user/product/${id}/review`, {
         method: "POST",
         body: JSON.stringify(review),
         headers: {
@@ -222,6 +222,22 @@ const editProduct = (payload) => {
   };
 };
 
+const viewProducts = (page, order, by) => {
+  return (dispatch) => {
+    try {
+      return fetch(
+        `${URLAPI}guess/product?page=${page}&order_direction=${order}&order_by=${by}&page_limit=${40}`
+      )
+        .then((response) => response.json())
+        .then((json) => {
+          dispatch({ type: GET_PRODUCTS, payload: json });
+        });
+    } catch (error) {
+      dispatch({ type: GET_PRODUCTS, payload: error });
+    }
+  };
+};
+
 export {
   getProducts,
   productDetail,
@@ -236,4 +252,5 @@ export {
   editCategory,
   obtainEditProduct,
   editProduct,
+  viewProducts
 };

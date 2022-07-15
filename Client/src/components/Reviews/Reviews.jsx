@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postReview } from "../../redux/actions";
+import { productDetail } from "../../redux/actions";
 import { FaStar } from "react-icons/fa"; //probando a ver si puedo ingresar las estrellas
 
 /* Variables para los colores de las estrellas */
@@ -10,7 +11,6 @@ const colors = {
   orange: "#FFBA5A",
   grey: "#a9a9a9",
 };
-/* Variables para los colores de las estrellas */
 
 export const Reviews = () => {
   /* Comienza armado de estrellas */
@@ -42,6 +42,17 @@ export const Reviews = () => {
     star: 0,
   });
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    dispatch(postReview(comment, id));
+    setComment({
+      description: "",
+      star: 0,
+    });
+    alert("Comentario agregado con exito");
+    dispatch(productDetail(id))
+  }
+
   return (
     <div className={styles.bgPage}>
       <div className={styles.detailContainer}>
@@ -56,7 +67,7 @@ export const Reviews = () => {
                     return (
                       <div key={id}>
                         <div>{r.description}</div>
-                        <div>{r.star}</div>
+                        <div>{r.star} ⭐</div>
                       </div>
                     );
                   })}
@@ -67,16 +78,7 @@ export const Reviews = () => {
         <div className={styles.newReviewContainer}>
           <h3 className={styles.title}>New Review</h3>
           <form
-              onSubmit={(e) => {
-              e.preventDefault();
-              dispatch(postReview(comment, id));
-              console.log(comment);
-              setComment({
-                description: "",
-                star: 0,
-              });
-            }}
-          >
+              onSubmit={(e) => handleSubmit(e)}>
             <input
               type="text"
               className={styles.input}
@@ -89,15 +91,6 @@ export const Reviews = () => {
                 })
               }
             />
-            {/* <input 
-                      type='number'
-                      className={styles.input}
-                      value={comment.star}
-                      onChange={e => setComment({
-                          ...comment,
-                          star: e.target.value
-                      })}
-                  /> */}
             <div className={styles.starts}>
               {stars.map((_, index) => {
                 return (

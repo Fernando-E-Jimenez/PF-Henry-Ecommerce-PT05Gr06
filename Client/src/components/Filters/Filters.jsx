@@ -21,10 +21,10 @@ export const Filters = () => {
   return (
     <div className={styles.filtersContainer}>
       <div className={styles.filterBox}>
-        <button onClick={() => dispatch(changeOrder('ASC', 'name'))}>⏫ Ordenar de la A-Z</button>
-        <button onClick={() => dispatch(changeOrder('DESC', 'name'))}>⏬ Ordenar de la Z-A</button>
-        <button onClick={() => dispatch(changeOrder('ASC', 'price'))}>➖ Ordenar del menor al mayor precio</button>
-        <button onClick={() => dispatch(changeOrder('DESC', 'price'))}>➕ Ordenar del mayor al menor precio</button>
+        <button onClick={() => dispatch(changeOrder('ASC', 'name', ''))}>⏫ Ordenar de la A-Z</button>
+        <button onClick={() => dispatch(changeOrder('DESC', 'name', ''))}>⏬ Ordenar de la Z-A</button>
+        <button onClick={() => dispatch(changeOrder('ASC', 'price', ''))}>➖ Ordenar del menor al mayor precio</button>
+        <button onClick={() => dispatch(changeOrder('DESC', 'price', ''))}>➕ Ordenar del mayor al menor precio</button>
         <select defaultValue={'DEFAULT'} className={styles.categoriesContainer} onChange={handleChange}>
           <option value={'DEFAULT'} disabled >Categorias</option>
           {categories.map(c => {
