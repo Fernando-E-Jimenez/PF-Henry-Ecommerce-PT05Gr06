@@ -1,7 +1,14 @@
-const { Order, Product } = require("../db");
+const { Order, Product, User } = require("../db");
 const upload = require("../libs/storage");
 const { Router } = require("express");
 const router = Router();
+const mercadopago = require("mercadopago");
+
+
+mercadopago.configure({
+    access_token: "TEST-5234286386169714-071521-eec79942f3b545900ffd49238398d759-1161619687",
+  });
+
 
 // ..sacar items de mi carrito, en caso que decida no quererlos.
 router.delete("/:idorder/product/:id", async (req, res) => {
@@ -69,6 +76,7 @@ router.put("/:idorder/product/:id", async (req, res) => {
         dni,
         address,
       } = req.body
+      const order = await Order.findByPk(parseInt(idorder));
       if (!name) return res.status(400).send("Faltan datos necesarios (name).");
     if (!dni) return res.status(400).send("Faltan datos necesarios (dni).");
     if (!address) return res.status(400).send("Faltan datos necesarios (address).");
@@ -76,11 +84,38 @@ router.put("/:idorder/product/:id", async (req, res) => {
     let userNew = await User.create({
       name,
       dni,
+      orderId: order.dataValues.id
     });
 
-    const order = await Order.findByPk(parseInt(idorder));
-    
+    let addresNew = await Order.update(
+      {address},
+      {where: { id: order.dataValues.id }}
+    );
+    let projects = await order.getProducts(); // -
+      let categoryNew = projects.map((e) => {
+        return e.dataValues.name;
+      });
+      console.log(categoryNew)
+    // Crea un objeto de preferencia
+// let preference = {
+//   items: [
+//     {
+//       title: "Mi producto",
+//       unit_price: 100,
+//       quantity: 1,
+//     },
+//   ],
+// };
 
+// mercadopago.preferences
+//   .create(preference)
+//   .then(function (response) {
+//     // En esta instancia deberás asignar el valor dentro de response.body.id por el ID de preferencia solicitado en el siguiente paso
+//   })
+//   .catch(function (error) {
+//     console.log(error);
+//   });
+res.status(200).send("actualizado");
     }catch (e) {
     res.status(400).send("Error: " + e)
 }
