@@ -16,7 +16,8 @@ import {
 } from "../types";
 import axios from "axios";
 
-const URLAPI = "http://localhost:3001/";
+// const URLAPI = "http://localhost:3001/";
+const { URLAPI } = process.env;
 
 const getProducts = (page, order, by, id) => {
   return (dispatch) => {
