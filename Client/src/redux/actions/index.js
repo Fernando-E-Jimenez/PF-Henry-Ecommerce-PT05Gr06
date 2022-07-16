@@ -16,8 +16,8 @@ import {
 } from "../types";
 import axios from "axios";
 
-const URLAPI = "http://localhost:3001/";
-// const {URLAPI} = process.env;
+// const URLAPI = "http://localhost:3001/";
+const {URLAPI} = process.env;
 
 const getProducts = (page, order, by, id) => {
   return (dispatch) => {
@@ -88,7 +88,7 @@ const createCategory = (payload) => {
   return async (dispatch) => {
     try {
       const category = await axios.post(
-        "http://localhost:3001/admin/category",
+        `${URLAPI}/admin/category`,
         payload
       );
       console.log(category);
@@ -106,7 +106,7 @@ const getCategory = () => {
   return async (dispatch) => {
     try {
       const categories = await axios.get(
-        "http://localhost:3001/admin/category"
+        `${URLAPI}/admin/category`
       );
       return dispatch({
         type: GET_CATEGORIES,
@@ -122,7 +122,7 @@ const getCategory = () => {
 const getProduct = () => {
   return async (dispatch) => {
     try {
-      const products = await axios.get("http://localhost:3001/guess/product");
+      const products = await axios.get(`${URLAPI}/guess/product`);
       return dispatch({
         type: GET_PRODUCT,
         payload: products.data,
@@ -144,7 +144,7 @@ const createProduct = (payload) => {
   return async (dispatch) => {
     try {
       const product = await axios.post(
-        "http://localhost:3001/admin/product",
+        `${URLAPI}/admin/product`,
         payload
       );
       console.log(product);
@@ -171,7 +171,7 @@ const changeOrder = (type, by, id) => {
 const deleteCategory = (id) => {
   return async (dispatch) => {
     try {
-      await axios.delete(`http://localhost:3001/admin/category/${id}`);
+      await axios.delete(`${URLAPI}/admin/category/${id}`);
       return dispatch({
         type: DELETE_CATEGORY,
       });
@@ -209,7 +209,7 @@ const editProduct = (payload) => {
   return async (dispatch) => {
     try {
       const update = await axios.put(
-        `http://localhost:3001/admin/product`,
+        `${URLAPI}/admin/product`,
         payload
       );
       console.log(update);
