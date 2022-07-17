@@ -92,29 +92,35 @@ router.put("/:idorder/product/:id", async (req, res) => {
       {where: { id: order.dataValues.id }}
     );
     let projects = await order.getProducts(); // -
-      let categoryNew = projects.map((e) => {
-        return e.dataValues.name;
+    console.log(projects)
+      let productsCar = projects.map( e=> {
+        return{
+          name: e.dataValues.name,
+          price: e.dataValues.price,
+          cant: e.dataValues.productXorder.cant
+        };
       });
-      console.log(categoryNew)
-    // Crea un objeto de preferencia
-// let preference = {
-//   items: [
-//     {
-//       title: "Mi producto",
-//       unit_price: 100,
-//       quantity: 1,
-//     },
-//   ],
-// };
+      let preference = {
+        items: [productsCar],
+        back_urls: {
+          "success": "http://localhost:8080/feedback",
+          "failure": "http://localhost:8080/feedback",
+          "pending": "http://localhost:8080/feedback"
+        },
+        auto_return: "approved",
+      };
 
-// mercadopago.preferences
-//   .create(preference)
-//   .then(function (response) {
-//     // En esta instancia deberás asignar el valor dentro de response.body.id por el ID de preferencia solicitado en el siguiente paso
-//   })
-//   .catch(function (error) {
-//     console.log(error);
-//   });
+
+ const response = await mercadopago.preferences
+   .create(preference)
+   .then(function (response) {
+       // En esta instancia deberás asignar el valor dentro de response.body.id por el ID de preferencia solicitado en el siguiente paso
+   const preferenceId = response.body.id
+      })
+   .catch(function (error) {
+     console.log(error);
+   });
+
 res.status(200).send("actualizado");
     }catch (e) {
     res.status(400).send("Error: " + e)
