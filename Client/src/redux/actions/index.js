@@ -16,14 +16,17 @@ import {
 } from "../types";
 import axios from "axios";
 
-// const URLAPI = "http://localhost:3001/";
-const {URLAPI} = process.env;
+// const VITE_URL_API = "http://localhost:3001/";
+// const { VITE_URL_API } = process.env.NODE_ENV;
+const { VITE_URL_API } = import.meta.env;
+
+console.log ("Hola: " + VITE_URL_API)
 
 const getProducts = (page, order, by, id) => {
   return (dispatch) => {
     try {
       return fetch(
-        `${URLAPI}guess/product?page=${page}&order_direction=${order}&order_by=${by}&category=${id}/`
+        `${VITE_URL_API}/guess/product?page=${page}&order_direction=${order}&order_by=${by}&category=${id}`
       )
         .then((response) => response.json())
         .then((json) => {
@@ -38,7 +41,7 @@ const getProducts = (page, order, by, id) => {
 const productDetail = (id) => {
   return function (dispatch) {
     try {
-      return fetch(`${URLAPI}guess/product/${id}/`)
+      return fetch(`${VITE_URL_API}/guess/product/${id}`)
         .then((response) => response.json())
         .then((json) => {
           dispatch({ type: PRODUCT_DETAIL, payload: json });
@@ -52,7 +55,7 @@ const productDetail = (id) => {
 const getProductsFilter = (name) => {
   return function (dispatch) {
     try {
-      return fetch(`${URLAPI}guess/product?name=${name}/`)
+      return fetch(`${VITE_URL_API}/guess/product?name=${name}`)
         .then((response) => response.json())
         .then((json) => {
           dispatch({ type: GET_PRODUCTS_FILTER, payload: json });
@@ -66,7 +69,7 @@ const getProductsFilter = (name) => {
 const postReview = (review, id) => {
   return function (dispatch) {
     try {
-      return fetch(`${URLAPI}user/product/${id}/review/`, {
+      return fetch(`${VITE_URL_API}/user/product/${id}/review`, {
         method: "POST",
         body: JSON.stringify(review),
         headers: {
@@ -88,7 +91,7 @@ const createCategory = (payload) => {
   return async (dispatch) => {
     try {
       const category = await axios.post(
-        `${URLAPI}/admin/category/`,
+        `${VITE_URL_API}/admin/category`,
         payload
       );
       console.log(category);
@@ -106,7 +109,7 @@ const getCategory = () => {
   return async (dispatch) => {
     try {
       const categories = await axios.get(
-        `${URLAPI}/admin/category/`
+        `${VITE_URL_API}/admin/category`
       );
       return dispatch({
         type: GET_CATEGORIES,
@@ -122,7 +125,7 @@ const getCategory = () => {
 const getProduct = () => {
   return async (dispatch) => {
     try {
-      const products = await axios.get(`${URLAPI}/guess/product/`);
+      const products = await axios.get(`${VITE_URL_API}/guess/product`);
       return dispatch({
         type: GET_PRODUCT,
         payload: products.data,
@@ -144,7 +147,7 @@ const createProduct = (payload) => {
   return async (dispatch) => {
     try {
       const product = await axios.post(
-        `${URLAPI}/admin/product/`,
+        `${VITE_URL_API}/admin/product`,
         payload
       );
       console.log(product);
@@ -171,7 +174,7 @@ const changeOrder = (type, by, id) => {
 const deleteCategory = (id) => {
   return async (dispatch) => {
     try {
-      await axios.delete(`${URLAPI}/admin/category/${id}`);
+      await axios.delete(`${VITE_URL_API}/admin/category/${id}`);
       return dispatch({
         type: DELETE_CATEGORY,
       });
@@ -209,7 +212,7 @@ const editProduct = (payload) => {
   return async (dispatch) => {
     try {
       const update = await axios.put(
-        `${URLAPI}/admin/product/`,
+        `${VITE_URL_API}/admin/product`,
         payload
       );
       console.log(update);
@@ -227,7 +230,7 @@ const viewProducts = (page, order, by) => {
   return (dispatch) => {
     try {
       return fetch(
-        `${URLAPI}guess/product?page=${page}&order_direction=${order}&order_by=${by}&page_limit=${40}`
+        `${VITE_URL_API}guess/product?page=${page}&order_direction=${order}&order_by=${by}&page_limit=${40}`
       )
         .then((response) => response.json())
         .then((json) => {
