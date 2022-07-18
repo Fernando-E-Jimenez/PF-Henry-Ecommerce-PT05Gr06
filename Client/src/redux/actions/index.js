@@ -240,7 +240,7 @@ const viewProducts = (page, order, by) => {
   };
 };
 
-const addToCart = (itemID, qty) => {
+const addToCart = (itemID) => {
   return {
     type: ADD_TO_CART,
     payload: {

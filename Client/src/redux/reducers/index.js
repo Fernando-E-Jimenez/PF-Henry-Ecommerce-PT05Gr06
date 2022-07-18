@@ -132,6 +132,7 @@ const reducer = (state = initialState, action) => {
       const product = state.products.data.find(
         (product) => product.id === action.payload.id
       );
+      console.log(action.payload.id);
       console.log(product);
       const inCart = state.cart.find((product) =>
         product.id === action.payload.id ? true : false

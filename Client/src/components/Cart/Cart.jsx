@@ -45,11 +45,7 @@ export const Cart = () => {
             <div>
               {/* Products */}
               {cart.map((product) => (
-                <CartItem
-                  key={product.id}
-                  product={product}
-                  setTotalPrice={setTotalPrice}
-                />
+                <CartItem key={product.id} product={product} />
               ))}
             </div>
           </div>

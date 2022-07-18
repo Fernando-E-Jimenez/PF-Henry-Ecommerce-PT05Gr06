@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 export const CartItem = ({ product }) => {
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart);
 
   const [quantity, setQuantity] = useState(1);
 
