@@ -15,6 +15,19 @@ function LoginButton() {
     <button onClick={loginWithRedirect}>Log in</button>
   );
 }
+function LogoutButton() {
+  const {
+    isAuthenticated,
+    logout,
+  } = useAuth0();
+
+  return isAuthenticated && (
+    <button onClick={() => {
+      logout({ returnTo: window.location.origin });
+    }}>Log out</button>
+  );
+}
+
 
 export const Home = () => {
   return (
@@ -22,6 +35,7 @@ export const Home = () => {
       <Filters />
       <CardsContainer />
       <LoginButton/>
+      <LogoutButton/>
     </>
   );
 };
