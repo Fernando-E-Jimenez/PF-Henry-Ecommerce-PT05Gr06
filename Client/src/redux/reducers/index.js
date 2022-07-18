@@ -14,6 +14,7 @@ import {
   EDIT_PRODUCT_OBTENER,
   ADD_TO_CART,
   PRODUCT_QUANTITY,
+  REMOVE_FROM_CART,
 } from "../types";
 
 const initialState = {
@@ -135,7 +136,6 @@ const reducer = (state = initialState, action) => {
       const inCart = state.cart.find((product) =>
         product.id === action.payload.id ? true : false
       );
-      console.log(inCart);
 
       return {
         ...state,
@@ -157,6 +157,13 @@ const reducer = (state = initialState, action) => {
             ? { ...item, qty: +action.payload.qty }
             : item
         ),
+      };
+    }
+
+    case REMOVE_FROM_CART: {
+      return {
+        ...state,
+        cart: state.cart.filter((product) => product.id !== action.payload.id),
       };
     }
 

@@ -15,6 +15,7 @@ import {
   EDIT_PRODUCT_OBTENER,
   ADD_TO_CART,
   PRODUCT_QUANTITY,
+  REMOVE_FROM_CART,
 } from "../types";
 import axios from "axios";
 
@@ -258,6 +259,16 @@ const productQuantity = (itemID, qty) => {
   };
 };
 
+const removeProduct = (itemID) => {
+  console.log(itemID);
+  return {
+    type: REMOVE_FROM_CART,
+    payload: {
+      id: itemID,
+    },
+  };
+};
+
 export {
   getProducts,
   productDetail,
@@ -275,4 +286,5 @@ export {
   viewProducts,
   addToCart,
   productQuantity,
+  removeProduct,
 };

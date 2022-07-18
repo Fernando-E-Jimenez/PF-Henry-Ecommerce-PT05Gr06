@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, productQuantity } from "../../redux/actions";
-import { useState } from "react";
+import { removeProduct, productQuantity } from "../../redux/actions";
+import { useEffect, useState } from "react";
 
 export const CartItem = ({ product }) => {
   const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
 
   const [quantity, setQuantity] = useState(1);
 
@@ -17,6 +18,11 @@ export const CartItem = ({ product }) => {
     dispatch(productQuantity(product.id, quantity));
   };
 
+  const removeProductCart = (id) => {
+    console.log("producto eliminado", id);
+    dispatch(removeProduct(id));
+  };
+
   const total = quantity * product.price;
 
   return (
@@ -27,12 +33,12 @@ export const CartItem = ({ product }) => {
         </div>
         <div className="flex flex-col justify-between ml-4 flex-grow">
           <span className=" text-2xl">{product.name}</span>
-          <a
-            href="#"
+          <button
+            onClick={() => removeProductCart(product.id)}
             className="font-semibold hover:text-red-500 text-gray-500 text-xl"
           >
             Remove
-          </a>
+          </button>
         </div>
       </div>
       <div className="flex justify-center w-1/5 ">

@@ -2,11 +2,12 @@ import { Link } from "react-router-dom";
 import { Cart } from "../Cart/Cart";
 import { SearchBar } from "../SearchBar/SearchBar";
 import { User } from "../User/User";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./Navbar.module.css";
 
 export const Navbar = () => {
   const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart.length);
 
   return (
     <div className={styles.navbarContainer}>
@@ -22,7 +23,7 @@ export const Navbar = () => {
           <SearchBar />
         </div>
         <div className={styles.userContainer}>
-          <Link to="/cart">
+          <Link to="/cart" className={styles.cartContainer}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="icon icon-tabler icon-tabler-shopping-cart"
@@ -41,6 +42,11 @@ export const Navbar = () => {
               <path d="M17 17h-11v-14h-2" />
               <path d="M6 5l14 1l-1 7h-13" />
             </svg>
+            {cart > 0 ? (
+              <p className={styles.cartQuantity}>{cart > 9 ? "9+" : cart}</p>
+            ) : (
+              ""
+            )}
           </Link>
           <User />
         </div>
