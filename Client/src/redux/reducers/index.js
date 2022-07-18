@@ -12,6 +12,8 @@ import {
   EDIT_CATEGORY,
   EDIT_PRODUCT,
   EDIT_PRODUCT_OBTENER,
+  ADD_TO_CART,
+  PRODUCT_QUANTITY,
 } from "../types";
 
 const initialState = {
@@ -23,8 +25,11 @@ const initialState = {
   order: {
     type: "",
     by: "",
-    id: ''
+    id: "",
   },
+  cart: localStorage.getItem("cartItems")
+    ? JSON.parse(localStorage.getItem("cartItems"))
+    : [],
 };
 
 //console.log(initialState.productEdit);
@@ -51,7 +56,7 @@ const reducer = (state = initialState, action) => {
         order: {
           type: action.payload.type,
           by: action.payload.by,
-          id: action.payload.id
+          id: action.payload.id,
         },
       };
     }
@@ -119,6 +124,39 @@ const reducer = (state = initialState, action) => {
         ...state,
         productEdit: null,
         products: action.payload,
+      };
+    }
+
+    case ADD_TO_CART: {
+      const product = state.products.data.find(
+        (product) => product.id === action.payload.id
+      );
+      console.log(product);
+      const inCart = state.cart.find((product) =>
+        product.id === action.payload.id ? true : false
+      );
+      console.log(inCart);
+
+      return {
+        ...state,
+        cart: inCart
+          ? state.cart.map((product) =>
+              product.id === action.payload.id
+                ? { ...product, qty: product.qty + 1 }
+                : product
+            )
+          : [...state.cart, { ...product, qty: 1 }],
+      };
+    }
+
+    case PRODUCT_QUANTITY: {
+      return {
+        ...state,
+        cart: state.cart.map((item) =>
+          item.id === action.payload.id
+            ? { ...item, qty: +action.payload.qty }
+            : item
+        ),
       };
     }
 

@@ -13,6 +13,8 @@ import {
   EDIT_CATEGORY,
   EDIT_PRODUCT,
   EDIT_PRODUCT_OBTENER,
+  ADD_TO_CART,
+  PRODUCT_QUANTITY,
 } from "../types";
 import axios from "axios";
 
@@ -20,7 +22,7 @@ import axios from "axios";
 // const { VITE_URL_API } = process.env.NODE_ENV;
 const { VITE_URL_API } = import.meta.env;
 
-console.log ("Hola: " + VITE_URL_API)
+console.log("Hola: " + VITE_URL_API);
 
 const getProducts = (page, order, by, id) => {
   return (dispatch) => {
@@ -108,9 +110,7 @@ const createCategory = (payload) => {
 const getCategory = () => {
   return async (dispatch) => {
     try {
-      const categories = await axios.get(
-        `${VITE_URL_API}/admin/category`
-      );
+      const categories = await axios.get(`${VITE_URL_API}/admin/category`);
       return dispatch({
         type: GET_CATEGORIES,
         payload: categories.data,
@@ -211,10 +211,7 @@ const editProduct = (payload) => {
   console.log(payload);
   return async (dispatch) => {
     try {
-      const update = await axios.put(
-        `${VITE_URL_API}/admin/product`,
-        payload
-      );
+      const update = await axios.put(`${VITE_URL_API}/admin/product`, payload);
       console.log(update);
       return dispatch({
         type: EDIT_PRODUCT,
@@ -242,6 +239,25 @@ const viewProducts = (page, order, by) => {
   };
 };
 
+const addToCart = (itemID, qty) => {
+  return {
+    type: ADD_TO_CART,
+    payload: {
+      id: itemID,
+    },
+  };
+};
+
+const productQuantity = (itemID, qty) => {
+  return {
+    type: PRODUCT_QUANTITY,
+    payload: {
+      id: itemID,
+      qty,
+    },
+  };
+};
+
 export {
   getProducts,
   productDetail,
@@ -256,5 +272,7 @@ export {
   editCategory,
   obtainEditProduct,
   editProduct,
-  viewProducts
+  viewProducts,
+  addToCart,
+  productQuantity,
 };
