@@ -4,6 +4,27 @@ import { SearchBar } from "../SearchBar/SearchBar";
 import { User } from "../User/User";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./Navbar.module.css";
+import { useAuth0 } from '@auth0/auth0-react';
+
+
+function Profile() {
+  const { user, isAuthenticated, isLoading } = useAuth0();
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+  return (
+    isAuthenticated && (
+      <div>
+        <img src={user.picture} alt={user.name} />
+        <h2>{user.name}</h2>
+        <p>Email: {user.email}</p>
+      </div>
+    )
+  )
+
+}
+
 
 export const Navbar = () => {
   const dispatch = useDispatch();
@@ -11,6 +32,7 @@ export const Navbar = () => {
 
   return (
     <div className={styles.navbarContainer}>
+      <Profile />
       <div className={styles.navbarBox}>
         <Link
           to="/"

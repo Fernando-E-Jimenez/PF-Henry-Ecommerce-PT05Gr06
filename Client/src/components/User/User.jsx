@@ -2,9 +2,15 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Admin from "../Admin/Admin";
 import styles from "./User.module.css";
+import { useAuth0 } from '@auth0/auth0-react';
 
 export const User = () => {
   const [open, setOpen] = useState(false);
+  const {
+    isAuthenticated,
+    loginWithRedirect,
+    logout
+  } = useAuth0();
 
   const handleClick = () => {
     setOpen(!open);
@@ -58,8 +64,35 @@ export const User = () => {
                 Cuenta
               </Link>
               <hr />
-
-              <a
+              {
+                !isAuthenticated ?
+                  <a
+                    href="#"
+                    className="text-gray-700 block px-4 py-2 text-md"
+                    role="menuitem"
+                    tabIndex="-1"
+                    id="menu-item-2"
+                    onClick={
+                      loginWithRedirect
+                    }
+                  >
+                    Iniciar Sesion
+                  </a>
+                  :
+                  <a
+                    href="#"
+                    className="text-gray-700 block px-4 py-2 text-md"
+                    role="menuitem"
+                    tabIndex="-1"
+                    id="menu-item-2"
+                    onClick={() => {
+                      logout({ returnTo: window.location.origin });
+                    }}
+                  >
+                    Salir
+                  </a>
+              }
+              {/* <a
                 href="#"
                 className="text-gray-700 block px-4 py-2 text-md"
                 role="menuitem"
@@ -67,7 +100,7 @@ export const User = () => {
                 id="menu-item-2"
               >
                 Salir
-              </a>
+              </a> */}
             </div>
           </div>
         )}
