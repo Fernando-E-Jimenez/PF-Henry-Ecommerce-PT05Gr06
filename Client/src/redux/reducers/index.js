@@ -15,7 +15,6 @@ import {
   ADD_TO_CART,
   PRODUCT_QUANTITY,
   REMOVE_FROM_CART,
-  ADD_TO_CART_DETAIL,
 } from "../types";
 
 const initialState = {
@@ -148,27 +147,6 @@ const reducer = (state = initialState, action) => {
                 : product
             )
           : [...state.cart, { ...product, qty: 1 }],
-      };
-    }
-
-    case ADD_TO_CART_DETAIL: {
-      const product = { ...state.detail, id: action.payload.id };
-      console.log(product);
-      //console.log(action.payload);
-
-      const inCart = state.cart.find((product) =>
-        product.id === action.payload.id ? true : false
-      );
-
-      return {
-        ...state,
-        cart: inCart
-          ? state.cart.map((product) =>
-              product.id === action.payload.id
-                ? { ...product, qty: product.qty + 1 }
-                : product
-            )
-          : [...state.cart, { ...product, qty: action.payload.qty }],
       };
     }
 
