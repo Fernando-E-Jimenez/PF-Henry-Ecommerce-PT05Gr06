@@ -17,8 +17,6 @@ export const CardDetail = () => {
   return (
     <div>
       {product?
-      <div>
-        <div className={styles.bgPage}>
           <div className={styles.detailContainer}>
             <div className={styles.imgContainer}>
               <img src={product.image} alt={product} />
@@ -65,10 +63,9 @@ export const CardDetail = () => {
               </div>
               <p className={styles.stock}>Stock Disponible: {product.stock}</p>
             </div>
+            <hr></hr>
+            <Reviews />
           </div>
-        </div>
-        <Reviews />
-      </div>
       :'Cargando...'}
     </div>
   );

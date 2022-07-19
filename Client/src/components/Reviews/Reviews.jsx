@@ -54,20 +54,19 @@ export const Reviews = () => {
   }
 
   return (
-    <div className={styles.bgPage}>
-      <div className={styles.detailContainer}>
+      <div className={styles.reviewsPage}>
           <div className={styles.reviewsContainer}>
             <div>
-              <h3 className={styles.title}>Reviews</h3>
+              <h4 className={styles.title}>Reviews</h4>
             </div>
             {product.review?
               product.review.length>0?
-                <div className={styles.cardsReviews}>
+                <div className={styles.boxReviews}>
                   {product.review.map((r, id) => {
                     return (
-                      <div key={id}>
-                        <div>{r.description}</div>
-                        <div>{r.star} ⭐</div>
+                      <div key={id} className={styles.cardReview} >
+                        <p style={{"fontSize":'large'}}>{r.description}</p>
+                        <div style={{"fontSize":'large'}}>{r.star} ⭐</div>
                       </div>
                     );
                   })}
@@ -76,10 +75,11 @@ export const Reviews = () => {
             :'Cargando...'}
           </div>
         <div className={styles.newReviewContainer}>
-          <h3 className={styles.title}>New Review</h3>
+          <h4 className={styles.title}>New Review</h4>
           <form
               onSubmit={(e) => handleSubmit(e)}>
             <input
+              style={{"fontSize":'large'}}
               type="text"
               className={styles.input}
               placeholder="What do you think about this product?"
@@ -116,7 +116,6 @@ export const Reviews = () => {
           </form>
         </div>
       </div>
-    </div>
     
   );
 };
