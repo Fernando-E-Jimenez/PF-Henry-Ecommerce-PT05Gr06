@@ -4,14 +4,13 @@ import { SearchBar } from "../SearchBar/SearchBar";
 import { User } from "../User/User";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./Navbar.module.css";
-import { useAuth0 } from '@auth0/auth0-react';
-
+import { useAuth0 } from "@auth0/auth0-react";
 
 function Profile() {
   const { user, isAuthenticated, isLoading } = useAuth0();
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
   return (
     isAuthenticated && (
@@ -21,18 +20,17 @@ function Profile() {
         <p>Email: {user.email}</p>
       </div>
     )
-  )
-
+  );
 }
-
 
 export const Navbar = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.length);
+  const { user, isAuthenticated, isLoading } = useAuth0();
 
   return (
     <div className={styles.navbarContainer}>
-      <Profile />
+      {/* <Profile /> */}
       <div className={styles.navbarBox}>
         <Link
           to="/"
@@ -70,7 +68,19 @@ export const Navbar = () => {
               ""
             )}
           </Link>
+
           <User />
+          {isAuthenticated ? (
+            <div className="w-20 h-20">
+              <img
+                className="rounded-full"
+                src={user.picture}
+                alt={user.name}
+              />
+            </div>
+          ) : (
+            <div></div>
+          )}
         </div>
       </div>
     </div>
