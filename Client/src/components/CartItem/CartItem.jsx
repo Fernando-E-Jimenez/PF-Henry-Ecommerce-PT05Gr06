@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 export const CartItem = ({ product }) => {
   const dispatch = useDispatch();
-  console.log(product.qty);
 
   const [quantity, setQuantity] = useState(product.qty ? product.qty : 1);
 
@@ -25,6 +24,22 @@ export const CartItem = ({ product }) => {
 
   const total = quantity * product.price;
 
+  useEffect(() => {
+    total;
+  }, [total]);
+
+  const priceUnit = product.price.toLocaleString("es-ar", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 2,
+  });
+
+  const precio = total.toLocaleString("es-ar", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 2,
+  });
+
   return (
     <div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
       <div className="flex w-2/5">
@@ -42,7 +57,11 @@ export const CartItem = ({ product }) => {
         </div>
       </div>
       <div className="flex justify-center w-1/5 ">
-        <button onClick={handleDecresed}>
+        <button
+          className={quantity === 1 ? "disabled:opacity-25" : ""}
+          disabled={quantity === 1 ? true : false}
+          onClick={handleDecresed}
+        >
           <svg className="fill-current text-gray-600 w-3" viewBox="0 0 448 512">
             <path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
           </svg>
@@ -56,8 +75,8 @@ export const CartItem = ({ product }) => {
           </svg>
         </button>
       </div>
-      <span className="text-center w-1/5 text-xl">{product.price}</span>
-      <span className="text-center w-1/5 text-xl">{total}</span>
+      <span className="text-center w-1/5 text-xl">{priceUnit}</span>
+      <span className="text-center w-1/5 text-xl">{precio}</span>
     </div>
   );
 };

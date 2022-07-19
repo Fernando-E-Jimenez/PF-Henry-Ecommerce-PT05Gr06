@@ -48,7 +48,11 @@ export const CardDetail = () => {
             <h3 className={styles.title}>{product.name}</h3>
             <p className={styles.price}>{product.price}</p>
             <div className={styles.count}>
-              <button onClick={handleDecresed}>
+              <button
+                onClick={handleDecresed}
+                className={quantity === 1 ? "disabled:opacity-25" : ""}
+                disabled={quantity === 1 ? true : false}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="icon icon-tabler icon-tabler-minus"

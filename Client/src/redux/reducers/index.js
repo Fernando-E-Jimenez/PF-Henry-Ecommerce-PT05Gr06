@@ -16,6 +16,7 @@ import {
   PRODUCT_QUANTITY,
   REMOVE_FROM_CART,
   ADD_TO_CART_DETAIL,
+  RESET_CART,
 } from "../types";
 
 const initialState = {
@@ -187,6 +188,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         cart: state.cart.filter((product) => product.id !== action.payload.id),
+      };
+    }
+
+    case RESET_CART: {
+      return {
+        ...state,
+        cart: [],
       };
     }
 
