@@ -11,6 +11,12 @@ export const Card = ({ id, name, price, image }) => {
     alert("Producto agregado al carrito");
   };
 
+  const precio = price.toLocaleString("es-ar", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 2,
+  });
+
   return (
     <div className={styles.cardContainer}>
       <Link to={`/product/${id}`}>
@@ -18,7 +24,7 @@ export const Card = ({ id, name, price, image }) => {
       </Link>
       <div className={styles.detail}>
         <p>{name}</p>
-        <p>{price}</p>
+        <p>{precio}</p>
 
         <button onClick={() => handleAddCart(id)} className={styles.button}>
           Agregar Carrito

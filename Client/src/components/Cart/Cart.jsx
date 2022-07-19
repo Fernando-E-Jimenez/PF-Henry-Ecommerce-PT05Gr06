@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CartItem } from "../CartItem/CartItem";
+import { Link } from "react-router-dom";
+import { resetCart } from "../../redux/actions";
 
 export const Cart = () => {
+  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
@@ -19,6 +22,16 @@ export const Cart = () => {
     setTotalItems(items);
     setTotalPrice(price);
   }, [cart, totalPrice, totalItems, setTotalPrice, setTotalItems]);
+
+  const handleResetCart = () => {
+    dispatch(resetCart());
+  };
+
+  const precio = totalPrice.toLocaleString("es-ar", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 2,
+  });
 
   localStorage.setItem("cartItems", JSON.stringify(cart));
 
@@ -44,11 +57,25 @@ export const Cart = () => {
                 Total
               </h3>
             </div>
-            <div>
+            <div className="mb-20">
               {/* Products */}
               {cart.map((product) => (
                 <CartItem key={product.id} product={product} />
               ))}
+            </div>
+            <div className="flex justify-around">
+              <Link
+                className="bg-primary-color font-semibold py-3 px-2 rounded-md text-2xl text-white w-56"
+                to="/"
+              >
+                Seguir Comprando
+              </Link>
+              <button
+                onClick={handleResetCart}
+                className="bg-red-500 font-semibold hover:bg-red-600 py-3 px-2 rounded-md text-2xl text-white w-56 "
+              >
+                Reset Cart
+              </button>
             </div>
           </div>
           <div className="w-1/4 px-8 py-10">
@@ -57,7 +84,7 @@ export const Cart = () => {
             </h1>
             <div className="flex justify-between mt-10 mb-5">
               <span className="font-semibold text-2xl">Total Items</span>
-              <span className="font-semibold text-2xl">{totalPrice}</span>
+              <span className="font-semibold text-2xl">{precio}</span>
             </div>
             <div className="py-10">
               <label
@@ -79,7 +106,7 @@ export const Cart = () => {
             <div className="border-t mt-8">
               <div className="flex font-semibold justify-between py-6 text-3xl ">
                 <span>Total cost</span>
-                <span>{totalPrice}</span>
+                <span>{precio}</span>
               </div>
               <button className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-2xl text-white w-full">
                 Checkout

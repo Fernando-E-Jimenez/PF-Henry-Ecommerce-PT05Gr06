@@ -8,8 +8,6 @@ export const User = () => {
   const [open, setOpen] = useState(false);
   const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
 
-  console.log(user);
-
   const handleClick = () => {
     setOpen(!open);
   };
