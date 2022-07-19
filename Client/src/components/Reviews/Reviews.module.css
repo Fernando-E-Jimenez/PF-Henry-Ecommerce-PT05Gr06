@@ -1,29 +1,30 @@
-.detailContainer {
-  display: flex;
-  flex-direction: column;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-  background-color: white;
-  width: 120rem;
-  height: 70rem;
-  margin: auto;
-  margin-top: 5rem;
-  border-radius: 20px;
-  box-shadow: 0px 0px 10px rgb(0 0 0 / 15%);
-  align-items: center;
+.reviewsPage {
+  width: 80%;
 }
-
 .reviewsContainer {
-  align-self: flex-start;
   margin: 2rem 2rem;
+  border-top: dotted 1px gray;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
 }
 
 .newReviewContainer {
-  align-self: flex-start;
   margin: 2rem 2rem;
+
 }
 
-.cardsReviews {
+.boxReviews {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+  gap: 2rem;
+  padding: 2rem 2rem;
+  max-width: 100rem;
+  margin: auto;
+}
+
+.cardReview {
   display: flex;
   flex-direction: column;
   background-color: white;
@@ -54,7 +55,7 @@
 .input {
   margin: 1rem 0.5rem;
   margin-bottom: 1rem;
-  width: 20rem;
+  width: 60rem;
   border-radius: 10px;
   padding: 0.8rem 0.5rem;
 }

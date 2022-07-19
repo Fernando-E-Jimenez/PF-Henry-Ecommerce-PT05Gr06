@@ -34,12 +34,10 @@ export const CardDetail = () => {
 
   return (
     <div>
-      {product ? (
-        <div>
-          <div className={styles.bgPage}>
-            <div className={styles.detailContainer}>
-              <div className={styles.imgContainer}>
-                <img src={product.image} alt={product} />
+      {product?
+          <div className={styles.detailContainer}>
+            <div className={styles.imgContainer}>
+              <img src={product.image} alt={product} />
               </div>
               <div className={styles.detailBox}>
                 <h3 className={styles.title}>{product.name}</h3>
@@ -62,7 +60,6 @@ export const CardDetail = () => {
                       <line x1="5" y1="12" x2="19" y2="12" />
                     </svg>
                   </button>
-
                   <p className={styles.cantidad}>{quantity}</p>
                   <button onClick={handleAdd}>
                     <svg
@@ -96,12 +93,10 @@ export const CardDetail = () => {
                 </p>
               </div>
             </div>
+            <hr></hr>
+            <Reviews />
           </div>
-          <Reviews />
-        </div>
-      ) : (
-        "Cargando..."
-      )}
+      :'Cargando...'}
     </div>
   );
 };

@@ -228,7 +228,7 @@ const viewProducts = (page, order, by) => {
   return (dispatch) => {
     try {
       return fetch(
-        `${VITE_URL_API}guess/product?page=${page}&order_direction=${order}&order_by=${by}&page_limit=${40}`
+        `${VITE_URL_API}/guess/product?page=${page}&order_direction=${order}&order_by=${by}&page_limit=${40}`
       )
         .then((response) => response.json())
         .then((json) => {
