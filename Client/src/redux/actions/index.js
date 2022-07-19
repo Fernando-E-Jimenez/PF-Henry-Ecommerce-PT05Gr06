@@ -16,6 +16,7 @@ import {
   ADD_TO_CART,
   PRODUCT_QUANTITY,
   REMOVE_FROM_CART,
+  ADD_TO_CART_DETAIL,
 } from "../types";
 import axios from "axios";
 
@@ -249,6 +250,16 @@ const addToCart = (itemID) => {
   };
 };
 
+const addToCartDetail = (itemID, qty) => {
+  return {
+    type: ADD_TO_CART_DETAIL,
+    payload: {
+      id: Number(itemID),
+      qty: Number(qty),
+    },
+  };
+};
+
 const productQuantity = (itemID, qty) => {
   return {
     type: PRODUCT_QUANTITY,
@@ -287,4 +298,5 @@ export {
   addToCart,
   productQuantity,
   removeProduct,
+  addToCartDetail,
 };
