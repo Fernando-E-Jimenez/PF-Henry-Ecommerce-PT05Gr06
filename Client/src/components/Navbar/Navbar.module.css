@@ -27,3 +27,23 @@
   display: flex;
   justify-content: space-around;
 }
+
+.cartContainer {
+  display: flex;
+}
+
+.cartQuantity {
+  display: flex;
+  position: relative;
+  right: 12px;
+  background-color: #e9725a;
+  border-radius: 50%;
+  color: #fff;
+  width: 15px;
+  height: 15px;
+  padding: 5px 5px;
+  font-size: 0.9rem;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
