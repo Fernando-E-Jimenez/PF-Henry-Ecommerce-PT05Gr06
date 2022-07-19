@@ -20,6 +20,8 @@ export const Cart = () => {
     setTotalPrice(price);
   }, [cart, totalPrice, totalItems, setTotalPrice, setTotalItems]);
 
+  localStorage.setItem("cartItems", JSON.stringify(cart));
+
   return (
     <>
       <div className="container mx-auto mt-10 bg-gray-200">

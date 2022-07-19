@@ -13,6 +13,8 @@ export const CardDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const product = useSelector((state) => state.detail);
+  const cart = useSelector((state) => state.cart);
+  localStorage.setItem("cartItems", JSON.stringify(cart));
 
   const [quantity, setQuantity] = useState(1);
 
