@@ -5,16 +5,16 @@ import { useEffect, useState } from "react";
 export const CartItem = ({ product }) => {
   const dispatch = useDispatch();
 
-  const [quantity, setQuantity] = useState(product.qty ? product.qty : 1);
+  const [quantity, setQuantity] = useState(product.qty);
 
   const handleAdd = () => {
     setQuantity(quantity + 1);
-    dispatch(productQuantity(product.id, quantity));
+    dispatch(productQuantity(product.id, quantity+1));
   };
 
   const handleDecresed = () => {
     setQuantity(quantity - 1);
-    dispatch(productQuantity(product.id, quantity));
+    dispatch(productQuantity(product.id, quantity-1));
   };
 
   const removeProductCart = (id) => {
