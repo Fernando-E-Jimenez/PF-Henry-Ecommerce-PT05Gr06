@@ -134,8 +134,6 @@ const reducer = (state = initialState, action) => {
       const product = state.products.data.find(
         (product) => product.id === action.payload.id
       );
-      console.log(action.payload.id);
-      console.log(product);
       const inCart = state.cart.find((product) =>
         product.id === action.payload.id ? true : false
       );
@@ -154,9 +152,6 @@ const reducer = (state = initialState, action) => {
 
     case ADD_TO_CART_DETAIL: {
       const product = { ...state.detail, id: action.payload.id };
-      console.log(product);
-      //console.log(action.payload);
-
       const inCart = state.cart.find((product) =>
         product.id === action.payload.id ? true : false
       );
@@ -178,7 +173,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         cart: state.cart.map((item) =>
           item.id === action.payload.id
-            ? { ...item, qty: +action.payload.qty }
+            ? { ...item, qty: action.payload.qty }
             : item
         ),
       };
