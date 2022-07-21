@@ -1,4 +1,4 @@
-const { Review, Rol, User } = require("../db");
+const { Review, User } = require("../db");
 const { Router } = require("express");
 const router = Router();
 
@@ -61,11 +61,6 @@ router.post("/", async (req, res) => {
       email,
     });
 
-    const roles = await Rol.findAll({
-      where: { description: "User" },
-    });
-    userNew.addRol(roles);
-    res.status(200).send(userNew);
   } catch (e) {
     return res.status(400).send("Error: " + e);
   }

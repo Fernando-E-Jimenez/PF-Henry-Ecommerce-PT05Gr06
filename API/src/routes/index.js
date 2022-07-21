@@ -7,7 +7,6 @@ const guesOrder = require("../controllers/GuessOrders");
 const guesProductOrder = require("../controllers/ProductOrder");
 const adminOrder = require("../controllers/AdminOrders");
 const users = require("../controllers/User");
-const rol = require("../controllers/Rol");
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -24,6 +23,6 @@ router.use("/guess/order", guesOrder);
 router.use("/guess/product", guesProductOrder);
 router.use("/admin/order", adminOrder);
 router.use("/user", users);
-router.use("/user/rol", rol);
+
 
 module.exports = router;
