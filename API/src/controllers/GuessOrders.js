@@ -63,10 +63,10 @@ router.put("/:idorder/product/:id", async (req, res) => {
 });
 
   //.poder comprar todos los items de un mi carrito. (checkout)
-  router.put("/:idorder/checkout", async (req, res) => {
+  router.put("/:idorder/user/:iduser/checkout", async (req, res) => {
     let array={};
     try{
-      const {idorder} = req.params;
+      const {idorder,iduser} = req.params;
       const {
         name,
         dni,
@@ -77,11 +77,15 @@ router.put("/:idorder/product/:id", async (req, res) => {
     if (!dni) return res.status(400).send("Faltan datos necesarios (dni).");
     if (!address) return res.status(400).send("Faltan datos necesarios (address).");
     const order = await Order.findByPk(parseInt(idorder));
-    let userNew = await User.create({
+    const user = await User.findByPk(parseInt(iduser));
+
+
+let userNew = await User.update({
       name,
       dni,
       orderId: order.dataValues.id
-    });
+    },
+    {where: {id: user.dataValues.id}});
 
     
     let addresNew = await Order.update(
@@ -117,8 +121,19 @@ router.put("/:idorder/product/:id", async (req, res) => {
           category: array
         };
       });
-          let preference = {
+
+      let users = {
+        "name": user.dataValues.name,
+        "dni": user.dataValues.dni,
+        // "user": user.dataValues.user,
+        "email": user.dataValues.email,
+        "mont": order.dataValues.mont
+      }
+      
+      let preference = {
+        "purpose": "wallet_purchase",
         items: [productsCar],
+        payer: [users],
         back_urls: {
           "success": "http://localhost:8080/feedback",
           "failure": "http://localhost:8080/feedback",
@@ -126,7 +141,7 @@ router.put("/:idorder/product/:id", async (req, res) => {
         },
         auto_return: "approved",
       };
-
+      console.log(preference)
 //  const response = await mercadopago.preferences
 //    .create(preference)
 //    .then(function (response) {
@@ -136,6 +151,8 @@ router.put("/:idorder/product/:id", async (req, res) => {
 //    .catch(function (error) {
 //      console.log(error);
 //    });
+    
+    
 
 res.status(200).send("actualizado");
     }catch (e) {
