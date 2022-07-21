@@ -39,6 +39,11 @@ module.exports = (sequelize) => {
         allowNull: false,
         defaultValue: "Activo",
       },
+      rol: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "User",
+      }
     },
     {
       timestamps: false,
