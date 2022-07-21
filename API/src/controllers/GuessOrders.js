@@ -130,9 +130,12 @@ let userNew = await User.update({
         "mont": order.dataValues.mont
       }
       
+
+
       let preference = {
-        "purpose": "wallet_purchase",
+        purpose: "wallet_purchase",
         items: [productsCar],
+        external_reference: `${order.dataValues.id}`,
         payer: [users],
         back_urls: {
           "success": "http://localhost:8080/feedback",
@@ -140,7 +143,14 @@ let userNew = await User.update({
           "pending": "http://localhost:8080/feedback"
         },
         auto_return: "approved",
-      };
+        payment_methods: {
+          excluded_payment_types: [{ id: "ticket" }],
+        },
+        shipments:{
+          cost: order.dataValues.mont,
+          mode: "not_specified",
+      }
+    }
       console.log(preference)
 //  const response = await mercadopago.preferences
 //    .create(preference)
