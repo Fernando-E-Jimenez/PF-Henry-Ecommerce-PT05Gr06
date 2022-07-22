@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { Category, Product } = require("../db");
+const { Category, Product, State } = require("../db");
 
 const paginate = async (
   model,
@@ -17,13 +17,19 @@ const paginate = async (
     let options = {
       offset: getOffset(page, limit),
       limit: limit,
-      include: {
-        model: Category,
-        atributes: ["name"],
-        through: {
-          attributes: [],
+      include: [
+        {
+          model: Category,
+          atributes: ["name"],
+          through: {
+            attributes: [],
+          },
         },
-      },
+        {
+          model: State
+        }
+      ],
+
       distinct: true,
     };
 
@@ -38,9 +44,9 @@ const paginate = async (
     }
 
     if (Object.keys(filter).length) {
-      options.include.where = { id: filter };
+      options.include[0].where = { id: filter };
     }
-
+//
     // take in the model, take in the options
     // console.log(options);
     let { count, rows } = await model.findAndCountAll(options);
