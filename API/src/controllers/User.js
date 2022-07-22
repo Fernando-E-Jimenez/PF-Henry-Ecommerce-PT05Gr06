@@ -1,6 +1,16 @@
-const { Review, Rol, User } = require("../db");
+const { Review, User } = require("../db");
 const { Router } = require("express");
 const router = Router();
+
+
+const userBD = async () => {
+  try {
+    return await User.findAll();
+  } catch (e) {
+    return e;
+  }
+};
+
 
 router.post("/:id/review", async (req, res) => {
   try {
@@ -51,28 +61,15 @@ router.post("/", async (req, res) => {
       email,
     });
 
-    const roles = await Rol.findAll({
-      where: { description: "User" },
-    });
-    userNew.addRol(roles);
-    res.status(200).send(userNew);
   } catch (e) {
     return res.status(400).send("Error: " + e);
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const { id } = req.params;
-    if (!id) return res.status(400).send("Faltan datos necesarios (id).");
-    if (isNaN(parseInt(id)))
-      return res
-        .status(400)
-        .send("Formato de datos invalido (id) debe ser un numero.");
-    const user = await User.findByPk(id);
-    user
-      ? res.status(200).json(user)
-      : res.status(404).send({ message: "Error: El Usuario no existe" });
+    const all = await userBD();
+    res.status(200).send(all);
   } catch (e) {
     return res.status(400).send({ message: "Error: " + e });
   }

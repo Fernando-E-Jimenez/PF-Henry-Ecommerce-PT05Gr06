@@ -82,9 +82,6 @@ Rol.belongsTo(State);
 
 // Product.hasMany(Reviews);
 
-User.belongsToMany(Rol, { through: "userXrol" });
-Rol.belongsToMany(User, { through: "userXrol" });
-
 // Product - Category;
 
 Product.belongsToMany(Category, { through: "productXcategory" });

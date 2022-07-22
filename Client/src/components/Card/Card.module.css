@@ -35,6 +35,8 @@
   justify-content: space-evenly;
   font-size: 1.5rem;
   color: gray;
+  text-align: center;
+  text-transform: capitalize;
 }
 
 .count {

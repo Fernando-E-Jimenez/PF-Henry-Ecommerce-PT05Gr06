@@ -26,6 +26,6 @@ router.use("/guess/product", guesProductOrder);
 router.use("/admin/order", adminOrder);
 router.use("/admin/state", state);
 router.use("/user", users);
-router.use("/user/rol", rol);
+
 
 module.exports = router;

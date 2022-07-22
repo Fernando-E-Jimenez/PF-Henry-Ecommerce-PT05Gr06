@@ -118,12 +118,12 @@ const arrayProductos = [
     category: [1, 7, 9],
   },
   {
-    name: "Vino Tinto Navarro Correas Colección Privada Blend Malbec Cabernet Sauvignon Merlot",
+    name: "Vino Tinto Trapiche Fino Manos Malbec",
     description:
-      "El vino Navarro Correas colección privada es un vino tinto argentino que viene en botella de 750 ML. El tipo de uva es Malbec/Cabernet Sauvignon/Merlot. Debe consumirse a una temperatura de 18° C. - Dislicores no garantiza la añada de los productos, si su decisión de compra está motivada por la añada del producto, por favor comunicarse directamente con servicio al cliente.",
+      "El vino tinto Trapiche Fino Manos es un vino argentino que viene por botella de 750 ml. El tipo de uva es Malbec 100%. ¡Disfruta de una tarde con un vino tinto y amigos! -Dislicores no garantiza la añada de los productos, si su decisión de compra está motivada por la añada del producto, por favor comunicarse directamente con servicio al cliente.",
     image:
-      "https://dislicoresqa.vtexassets.com/arquivos/ids/280553-800-auto?v=637900848323500000&width=800&height=auto&aspect=true",
-    price: "155900",
+      "https://dislicoresqa.vtexassets.com/arquivos/ids/257814-800-auto?v=637892572075300000&width=800&height=auto&aspect=true",
+    price: "635000",
     stock: "430",
     category: [1, 9, 7],
   },

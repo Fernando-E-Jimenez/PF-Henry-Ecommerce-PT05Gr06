@@ -3,6 +3,7 @@ import AddCategory from "./components/AddCategory/AddCategory";
 import AddProduct from "./components/AddProduct/AddProduct";
 import Admin from "./components/Admin/Admin";
 import { CardDetail } from "./components/CardDetail/CardDetail";
+import { Cart } from "./components/Cart/Cart";
 import { EditCategory } from "./components/EditCategory/EditCategory";
 import { EditProduct } from "./components/EditProduct/EditProduct";
 import { Home } from "./components/Home/Home";
@@ -17,6 +18,7 @@ export const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product/:id" element={<CardDetail />} />
+        <Route path="cart" element={<Cart />} />
         <Route path="/admin" element={<Admin />}>
           <Route path="new-product" element={<AddProduct />} />
           <Route path="view-products" element={<ViewProducts />} />

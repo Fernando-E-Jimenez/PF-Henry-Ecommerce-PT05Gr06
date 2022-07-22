@@ -1,10 +1,11 @@
 .detailContainer {
   display: flex;
+  flex-flow: column;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
   background-color: white;
   width: 120rem;
-  height: 70rem;
+  height: max-content;
   margin: auto;
   margin-top: 5rem;
   border-radius: 20px;
@@ -28,6 +29,7 @@
   flex-direction: column;
   text-align: center;
   justify-content: center;
+  border-top: dotted 1px gray;
 }
 
 .count {
@@ -59,6 +61,7 @@
 .title {
   font-size: 3rem;
   margin-bottom: 2rem;
+  text-transform: capitalize;
 }
 
 .price {

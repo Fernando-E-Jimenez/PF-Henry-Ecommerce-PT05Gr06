@@ -1,14 +1,14 @@
-const { Order, Product, User } = require("../db");
+const { Order, Product, User, Category, Rol} = require("../db");
 const upload = require("../libs/storage");
 const { Router } = require("express");
 const router = Router();
-const mercadopago = require("mercadopago");
+const {mercadopago} = require('../utils/mercadoPago');
+const { DB_HOST} = process.env;
 
-
-mercadopago.configure({
-    access_token: "TEST-5234286386169714-071521-eec79942f3b545900ffd49238398d759-1161619687",
-  });
-
+const BASE_URL2 =
+  DB_HOST === "localhost"
+    ? "http://localhost:5000"
+    : "https://nueva-prueba-sin-variables.vercel.app/";
 
 // ..sacar items de mi carrito, en caso que decida no quererlos.
 router.delete("/:idorder/product/:id", async (req, res) => {
@@ -67,54 +67,114 @@ router.put("/:idorder/product/:id", async (req, res) => {
   }
 });
 
-  //.poder comprar todos los items de un mi carrito. (checkout) 
-  router.put("/:idorder/checkout", async (req, res) => {
+  //.poder comprar todos los items de un mi carrito. (checkout)
+  router.put("/:idorder/user/:iduser/checkout", async (req, res) => {
+    let array={};
     try{
-      const {idorder} = req.params;
+      const {idorder,iduser} = req.params;
       const {
         name,
         dni,
         address,
       } = req.body
-      const order = await Order.findByPk(parseInt(idorder));
+
       if (!name) return res.status(400).send("Faltan datos necesarios (name).");
     if (!dni) return res.status(400).send("Faltan datos necesarios (dni).");
     if (!address) return res.status(400).send("Faltan datos necesarios (address).");
+    const order = await Order.findByPk(parseInt(idorder));
+    const user = await User.findByPk(parseInt(iduser));
 
-    let userNew = await User.create({
+
+let userNew = await User.update({
       name,
       dni,
       orderId: order.dataValues.id
-    });
+    },
+    {where: {id: user.dataValues.id}});
+
 
     let addresNew = await Order.update(
       {address},
       {where: { id: order.dataValues.id }}
     );
     let projects = await order.getProducts(); // -
-      let categoryNew = projects.map((e) => {
-        return e.dataValues.name;
-      });
-      console.log(categoryNew)
-    // Crea un objeto de preferencia
-// let preference = {
-//   items: [
-//     {
-//       title: "Mi producto",
-//       unit_price: 100,
-//       quantity: 1,
-//     },
-//   ],
-// };
+    let productsClient = await Promise.all(projects.map( async (f)=>{
+      return{
+        id: f.dataValues.id,
+      };
+    }
+    ));
+       let claves = Object.keys(productsClient);
+    for(let i=0; i< claves.length; i++){
+  let clave = claves[i];
+  let nameCategor = await Category.findByPk(parseInt(clave));
+  if(nameCategor){
+    array = {
+      id: claves[i],
+      name: nameCategor.dataValues.name
+    }
+  }
+}
 
-// mercadopago.preferences
-//   .create(preference)
-//   .then(function (response) {
-//     // En esta instancia deberás asignar el valor dentro de response.body.id por el ID de preferencia solicitado en el siguiente paso
-//   })
-//   .catch(function (error) {
-//     console.log(error);
-//   });
+      let productsCar = projects.map( e=> {
+        return{
+          id: e.dataValues.id,
+          tittle: e.dataValues.name,
+          description: e.dataValues.description,
+          picture_url: e.dataValues.image,
+          category_id: array,
+          price: e.dataValues.price,
+          quantity: e.dataValues.productXorder.cant,
+          currency_id: "$"
+        };
+      });
+
+      let users = {
+        "name": user.dataValues.name,
+        "dni": user.dataValues.dni,
+        // "user": user.dataValues.user,
+        "email": user.dataValues.email,
+        "mont": order.dataValues.mont
+      }
+
+
+
+      let preference = {
+        purpose: "wallet_purchase",
+        items: [productsCar],
+        external_reference: `${order.dataValues.id}`,
+        payer: [users],
+        back_urls: {
+          success: `${BASE_URL2}`,
+          failure: `${BASE_URL2}`,
+          pending: `${BASE_URL2}`
+        },
+        auto_return: "approved",
+        payment_methods: {
+          excluded_payment_types: [{ id: "ticket" }],
+        },
+        shipments:{
+          cost: order.dataValues.mont,
+          mode: "not_specified",
+      }
+    }
+      console.log(preference)
+
+mercadopago.preferences
+   .create(preference)
+   .then(function (response) {
+       // En esta instancia deberás asignar el valor dentro de response.body.id por el ID de preferencia solicitado en el siguiente paso
+   console.log(response)
+   res.json({ 
+    global: response.body.id
+   })
+      })
+   .catch(function (error) {
+     console.log(error);
+   });
+
+
+
 res.status(200).send("actualizado");
     }catch (e) {
     res.status(400).send("Error: " + e)
