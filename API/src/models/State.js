@@ -5,7 +5,7 @@ const { DataTypes } = require("sequelize");
 module.exports = (sequelize) => {
   // defino el modelo temperamento
   sequelize.define(
-    "rol",
+    "state",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -13,9 +13,10 @@ module.exports = (sequelize) => {
         primaryKey: true,
         allowNull: false,
       },
-      description: {
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true
       }
     },
     {
