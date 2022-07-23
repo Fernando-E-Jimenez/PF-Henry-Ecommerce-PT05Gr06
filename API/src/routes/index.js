@@ -17,14 +17,15 @@ const router = Router();
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
 
-router.use("/guess/product", guesProduct);
 router.use("/admin/product", product);
 router.use("/admin/category", category);
-router.use("/user/product", userReview);
+router.use("/admin/state", state);
+router.use("/admin/rol", rol);
+router.use("/admin/order", adminOrder);
+router.use("/guess/product", guesProduct);
 router.use("/guess/order", guesOrder);
 router.use("/guess/product", guesProductOrder);
-router.use("/admin/order", adminOrder);
-router.use("/admin/state", state);
+router.use("/user/product", userReview);
 router.use("/user", users);
 
 
