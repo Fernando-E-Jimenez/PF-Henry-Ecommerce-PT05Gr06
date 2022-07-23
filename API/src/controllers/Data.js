@@ -18,6 +18,18 @@ const arrayStates = [
     name: "Completa"
   }
 ]
+
+const arrayRols = [
+  {
+    name: "Admin"
+  },
+  {
+    name: "Guess"
+  },
+  {
+    name: "User"
+  }
+]
 const arraycategorias = [
   {
     name: "Tinto",
@@ -362,4 +374,4 @@ const arrayReviews = [
   },
 ];
 
-module.exports = { arrayProductos, arraycategorias, arrayReviews, arrayStates };
+module.exports = { arrayProductos, arraycategorias, arrayReviews, arrayStates, arrayRols };
