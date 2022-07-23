@@ -78,7 +78,11 @@ State.hasMany(Rol, {
 });
 Rol.belongsTo(State);
 
-
+//Rol - User
+Rol.hasMany(User, {
+  foreignKey: 'rolId'
+});
+User.belongsTo(Rol);
 
 // Product.hasMany(Reviews);
 
