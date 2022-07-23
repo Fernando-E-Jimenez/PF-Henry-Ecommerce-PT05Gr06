@@ -1,6 +1,6 @@
-const { Product, Category, Review, Order, State } = require("../db");
+const { Product, Category, Review, Order, State, Rol } = require("../db");
 const { upload, cloudinary } = require("../libs/storage");
-const { arrayProductos, arraycategorias, arrayReviews, arrayStates } = require("./Data");
+const { arrayProductos, arraycategorias, arrayReviews, arrayStates, arrayRols } = require("./Data");
 
 const { Router } = require("express");
 const paginate = require("./Paginate");
@@ -152,7 +152,7 @@ router.put("/", upload.array("image"), async (req, res, next) => {
         );
 
     const prod = await Product.findByPk(parseInt(id));
-    if(!prod) return res.status(400).send("Error producto no encontrado.");
+    if (!prod) return res.status(400).send("Error producto no encontrado.");
     if (typeof category === "string") {
       const cat = category.split(",");
       prod.setCategories(cat);
@@ -212,20 +212,25 @@ router.get("/carga", async (req, res, next) => {
   if (id) return next();
   try {
     const ejecutar = async (promesa) => {
-      await promesa;
+      return await promesa;
     }
-    await arrayStates.map(async (s) => {
-      try {
-        await ejecutar(
-          State.findOrCreate({
-            where: { name: s.name.toLowerCase() },
-          })
-        )
-      } catch (error) {
-        console.log(error)
-      }
-    });
+    const ejecutar2 = async (array) => {
+      return await Promise.all(array.map(async s => {
+        await State.findOrCreate({
+          where: { name: s.name.toLowerCase() },
+        })
+      })) ;
+    }
+  
+    await ejecutar2(arrayStates);
 
+    arrayRols.map(async (r) => {
+      await ejecutar(
+        Rol.findOrCreate({
+          where: { name: r.name.toLowerCase(), stateId: 1 },
+        })
+      )
+    })
     await arraycategorias.map(async (c) => {
       await ejecutar(
         Category.findOrCreate({
