@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { editProduct, getCategory } from "../../redux/actions";
+import { editProduct, getCategory, getStates } from "../../redux/actions";
 import { useNavigate, useParams } from "react-router-dom";
 
 export const EditProduct = () => {
@@ -9,6 +9,7 @@ export const EditProduct = () => {
 
   const productEdit = useSelector((state) => state.productEdit);
   const categoriesState = useSelector((state) => state.categories);
+  const States = useSelector((state) => state.states);
 
   const categoriesName = productEdit.categories.map((e) => e.id);
 
@@ -50,13 +51,13 @@ export const EditProduct = () => {
     console.log(product.category);
   };
 
-  const { id, name, description, image, price, stock, category } = product;
+  const { id, name, description, image, price, stock, category, state } = product;
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     formData.append("id", id);
-    formData.append("state", "Activo");
+    // formData.append("state", );
     for (let i = 0; i < category.length - 1; i++) {
       formData.append("category", category[i]);
     }
@@ -66,6 +67,10 @@ export const EditProduct = () => {
     navigate("/admin/view-products");
     alert("Producto editado con exito");
   };
+
+  useEffect(() => {
+    dispatch(getStates());
+  }, []);
 
   return (
     <div>
@@ -171,6 +176,26 @@ export const EditProduct = () => {
               </button>
             </div>
           ))}
+        </div>
+
+
+        <div className="mb-5">
+          <label className="text-gray-700 font-bold text-2xl">
+            Seleccionar Estado
+          </label>
+          <select
+            onChange={handleChange}
+            name="state"
+            defaultValue={"Select State"}
+            className="border w-full p-2 mt-2 placeholder-gray-400 rounded-md text-xl"
+          >
+            <option disabled>Seleccionar State</option>
+            {States?.map((e) => (
+              <option key={e.id} value={e.id}>
+                {e.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <button

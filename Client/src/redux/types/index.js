@@ -11,6 +11,10 @@ export const DELETE_CATEGORY = "DELETE_CATEGORY";
 export const EDIT_CATEGORY = "EDIT_CATEGORY";
 export const EDIT_PRODUCT_OBTENER = "EDIT_PRODUCT_OBTENER";
 export const EDIT_PRODUCT = "EDIT_PRODUCT";
+export const GET_STATES = "GET_STATES";
+export const NEW_STATE = "NEW_STATE";
+export const EDIT_STATE = "EDIT_STATE";
+export const DELETE_STATE = "DELETE_STATE";
 
 // SHOPPING CART
 export const ADD_TO_CART = "ADD_TO_CART";

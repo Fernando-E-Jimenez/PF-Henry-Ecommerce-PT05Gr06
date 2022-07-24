@@ -32,12 +32,7 @@ module.exports = (sequelize) => {
       image: {
         type: DataTypes.ARRAY(DataTypes.STRING),
         allowNull: false,
-      },
-      state: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: "Activo",
-      },
+      }
     },
     {
       timestamps: false,

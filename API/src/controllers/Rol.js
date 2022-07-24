@@ -1,59 +1,45 @@
-const { Category, State } = require("../db");
-const axios = require("axios");
+const { Rol, State } = require("../db");
 const { Router } = require("express");
 const router = Router();
 
-/* - Listar todos las Categorias - */
+// Listar Roles
 
 router.get("/", async (req, res) => {
   try {
-    const categories = await Category.findAll({ include: State });
-    return res.status(200).send(categories);
+    const rols = await Rol.findAll({ include: State });
+    return res.status(200).send(rols);
   } catch (e) {
-    res.status(400).send("Error: " + e);
+    return res.status(400).send({ message: "Error: " + e });
   }
 });
 
-/* - Registro de Categorias - */
+/* - Registro de Roles - */
 
 router.post("/", async (req, res, next) => {
-  const { name } = req.body;
+  const { name, state } = req.body;
   try {
     if (!name) return res.status(400).send("Faltan datos necesarios (name).");
-    const category = await Category.create({ name });
-    res.status(201).send(category);
-  } catch (e) {
-    if (JSON.stringify(e).includes("SequelizeUniqueConstraintError"))
-      res
+    if (!state) return res.status(400).send("Faltan datos necesarios (state).");
+    if (!isNaN(parseInt(name)))
+      return res
         .status(400)
-        .send(
-          "Error: Ya se encuentra registrada una categoria con el nombre: " +
-          name
-        );
-    res.status(400).send("Error: " + e);
+        .send("Formato de datos invalido (name) debe ser una cadena de texto.");
+    if (isNaN(parseInt(state)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (state) debe ser un numero.");
+
+    const rol = await Rol.create({ name: name.toLowerCase(), stateId: state });
+    return res.status(201).send(rol);
+  } catch (e) {
+    console.log(e)
+    if (JSON.stringify(e).includes("SequelizeUniqueConstraintError"))
+      return res.status(400).send("Error: Ya se encuentra registrado un rol con el nombre: " + name);
+    return res.status(400).send({ message: "Error: " + e });
   }
 });
 
-/* Eliminar Categoria */
-router.delete("/:id", async (req, res, next) => {
-  const { id } = req.params;
-  console.log(id);
-  try {
-    await Category.update(
-      {
-        stateId: 2,
-      },
-      {
-        where: {
-          id,
-        },
-      }
-    );
-    res.status(200).send("Categoria Eliminada");
-  } catch (error) {
-    console.log(error);
-  }
-});
+/* Consultar un Rol */
 
 router.get("/:id", async (req, res) => {
   try {
@@ -63,13 +49,15 @@ router.get("/:id", async (req, res) => {
       return res
         .status(400)
         .send("Formato de datos invalido (id) debe ser un numero.");
-    const categories = await Category.findByPk(id, { include: State });
-    if (categories) return res.status(200).send(categories);
-    return res.status(200).send({ message: "Error: Categoria no encontrada." });
+    const rol = await Rol.findByPk(id, { include: State });
+    if (rol) return res.status(200).send(rol);
+    return res.status(200).send({ message: "Error: Rol no encontrado." });
   } catch (e) {
-    res.status(400).send("Error: " + e);
+    return res.status(400).send({ message: "Error: " + e });
   }
 });
+
+/* Actualizar un Rol */
 
 router.put("/:id", async (req, res) => {
   try {
@@ -90,10 +78,10 @@ router.put("/:id", async (req, res) => {
       return res
         .status(400)
         .send("Formato de datos invalido (state) debe ser un numero.");
-    const category = await Category.update(
+    const rol = await Rol.update(
       {
-        name,
-        stateId: state,
+        name: name.toLowerCase(),
+        stateId: state
       },
       {
         where: {
@@ -101,17 +89,17 @@ router.put("/:id", async (req, res) => {
         },
       }
     );
-    if (category[0] !== 0) {
-      console.log(category);
-      const cat = await Category.findByPk(id, {include: State});
-      return res.status(200).send(cat);
+    if (rol[0] !== 0) {
+      console.log(rol);
+      const ro = await Rol.findByPk(id);
+      return res.status(200).send(ro);
     } else {
       return res
         .status(404)
-        .send({ message: "Error: Categoria no encontrada." });
+        .send({ message: "Error: Estado no encontrada." });
     }
   } catch (e) {
-    return res.status(400).send("Error: " + e);
+    return res.status(400).send({ message: "Error: " + e });
   }
 });
 

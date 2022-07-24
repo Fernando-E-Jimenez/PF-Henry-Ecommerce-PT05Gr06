@@ -1,4 +1,8 @@
 import {
+  GET_STATES,
+  NEW_STATE,
+  EDIT_STATE,
+  DELETE_STATE,
   GET_PRODUCTS,
   PRODUCT_DETAIL,
   GET_PRODUCTS_FILTER,
@@ -25,6 +29,7 @@ const initialState = {
   detail: {},
   resultPost: {},
   categories: [],
+  states: [],
   order: {
     type: "",
     by: "",
@@ -191,6 +196,13 @@ const reducer = (state = initialState, action) => {
         ...state,
         cart: [],
       };
+    }
+
+    case GET_STATES: {
+      return {
+        ...state,
+        states: action.payload
+      }
     }
 
     default:

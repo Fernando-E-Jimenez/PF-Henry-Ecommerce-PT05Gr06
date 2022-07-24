@@ -5,7 +5,7 @@ const { DataTypes } = require("sequelize");
 module.exports = (sequelize) => {
   // defino el modelo temperamento
   sequelize.define(
-    "review",
+    "rol",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -13,13 +13,10 @@ module.exports = (sequelize) => {
         primaryKey: true,
         allowNull: false,
       },
-      description: {
-        type: DataTypes.TEXT,
+      name: {
+        type: DataTypes.STRING,
         allowNull: false,
-      },
-      star: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+        unique: true
       }
     },
     {

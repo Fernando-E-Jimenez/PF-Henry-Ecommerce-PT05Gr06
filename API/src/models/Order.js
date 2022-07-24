@@ -13,10 +13,6 @@ module.exports = (sequelize) => {
         primaryKey: true,
         allowNull: false,
       },
-      state: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
       address: {
         type: DataTypes.STRING,
         allowNull: true,
