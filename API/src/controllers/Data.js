@@ -24,9 +24,6 @@ const arrayRols = [
     name: "Admin"
   },
   {
-    name: "Guess"
-  },
-  {
     name: "User"
   }
 ]
