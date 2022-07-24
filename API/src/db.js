@@ -104,6 +104,13 @@ const productXorder = sequelize.define("productXorder", {
   cant: Sequelize.INTEGER,
 });
 
+const car = sequelize.define("car", {
+  cant: Sequelize.INTEGER,
+});
+
+Product.belongsToMany(User, { through: car });
+User.belongsToMany(Product, { through: car });
+
 Product.belongsToMany(Order, { through: productXorder });
 Order.belongsToMany(Product, { through: productXorder });
 
