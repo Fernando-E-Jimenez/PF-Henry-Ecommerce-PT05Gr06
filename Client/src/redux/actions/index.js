@@ -1,5 +1,9 @@
 import { products } from "../../../dbPrueba";
 import {
+  GET_STATES,
+  NEW_STATE,
+  EDIT_STATE,
+  DELETE_STATE,
   GET_PRODUCTS,
   PRODUCT_DETAIL,
   GET_PRODUCTS_FILTER,
@@ -287,6 +291,66 @@ const resetCart = () => {
   };
 };
 
+const getStates = () => {
+  return async (dispatch) => {
+    try {
+      const states = await axios.get(`${VITE_URL_API}/admin/state`);
+      return dispatch({
+        type: GET_STATES,
+        payload: states.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+
+const deleteState = (id) => {
+  return async (dispatch) => {
+    try {
+      await axios.delete(`${VITE_URL_API}/admin/state/${id}`);
+      return dispatch({
+        type: DELETE_STATE,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+const editState = (data) => {
+  return async (dispatch) => {
+    try {
+      const update = await axios.put(`${VITE_URL_API}/admin/state/${id}`);
+      return dispatch({
+        type: EDIT_STATE,
+        payload: update,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+const createState = (payload) => {
+  return async (dispatch) => {
+    try {
+      const state = await axios.post(
+        `${VITE_URL_API}/admin/state`,
+        payload
+      );
+      console.log(state);
+      return dispatch({
+        type: NEW_STATE,
+        payload: category,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 export {
   getProducts,
   productDetail,
@@ -307,4 +371,8 @@ export {
   removeProduct,
   addToCartDetail,
   resetCart,
+  getStates,
+  createState,
+  editState,
+  deleteState
 };
