@@ -155,9 +155,11 @@ router.put("/", upload.array("image"), async (req, res, next) => {
     if (!prod) return res.status(400).send("Error producto no encontrado.");
     if (typeof category === "string") {
       const cat = category.split(",");
+      prod.removeCategories(cat);
       prod.setCategories(cat);
     } else {
-      prod.setCategories(category)
+      prod.removeCategories(category);
+      prod.setCategories(category);
     }
     console.log(state);
     if (image) {
