@@ -209,6 +209,59 @@ router.put("/", upload.array("image"), async (req, res, next) => {
   }
 });
 
+
+// Ruta para Eliminar y Habilitar un Producto
+
+
+router.delete("/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) return res.status(400).send("Faltan datos necesarios (id).");
+    if (isNaN(parseInt(id)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (id) debe ser un numero.");
+
+    const prod = await Product.findByPk(parseInt(id));
+    if (!prod) return res.status(400).send("Error producto no encontrado.");
+
+    if (prod.stateId === 1) {
+      const product = await Product.update(
+        { stateId: 2 },
+        {
+          where: {
+            id: id,
+          },
+        }
+      );
+      if (product[0] === 1) {
+        return res.status(200).json("Producto Eliminado.");
+      } else {
+        return res.status(400).send("Error al Eliminar el producto.");
+      }
+    } else {
+      const product = await Product.update(
+        { stateId: 1 },
+        {
+          where: {
+            id: id,
+          },
+        }
+      );
+      if (product[0] === 1) {
+        return res.status(200).json("Producto Habilitado.");
+      } else {
+        return res.status(400).send("Error al Habilitar el producto.");
+      }
+    }
+
+  } catch (error) {
+    return res.status(400).send("Error: " + error);
+  }
+});
+
+
 router.get("/carga", async (req, res, next) => {
   const { id } = req.params;
   if (id) return next();
@@ -221,9 +274,9 @@ router.get("/carga", async (req, res, next) => {
         await State.findOrCreate({
           where: { name: s.name.toLowerCase() },
         })
-      })) ;
+      }));
     }
-  
+
     await ejecutar2(arrayStates);
 
     arrayRols.map(async (r) => {
