@@ -10,6 +10,7 @@ const users = require("../controllers/User");
 const rol = require("../controllers/Rol");
 const state = require("../controllers/State");
 const adminUser = require("../controllers/AdminUser");
+const mercadopa =  require("../controllers/Mercadopago");
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -29,6 +30,7 @@ router.use("/guess/order", guesOrder);
 router.use("/guess/product", guesProductOrder);
 router.use("/user/product", userReview);
 router.use("/user", users);
+router.use("/mercadopag", mercadopa);
 
 
 module.exports = router;
