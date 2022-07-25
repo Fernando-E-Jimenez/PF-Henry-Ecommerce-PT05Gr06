@@ -1,5 +1,7 @@
 const { User, State, Rol } = require("../db");
+const { transporter } = require("../utils/nodeMailer");
 const { Router } = require("express");
+const { MAILUSER } = process.env;
 const router = Router();
 
 const userBD = async () => {
@@ -245,6 +247,45 @@ router.delete("/:id", async (req, res, next) => {
 
   } catch (error) {
     return res.status(400).send("Error: " + error);
+  }
+});
+
+
+// Ruta para Enviar Correos
+
+router.post("/mail", async (req, res, next) => {
+  try {
+    const { asunto, texto, destinatario } = req.body;
+
+    if (!asunto) return res.status(400).send("Faltan datos necesarios (asunto).");
+    if (!texto) return res.status(400).send("Faltan datos necesarios (texto).");
+    if (!destinatario) return res.status(400).send("Faltan datos necesarios (destinatario).");
+    if (!isNaN(parseInt(asunto)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (asunto) debe ser una cadena de texto.");
+    if (!isNaN(parseInt(texto)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (texto) debe ser una cadena de texto.");
+
+    const emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+    if (!emailRegex.test(destinatario))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (destinatario) debe ser una direccion de correo electronico.");
+
+    // send mail with defined transport object
+    await transporter.sendMail({
+      from: '"App Vinos" <' + MAILUSER + '>', // sender address
+      to: destinatario, // list of receivers
+      subject: asunto, // Subject line
+      text: texto, // plain text body
+      // html: "<b>Hello world?</b>", // html body
+    });
+    return res.status(200).send('Email Enviado.');
+  } catch (error) {
+    return res.status(400).send({ message: "Error: " + error });
   }
 });
 
