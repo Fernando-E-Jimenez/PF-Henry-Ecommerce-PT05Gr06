@@ -95,10 +95,9 @@ router.post("/:idUser/cars/", async (req, res) => {
 router.delete("/:idUser/car/", async (req, res) => {
   try {
     const { idUser } = req.params;
-    const { id, cant } = req.body;
+    const { id } = req.body;
     if (!id) return res.status(400).send("Faltan datos necesarios (id).");
     if (!idUser) return res.status(400).send("Faltan datos necesarios (idUser).");
-    if (!cant) return res.status(400).send("Faltan datos necesarios (cant).");
     if (isNaN(parseInt(id)))
       return res
         .status(400)
@@ -107,10 +106,6 @@ router.delete("/:idUser/car/", async (req, res) => {
       return res
         .status(400)
         .send("Formato de datos invalido (idUser) debe ser un numero.");
-    if (isNaN(parseInt(cant)))
-      return res
-        .status(400)
-        .send("Formato de datos invalido (cant) debe ser un numero.");
 
     const user = await User.findByPk(idUser);
     if (!user) return res.status(400).send("El usuario no existe.");
