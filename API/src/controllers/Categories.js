@@ -39,17 +39,46 @@ router.delete("/:id", async (req, res, next) => {
   const { id } = req.params;
   console.log(id);
   try {
-    await Category.update(
-      {
-        stateId: 2,
-      },
-      {
-        where: {
-          id,
+    if (!id) return res.status(400).send("Faltan datos necesarios (id).");
+    if (isNaN(parseInt(id)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (id) debe ser un numero.");
+
+    const cat = await Category.findByPk(id);
+    if (cat.stateId === 1) {
+      const update = await Category.update(
+        {
+          stateId: 2,
         },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+      if (update[0] === 1) {
+        return res.status(200).send("Categoria Eliminada.");
+      } else {
+        return res.status(400).send("Error al Elminar la Categoria.");
       }
-    );
-    res.status(200).send("Categoria Eliminada");
+    } else {
+      const update =await Category.update(
+        {
+          stateId: 1,
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+      if (update[0] === 1) {
+        return res.status(200).send("Categoria Habilitado.");
+      } else {
+        return res.status(400).send("Error al Habilitar la Categoria.");
+      }
+    }
   } catch (error) {
     console.log(error);
   }
@@ -103,7 +132,7 @@ router.put("/:id", async (req, res) => {
     );
     if (category[0] !== 0) {
       console.log(category);
-      const cat = await Category.findByPk(id, {include: State});
+      const cat = await Category.findByPk(id, { include: State });
       return res.status(200).send(cat);
     } else {
       return res
