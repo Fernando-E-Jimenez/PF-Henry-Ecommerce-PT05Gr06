@@ -101,7 +101,8 @@ router.post("/", upload.array("image"), async (req, res, next) => {
         })
       );
     }
-
+    
+    
     const catego = await product.getCategories();
 
     return res.status(201).json({ ...product.dataValues, category: catego });
