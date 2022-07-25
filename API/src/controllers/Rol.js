@@ -103,4 +103,57 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+
+/* Eliminar Rol */
+
+
+router.delete("/:id", async (req, res, next) => {
+  const { id } = req.params;
+  console.log(id);
+  try {
+    if (!id) return res.status(400).send("Faltan datos necesarios (id).");
+    if (isNaN(parseInt(id)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (id) debe ser un numero.");
+
+    const rol = await Rol.findByPk(id);
+    if (rol.stateId === 1) {
+      const update = await Rol.update(
+        {
+          stateId: 2,
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+      if (update[0] === 1) {
+        return res.status(200).send("Rol Eliminado.");
+      } else {
+        return res.status(400).send("Error al Elminar el Rol.");
+      }
+    } else {
+      const update =await Rol.update(
+        {
+          stateId: 1,
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+      if (update[0] === 1) {
+        return res.status(200).send("Rol Habilitado.");
+      } else {
+        return res.status(400).send("Error al Habilitar el Rol.");
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = router;
