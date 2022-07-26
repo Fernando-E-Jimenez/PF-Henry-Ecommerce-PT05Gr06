@@ -1,4 +1,4 @@
-const { Review, User, Product } = require("../db");
+const { Review, User, Product, Order, State } = require("../db");
 const { Router } = require("express");
 const router = Router();
 
@@ -24,6 +24,64 @@ router.get("/:idUser/car/", async (req, res) => {
     return res.status(400).send({ message: "Error: " + error });
   }
 });
+
+//RUTA CREACION DE ORDER - ACTUALIZACION USER Y CART -> OPRODCUTXORDER
+router.post("/:iduser", async (req, res) => {
+  try{
+    let montT=0;
+    const {iduser} = req.params;
+  const {
+    name,
+    dni,
+    address,
+  } = req.body
+
+  if (!name) return res.status(400).send("Faltan datos necesarios (name).");
+if (!dni) return res.status(400).send("Faltan datos necesarios (dni).");
+if (!address) return res.status(400).send("Faltan datos necesarios (address).");
+
+const user = await User.findByPk(parseInt(iduser));
+let projects = await user.getProducts();
+let idState = await State.findOne({
+  where: { name: "en proceso"}
+  });
+
+let productsOrder = projects.map( e=> {
+  let mont1 = e.dataValues.price * e.dataValues.car.cant;
+  montT = montT + mont1
+  return{
+    id: e.dataValues.id,
+    cant: e.dataValues.car.cant,
+  };
+});
+
+  let order = await Order.create({
+    address,
+    mont: montT,
+    stateId: idState.dataValues.id,
+    userId: user.dataValues.id
+  });
+  console.log(order)
+  let userNew = await User.update({
+  name,
+  dni,
+  orderId: order.dataValues.id
+},
+{where: {id: iduser}});
+
+
+productsOrder.map( async (e) => {
+  await order.addProduct(e.id, { through: { cant: e.cant } });
+});
+
+res.status(200).send("actualizado");
+   }
+catch (e) {
+res.status(400).send("Error: " + e)
+}
+});
+
+
 
 // Ruta para Añadir un Producto al carrito del usuario
 // Sirve tambien para Actualizar la Cantidad de Productos de Este
