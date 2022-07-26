@@ -15,7 +15,6 @@ const BASE_URL2 =
         access_token: ACCES_TOKEN
     })
 
-
     router.get("/:iduser", async (req, res) => {
         
         try{
