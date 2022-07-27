@@ -1,67 +1,115 @@
-const { Product, Order, Review } = require("../db");
+const { Product, Order, Review, State, User } = require("../db");
 const { Router } = require("express");
 const router = Router();
 
-const orderDB = async () => {
-  try {
-    return await Order.findAll({
-      include: {
-        model: Product,
-        attributes: [
-          "id",
-          "name",
-          "description",
-          "stock",
-          "price",
-          "image",
-          "state",
-        ],
-        through: {
-          attributes: ["cant"],
-        },
-      },
-    });
-  } catch (e) {
-    return e;
-  }
-};
 
 // Admin ...poder ver una lista de todas las ordenes, para poder ver y revisar las ordenes.
 router.get("/", async (req, res) => {
   try {
-    const total = await orderDB();
-    res.status(200).send(total);
+    const { state } = req.query;
+    let options = {
+      include: [
+        {
+          model: User
+        },
+        {
+          model: State
+        },
+        {
+          model: Product,
+          through: {
+            attributes: ['cant']
+          }
+        }
+      ]
+    }
+    if (state) {
+      if (isNaN(parseInt(state)))
+        return res
+          .status(400)
+          .json({
+            message: "Formato de datos invalido (state) debe ser un numero.",
+          });
+      options.include[1].where = { id : state};
+    }
+    const total = await Order.findAll(options);
+    if(total.length === 0) return res.status(200).send("No se encontraron Ordenes.");
+    return res.status(200).send(total);
   } catch (e) {
-    res.status(400).send("Error: " + e);
+    return res.status(400).send("Error: " + e);
   }
 });
 
 // Admin ... ver los detalles de una orden específica,
 // asi puedo revisarla y actualizar su estado
 
-router.get("/:id", async (req, res) => {
+router.get("/:idOrder", async (req, res) => {
   try {
-    const { id } = req.params;
-    if (id) {
-      const all = await orderDB();
-      const productNew = all.filter((e) => e.id == id);
-      let categoryNew = productNew[0].categories.map((e) => {
-        return e.dataValues.name;
-      });
-      const reviewNew = r.filter((f) => f.productId == id);
-      var resultado = {
-        id: productNew[0].id,
-        cant: productNew[0].cant,
-        // price: productNew[0].price,
-        // stock: productNew[0].stock,
-        // image: productNew[0].image,
-        // review: reviewNew,
-        // category: categoryNew
-      };
-    }
-    res.status(200).send(resultado);
+    const { idOrder } = req.params;
+    if (!idOrder) return res.status(400).send("Faltan datos necesarios (idOrder).");
+    if (isNaN(parseInt(idOrder)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (idOrder) debe ser un numero.");
+    const order = await Order.findByPk(idOrder, {
+      include: [
+        {
+          model: User
+        },
+        {
+          model: State
+        },
+        {
+          model: Product,
+          through: {
+            attributes: ['cant']
+          }
+        }
+      ]
+    });
+    return res.status(200).send(order);
   } catch (e) {
-    res.status(400).send("Error: " + e);
+    return res.status(400).send("Error: " + e);
   }
 });
+
+
+// Admin ... Actualizar el estado de una orden
+
+router.put("/:idOrder", async (req, res) => {
+  try {
+    const { idOrder } = req.params;
+    const { state } = req.body;
+    if (!idOrder) return res.status(400).send("Faltan datos necesarios (idOrder).");
+    if (isNaN(parseInt(idOrder)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (idOrder) debe ser un numero.");
+    if (!state) return res.status(400).send("Faltan datos necesarios (state).");
+    if (isNaN(parseInt(state)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (state) debe ser un numero.");
+    const order = await Order.findByPk(idOrder);
+    if (!order) return res.status(200).send("No se encontro la orden.");
+    const update = await Order.update(
+      {
+        stateId: state
+      },
+      {
+        where: {
+          id: idOrder
+        }
+      }
+    )
+    if (update[0] === 1) {
+      return res.status(200).send("Orden Actualizada.");
+    }else{
+      return res.status(400).send("Error al actualizar Orden.");
+    }
+  } catch (e) {
+    return res.status(400).send("Error: " + e);
+  }
+});
+
 module.exports = router;
