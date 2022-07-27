@@ -1,4 +1,4 @@
-const { Review, User, Product, Order, State } = require("../db");
+const { Review, User, Product, Order, State, Car } = require("../db");
 const { Router } = require("express");
 const router = Router();
 
@@ -24,64 +24,6 @@ router.get("/:idUser/car/", async (req, res) => {
     return res.status(400).send({ message: "Error: " + error });
   }
 });
-
-//RUTA CREACION DE ORDER - ACTUALIZACION USER Y CART -> OPRODCUTXORDER
-router.post("/:iduser", async (req, res) => {
-  try{
-    let montT=0;
-    const {iduser} = req.params;
-  const {
-    name,
-    dni,
-    address,
-  } = req.body
-
-  if (!name) return res.status(400).send("Faltan datos necesarios (name).");
-if (!dni) return res.status(400).send("Faltan datos necesarios (dni).");
-if (!address) return res.status(400).send("Faltan datos necesarios (address).");
-
-const user = await User.findByPk(parseInt(iduser));
-let projects = await user.getProducts();
-let idState = await State.findOne({
-  where: { name: "en proceso"}
-  });
-
-let productsOrder = projects.map( e=> {
-  let mont1 = e.dataValues.price * e.dataValues.car.cant;
-  montT = montT + mont1
-  return{
-    id: e.dataValues.id,
-    cant: e.dataValues.car.cant,
-  };
-});
-
-  let order = await Order.create({
-    address,
-    mont: montT,
-    stateId: idState.dataValues.id,
-    userId: user.dataValues.id
-  });
-  console.log(order)
-  let userNew = await User.update({
-  name,
-  dni,
-  orderId: order.dataValues.id
-},
-{where: {id: iduser}});
-
-
-productsOrder.map( async (e) => {
-  await order.addProduct(e.id, { through: { cant: e.cant } });
-});
-
-res.status(200).send("actualizado");
-   }
-catch (e) {
-res.status(400).send("Error: " + e)
-}
-});
-
-
 
 // Ruta para Añadir un Producto al carrito del usuario
 // Sirve tambien para Actualizar la Cantidad de Productos de Este
@@ -242,7 +184,6 @@ router.put("/:id", async (req, res) => {
     );
     console.log(user);
     if (user[0] === 1) {
-      console.log("Aqui");
       let user1 = await User.findByPk(id);
       return res.status(200).json(user1);
     } else if (!user) {
@@ -274,5 +215,133 @@ router.get('/:id', async (req, res) => {
     return res.status(400).send({ message: "Error: " + error });
   }
 });
+
+
+//RUTA CREACION DE ORDER - ACTUALIZACION USER Y CART -> OPRODCUTXORDER
+
+router.post("/:iduser/order", async (req, res) => {
+  try {
+    let montT = 0;
+    const { iduser } = req.params;
+    const {
+      name,
+      dni,
+      address,
+    } = req.body
+
+    if (!name) return res.status(400).send("Faltan datos necesarios (name).");
+    if (!dni) return res.status(400).send("Faltan datos necesarios (dni).");
+    if (!address) return res.status(400).send("Faltan datos necesarios (address).");
+
+    const user = await User.findByPk(parseInt(iduser));
+    let projects = await user.getProducts();
+    let idState = await State.findOne({
+      where: { name: "creada" }
+    });
+
+    let productsOrder = projects.map(e => {
+      let mont1 = e.dataValues.price * e.dataValues.car.cant;
+      montT = montT + mont1
+      return {
+        id: e.dataValues.id,
+        cant: e.dataValues.car.cant,
+      };
+    });
+
+    let order = await Order.create({
+      address,
+      mont: montT,
+      stateId: idState.dataValues.id,
+      userId: user.dataValues.id
+    });
+    let userNew = await User.update({
+      name,
+      dni,
+      orderId: order.dataValues.id
+    },
+      { where: { id: iduser } });
+
+    productsOrder.map(async (e) => {
+      await order.addProduct(e.id, { through: { cant: e.cant } });
+    });
+    await Car.destroy({
+      where: {
+        userId:iduser
+      }
+    });
+    return res.status(200).send(order);
+  }
+  catch (e) {
+    return res.status(400).send("Error: " + e)
+  }
+});
+
+
+// Ruta para Listar las ordenes del usuario
+
+router.get("/:iduser/order", async (req, res) => {
+  try {
+    const { iduser } = req.params;
+    if (!iduser) return res.status(400).send("Faltan datos necesarios (id).");
+    if (isNaN(parseInt(iduser)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (id) debe ser un numero.");
+    const user = await User.findByPk(iduser);
+    if (!user) return res.status(400).send("Usuario no encontrado");
+    const orders = await user.getOrders({
+      include: [
+        { model: State },
+        {
+          model: Product,
+          through: {
+            attributes: ['cant']
+          }
+        }]
+    });
+    return res.status(200).json(orders);
+  }
+  catch (e) {
+    return res.status(400).send("Error: " + e)
+  }
+});
+
+// Ruta para Listar una orden del usuario
+
+router.get("/:iduser/order/:idOrder", async (req, res) => {
+  try {
+    const { iduser, idOrder } = req.params;
+    if (!iduser) return res.status(400).send("Faltan datos necesarios (id).");
+    if (isNaN(parseInt(iduser)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (iduser) debe ser un numero.");
+    if (!idOrder) return res.status(400).send("Faltan datos necesarios (idOrder).");
+    if (isNaN(parseInt(idOrder)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (idOrder) debe ser un numero.");
+    const user = await User.findByPk(iduser);
+    if (!user) return res.status(400).send("Usuario no encontrado");
+
+    const order = await Order.findByPk(idOrder, {
+      include: [
+        {model: State},
+        {
+          model: Product,
+          through: {
+            attributes: ['cant']
+          }
+        }
+      ]
+    })
+    return res.status(200).json(order);
+  }
+  catch (e) {
+    return res.status(400).send("Error: " + e)
+  }
+});
+
+
 
 module.exports = router;
