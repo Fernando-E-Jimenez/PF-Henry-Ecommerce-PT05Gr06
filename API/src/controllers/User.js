@@ -7,7 +7,8 @@ const router = Router();
 router.get("/:idUser/car/", async (req, res) => {
   try {
     const { idUser } = req.params;
-    if (!idUser) return res.status(400).send("Faltan datos necesarios (idUser).");
+    if (!idUser)
+      return res.status(400).send("Faltan datos necesarios (idUser).");
     if (isNaN(parseInt(idUser)))
       return res
         .status(400)
@@ -16,8 +17,11 @@ router.get("/:idUser/car/", async (req, res) => {
     const user = await User.findByPk(idUser);
     if (!user) return res.status(400).send("El usuario no existe.");
 
-    const car = await user.getProducts({ joinTableAttributes: ['cant'] });
-    if (!car || car.length === 0) return res.status(400).send("El Usuario no tiene productos en el carrito.");
+    const car = await user.getProducts({ joinTableAttributes: ["cant"] });
+    if (!car || car.length === 0)
+      return res
+        .status(400)
+        .send("El Usuario no tiene productos en el carrito.");
 
     return res.status(200).json(car);
   } catch (error) {
@@ -27,61 +31,56 @@ router.get("/:idUser/car/", async (req, res) => {
 
 //RUTA CREACION DE ORDER - ACTUALIZACION USER Y CART -> OPRODCUTXORDER
 router.post("/:iduser", async (req, res) => {
-  try{
-    let montT=0;
-    const {iduser} = req.params;
-  const {
-    name,
-    dni,
-    address,
-  } = req.body
+  try {
+    let montT = 0;
+    const { iduser } = req.params;
+    const { name, dni, address } = req.body;
 
-  if (!name) return res.status(400).send("Faltan datos necesarios (name).");
-if (!dni) return res.status(400).send("Faltan datos necesarios (dni).");
-if (!address) return res.status(400).send("Faltan datos necesarios (address).");
+    if (!name) return res.status(400).send("Faltan datos necesarios (name).");
+    if (!dni) return res.status(400).send("Faltan datos necesarios (dni).");
+    if (!address)
+      return res.status(400).send("Faltan datos necesarios (address).");
 
-const user = await User.findByPk(parseInt(iduser));
-let projects = await user.getProducts();
-let idState = await State.findOne({
-  where: { name: "en proceso"}
-  });
+    const user = await User.findByPk(parseInt(iduser));
+    let projects = await user.getProducts();
+    let idState = await State.findOne({
+      where: { name: "en proceso" },
+    });
 
-let productsOrder = projects.map( e=> {
-  let mont1 = e.dataValues.price * e.dataValues.car.cant;
-  montT = montT + mont1
-  return{
-    id: e.dataValues.id,
-    cant: e.dataValues.car.cant,
-  };
+    let productsOrder = projects.map((e) => {
+      let mont1 = e.dataValues.price * e.dataValues.car.cant;
+      montT = montT + mont1;
+      return {
+        id: e.dataValues.id,
+        cant: e.dataValues.car.cant,
+      };
+    });
+
+    let order = await Order.create({
+      address,
+      mont: montT,
+      stateId: idState.dataValues.id,
+      userId: user.dataValues.id,
+    });
+    console.log(order);
+    let userNew = await User.update(
+      {
+        name,
+        dni,
+        orderId: order.dataValues.id,
+      },
+      { where: { id: iduser } }
+    );
+
+    productsOrder.map(async (e) => {
+      await order.addProduct(e.id, { through: { cant: e.cant } });
+    });
+
+    res.status(200).send("actualizado");
+  } catch (e) {
+    res.status(400).send("Error: " + e);
+  }
 });
-
-  let order = await Order.create({
-    address,
-    mont: montT,
-    stateId: idState.dataValues.id,
-    userId: user.dataValues.id
-  });
-  console.log(order)
-  let userNew = await User.update({
-  name,
-  dni,
-  orderId: order.dataValues.id
-},
-{where: {id: iduser}});
-
-
-productsOrder.map( async (e) => {
-  await order.addProduct(e.id, { through: { cant: e.cant } });
-});
-
-res.status(200).send("actualizado");
-   }
-catch (e) {
-res.status(400).send("Error: " + e)
-}
-});
-
-
 
 // Ruta para Añadir un Producto al carrito del usuario
 // Sirve tambien para Actualizar la Cantidad de Productos de Este
@@ -91,7 +90,8 @@ router.post("/:idUser/car/", async (req, res) => {
     const { idUser } = req.params;
     const { id, cant } = req.body;
     if (!id) return res.status(400).send("Faltan datos necesarios (id).");
-    if (!idUser) return res.status(400).send("Faltan datos necesarios (idUser).");
+    if (!idUser)
+      return res.status(400).send("Faltan datos necesarios (idUser).");
     if (!cant) return res.status(400).send("Faltan datos necesarios (cant).");
     if (isNaN(parseInt(id)))
       return res
@@ -125,7 +125,8 @@ router.post("/:idUser/cars/", async (req, res) => {
     const { idUser } = req.params;
     const { products } = req.body;
     if (!products) return res.status(400).send("Faltan datos necesarios (id).");
-    if (!idUser) return res.status(400).send("Faltan datos necesarios (idUser).");
+    if (!idUser)
+      return res.status(400).send("Faltan datos necesarios (idUser).");
     if (isNaN(parseInt(idUser)))
       return res
         .status(400)
@@ -140,7 +141,7 @@ router.post("/:idUser/cars/", async (req, res) => {
 
     products.map(async (p) => {
       await user.addProduct(p.id, { through: { cant: p.cant } });
-    })
+    });
 
     return res.status(200).send("Productos Agregados al Carrito");
   } catch (error) {
@@ -155,7 +156,8 @@ router.delete("/:idUser/car/", async (req, res) => {
     const { idUser } = req.params;
     const { id } = req.body;
     if (!id) return res.status(400).send("Faltan datos necesarios (id).");
-    if (!idUser) return res.status(400).send("Faltan datos necesarios (idUser).");
+    if (!idUser)
+      return res.status(400).send("Faltan datos necesarios (idUser).");
     if (isNaN(parseInt(id)))
       return res
         .status(400)
@@ -176,7 +178,6 @@ router.delete("/:idUser/car/", async (req, res) => {
     return res.status(400).send({ message: "Error: " + error });
   }
 });
-
 
 router.post("/:id/review", async (req, res) => {
   try {
@@ -211,7 +212,6 @@ router.post("/:id/review", async (req, res) => {
     return res.status(400).send("Error: " + e);
   }
 });
-
 
 // Ruta para Actualizar los datos del Usuario
 
@@ -259,7 +259,7 @@ router.put("/:id", async (req, res) => {
 
 // Ruta para consultar los datos del Usuario
 
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     if (!id) return res.status(400).send("Faltan datos necesarios (id).");

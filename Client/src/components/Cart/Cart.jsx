@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { CartItem } from "../CartItem/CartItem";
 import { Link } from "react-router-dom";
 import { resetCart } from "../../redux/actions";
+import Checkout from "../Mercadopago/Checkout";
 
 export const Cart = () => {
   const dispatch = useDispatch();
@@ -108,9 +109,8 @@ export const Cart = () => {
                 <span>Total cost</span>
                 <span>{precio}</span>
               </div>
-              <button className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-2xl text-white w-full">
-                Checkout
-              </button>
+
+              <Checkout />
             </div>
           </div>
         </div>

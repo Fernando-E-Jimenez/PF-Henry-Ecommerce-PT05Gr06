@@ -1,11 +1,17 @@
-import { useState, useEffect} from 'react'
-import Checkout from '../Mercadopago/Checkout'
-import axios from 'axios'
+import React from "react";
+import { useSelector } from "react-redux";
 
-function mercadopago(){
-    const [datos, setDatos] = useState("")
+const Checkout = () => {
+  const cart = useSelector((state) => state.cart);
+  console.log(cart);
 
-    useEffect(()=>{
-        axios.get("http://localhost:5000/mercadopag")
-    })
-}
+  return (
+    <>
+      <button className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-2xl text-white w-full">
+        Finalizar Compra
+      </button>
+    </>
+  );
+};
+
+export default Checkout;

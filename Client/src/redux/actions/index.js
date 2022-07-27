@@ -246,12 +246,28 @@ const viewProducts = (page, order, by) => {
   };
 };
 
-const addToCart = (itemID) => {
-  return {
-    type: ADD_TO_CART,
-    payload: {
-      id: itemID,
-    },
+// const addToCart = (itemID) => {
+//   return {
+//     type: ADD_TO_CART,
+//     payload: {
+//       id: itemID,
+//     },
+//   };
+// };
+
+const addToCart = (id, userId) => {
+  console.log({ id, userId });
+  return async (dispatch) => {
+    try {
+      const respuesta = await axios.post(`${VITE_URL_API}/user/${userId}/car`, {
+        id,
+        userId,
+        cant: 1,
+      });
+      console.log(respuesta);
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 
@@ -305,7 +321,6 @@ const getStates = () => {
   };
 };
 
-
 const deleteState = (id) => {
   return async (dispatch) => {
     try {
@@ -336,10 +351,7 @@ const editState = (data) => {
 const createState = (payload) => {
   return async (dispatch) => {
     try {
-      const state = await axios.post(
-        `${VITE_URL_API}/admin/state`,
-        payload
-      );
+      const state = await axios.post(`${VITE_URL_API}/admin/state`, payload);
       console.log(state);
       return dispatch({
         type: NEW_STATE,
@@ -374,5 +386,5 @@ export {
   getStates,
   createState,
   editState,
-  deleteState
+  deleteState,
 };

@@ -1,13 +1,20 @@
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import styles from "./Card.module.css";
+import { useAuth0 } from "@auth0/auth0-react";
 import { addToCart } from "../../redux/actions";
 
 export const Card = ({ id, name, price, image }) => {
+  const { user, isAuthenticated, isLoading } = useAuth0();
+
+  const userLogin = Number(user?.sub.split("|")[1]);
+  console.log(userLogin);
+
   const dispatch = useDispatch();
 
   const handleAddCart = (id) => {
-    dispatch(addToCart(id));
+    console.log(id, userLogin);
+    dispatch(addToCart(id, userLogin));
     alert("Producto agregado al carrito");
   };
 
