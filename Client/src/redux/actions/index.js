@@ -380,6 +380,7 @@ const disableProduct = (id) => {
       console.log(error);
     }
   };
+}
 
 export {
   getProducts,
