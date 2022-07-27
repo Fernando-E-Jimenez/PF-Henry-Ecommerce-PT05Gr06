@@ -8,6 +8,7 @@ import {
 } from "../../redux/actions";
 import { useEffect, useState } from "react";
 import { Reviews } from "../Reviews/Reviews";
+import Swal from "sweetalert2";
 
 export const CardDetail = () => {
   const { id } = useParams();
@@ -30,7 +31,10 @@ export const CardDetail = () => {
 
   const handleAddCart = (id, quantity) => {
     dispatch(addToCartDetail(id, quantity));
-    alert("Producto agregado al carrito");
+    Swal.fire({
+      icon: "success",
+      title: "Producto agregado con exito",
+    });
   };
 
   useEffect(() => {

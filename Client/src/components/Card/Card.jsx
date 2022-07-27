@@ -2,13 +2,17 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import styles from "./Card.module.css";
 import { addToCart } from "../../redux/actions";
+import Swal from "sweetalert2";
 
 export const Card = ({ id, name, price, image }) => {
   const dispatch = useDispatch();
 
   const handleAddCart = (id) => {
     dispatch(addToCart(id));
-    alert("Producto agregado al carrito");
+    Swal.fire({
+      icon: "success",
+      title: "Producto agregado con exito",
+    });
   };
 
   const precio = price.toLocaleString("es-ar", {
