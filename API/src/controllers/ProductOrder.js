@@ -6,9 +6,9 @@ const router = Router();
 /*..poder agregar items a mi carrito de compras desde el listado o desde a página de 
 detalles de un producto, para poder comprarlos despues.  - Guest */
 
-router.post("/:id/order/:idorder", async (req, res) => {
+router.post("/:id", async (req, res) => {
   try {
-    const { id, idorder } = req.params;
+    const { id } = req.params;
 
     const { cant, state = "created" } = req.body;
     if (!cant)

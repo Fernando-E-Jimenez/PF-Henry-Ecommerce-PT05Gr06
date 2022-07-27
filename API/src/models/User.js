@@ -13,7 +13,7 @@ module.exports = (sequelize) => {
         primaryKey: true,
         allowNull: false,
       },
-      user: {
+      username: {
         type: DataTypes.STRING,
         allowNull: true,
         unique: true,
@@ -33,12 +33,7 @@ module.exports = (sequelize) => {
       email: {
         type: DataTypes.STRING,
         allowNull: true,
-      },
-      state: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: "Activo",
-      },
+      }
     },
     {
       timestamps: false,

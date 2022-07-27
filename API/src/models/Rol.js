@@ -13,14 +13,11 @@ module.exports = (sequelize) => {
         primaryKey: true,
         allowNull: false,
       },
-      description: {
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
-      },
-      state: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+        unique: true
+      }
     },
     {
       timestamps: false,

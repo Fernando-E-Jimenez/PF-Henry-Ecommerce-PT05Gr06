@@ -38,13 +38,53 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { Category, Order, Product, Review, Rol, User } = sequelize.models;
+const { Category, Order, Product, Review, Rol, User, State, Car } = sequelize.models;
 
 // Aca vendrian las relaciones
-// Product.hasMany(Reviews);
 
-User.belongsToMany(Rol, { through: "userXrol" });
-Rol.belongsToMany(User, { through: "userXrol" });
+//State - User
+State.hasMany(User,{
+    foreignKey: 'stateId'
+  });
+User.belongsTo(State);
+
+//State - Category
+State.hasMany(Category, {
+  foreignKey: 'stateId'
+});
+Category.belongsTo(State);
+
+//State - Order
+State.hasMany(Order, {
+  foreignKey: 'stateId'
+});
+Order.belongsTo(State);
+
+//State - Product
+State.hasMany(Product, {
+  foreignKey: 'stateId'
+});
+Product.belongsTo(State);
+
+//State - Review
+State.hasMany(Review, {
+  foreignKey: 'stateId'
+});
+Review.belongsTo(State);
+
+//State - Rol
+State.hasMany(Rol, {
+  foreignKey: 'stateId'
+});
+Rol.belongsTo(State);
+
+//Rol - User
+Rol.hasMany(User, {
+  foreignKey: 'rolId'
+});
+User.belongsTo(Rol);
+
+// Product.hasMany(Reviews);
 
 // Product - Category;
 
@@ -63,6 +103,10 @@ User.hasMany(Order);
 const productXorder = sequelize.define("productXorder", {
   cant: Sequelize.INTEGER,
 });
+
+
+Product.belongsToMany(User, { through: Car });
+User.belongsToMany(Product, { through: Car });
 
 Product.belongsToMany(Order, { through: productXorder });
 Order.belongsToMany(Product, { through: productXorder });

@@ -2,37 +2,15 @@ const { Order, Product, User, Category, Rol} = require("../db");
 const upload = require("../libs/storage");
 const { Router } = require("express");
 const router = Router();
-const {mercadopago} = require('../utils/mercadoPago')
+const {mercadopago} = require('../utils/mercadoPago');
+const { DB_HOST} = process.env;
 
+const BASE_URL2 =
+  DB_HOST === "localhost"
+    ? "http://localhost:5000"
+    : "https://nueva-prueba-sin-variables.vercel.app/";
 
-// ..sacar items de mi carrito, en caso que decida no quererlos.
-router.delete("/:idorder/product/:id", async (req, res) => {
-  try {
-    const { idorder, id } = req.params;
-    const order = await Order.findByPk(parseInt(idorder));
-    const prod1 = await Product.findByPk(parseInt(id));
-    const projects = await order.getProducts();
-    const p1 = projects[0];
-    const x = p1.productXorder.cant;
-
-    let mountProd = prod1.dataValues.price;
-    let priceA = parseInt(mountProd) * parseInt(x);
-    let montOrder = order.dataValues.mont;
-    montOrder = parseInt(montOrder) - parseInt(priceA);
-    const newPrice = await Order.update(
-      { mont: montOrder },
-      { where: { id: order.dataValues.id } }
-    );
-    await order.removeProducts(prod1);
-    res.status(200).send("borradooo");
-  } catch (e) {
-    res.status(400).send("Error: " + e);
-  }
-});
-
-// ..editar cantidades de los items de mi carrito, en caso que quiera mas o menos
-// cantidad de un item en particular.
-
+    
 router.put("/:idorder/product/:id", async (req, res) => {
   try {
     const { idorder, id } = req.params;
@@ -72,7 +50,7 @@ router.put("/:idorder/product/:id", async (req, res) => {
         dni,
         address,
       } = req.body
-      
+
       if (!name) return res.status(400).send("Faltan datos necesarios (name).");
     if (!dni) return res.status(400).send("Faltan datos necesarios (dni).");
     if (!address) return res.status(400).send("Faltan datos necesarios (address).");
@@ -87,7 +65,7 @@ let userNew = await User.update({
     },
     {where: {id: user.dataValues.id}});
 
-    
+
     let addresNew = await Order.update(
       {address},
       {where: { id: order.dataValues.id }}
@@ -99,7 +77,7 @@ let userNew = await User.update({
       };
     }
     ));
-       let claves = Object.keys(productsClient); 
+       let claves = Object.keys(productsClient);
     for(let i=0; i< claves.length; i++){
   let clave = claves[i];
   let nameCategor = await Category.findByPk(parseInt(clave));
@@ -114,11 +92,13 @@ let userNew = await User.update({
       let productsCar = projects.map( e=> {
         return{
           id: e.dataValues.id,
-          name: e.dataValues.name,
-          price: e.dataValues.price,
+          tittle: e.dataValues.name,
           description: e.dataValues.description,
-          cant: e.dataValues.productXorder.cant,
-          category: array
+          picture_url: e.dataValues.image,
+          category_id: array,
+          price: e.dataValues.price,
+          quantity: e.dataValues.productXorder.cant,
+          currency_id: "$"
         };
       });
 
@@ -129,7 +109,7 @@ let userNew = await User.update({
         "email": user.dataValues.email,
         "mont": order.dataValues.mont
       }
-      
+
 
 
       let preference = {
@@ -138,9 +118,9 @@ let userNew = await User.update({
         external_reference: `${order.dataValues.id}`,
         payer: [users],
         back_urls: {
-          "success": "http://localhost:8080/feedback",
-          "failure": "http://localhost:8080/feedback",
-          "pending": "http://localhost:8080/feedback"
+          success: `${BASE_URL2}`,
+          failure: `${BASE_URL2}`,
+          pending: `${BASE_URL2}`
         },
         auto_return: "approved",
         payment_methods: {
@@ -152,17 +132,21 @@ let userNew = await User.update({
       }
     }
       console.log(preference)
-//  const response = await mercadopago.preferences
-//    .create(preference)
-//    .then(function (response) {
-//        // En esta instancia deberás asignar el valor dentro de response.body.id por el ID de preferencia solicitado en el siguiente paso
-//    const preferenceId = response.body.id
-//       })
-//    .catch(function (error) {
-//      console.log(error);
-//    });
-    
-    
+
+mercadopago.preferences
+   .create(preference)
+   .then(function (response) {
+       // En esta instancia deberás asignar el valor dentro de response.body.id por el ID de preferencia solicitado en el siguiente paso
+   console.log(response)
+   res.json({ 
+    global: response.body.id
+   })
+      })
+   .catch(function (error) {
+     console.log(error);
+   });
+
+
 
 res.status(200).send("actualizado");
     }catch (e) {

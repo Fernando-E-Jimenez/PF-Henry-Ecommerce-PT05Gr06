@@ -1,3 +1,32 @@
+const arrayStates = [
+  {
+    name: "Activo"
+  },
+  {
+    name: "Inactivo"
+  },
+  {
+    name: "Creada"
+  },
+  {
+    name: "Procesando"
+  },
+  {
+    name: "Cancelada"
+  },
+  {
+    name: "Completa"
+  }
+]
+
+const arrayRols = [
+  {
+    name: "Admin"
+  },
+  {
+    name: "User"
+  }
+]
 const arraycategorias = [
   {
     name: "Tinto",
@@ -40,9 +69,6 @@ const arraycategorias = [
   },
   {
     name: "Dulces",
-  },
-  {
-    name: "Semi-Dulces",
   },
   {
     name: "Champaña",
@@ -345,4 +371,4 @@ const arrayReviews = [
   },
 ];
 
-module.exports = { arrayProductos, arraycategorias, arrayReviews };
+module.exports = { arrayProductos, arraycategorias, arrayReviews, arrayStates, arrayRols };

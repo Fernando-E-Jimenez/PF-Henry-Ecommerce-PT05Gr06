@@ -1,4 +1,4 @@
-const { Category } = require("../db");
+const { Category, State } = require("../db");
 const axios = require("axios");
 const { Router } = require("express");
 const router = Router();
@@ -7,7 +7,7 @@ const router = Router();
 
 router.get("/", async (req, res) => {
   try {
-    const categories = await Category.findAll();
+    const categories = await Category.findAll({ include: State });
     return res.status(200).send(categories);
   } catch (e) {
     res.status(400).send("Error: " + e);
@@ -28,7 +28,7 @@ router.post("/", async (req, res, next) => {
         .status(400)
         .send(
           "Error: Ya se encuentra registrada una categoria con el nombre: " +
-            name
+          name
         );
     res.status(400).send("Error: " + e);
   }
@@ -39,17 +39,46 @@ router.delete("/:id", async (req, res, next) => {
   const { id } = req.params;
   console.log(id);
   try {
-    await Category.update(
-      {
-        state: "Inactivo",
-      },
-      {
-        where: {
-          id,
+    if (!id) return res.status(400).send("Faltan datos necesarios (id).");
+    if (isNaN(parseInt(id)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (id) debe ser un numero.");
+
+    const cat = await Category.findByPk(id);
+    if (cat.stateId === 1) {
+      const update = await Category.update(
+        {
+          stateId: 2,
         },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+      if (update[0] === 1) {
+        return res.status(200).send("Categoria Eliminada.");
+      } else {
+        return res.status(400).send("Error al Elminar la Categoria.");
       }
-    );
-    res.status(200).send("Categoria Eliminada");
+    } else {
+      const update =await Category.update(
+        {
+          stateId: 1,
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+      if (update[0] === 1) {
+        return res.status(200).send("Categoria Habilitado.");
+      } else {
+        return res.status(400).send("Error al Habilitar la Categoria.");
+      }
+    }
   } catch (error) {
     console.log(error);
   }
@@ -63,7 +92,7 @@ router.get("/:id", async (req, res) => {
       return res
         .status(400)
         .send("Formato de datos invalido (id) debe ser un numero.");
-    const categories = await Category.findByPk(id);
+    const categories = await Category.findByPk(id, { include: State });
     if (categories) return res.status(200).send(categories);
     return res.status(200).send({ message: "Error: Categoria no encontrada." });
   } catch (e) {
@@ -86,14 +115,14 @@ router.put("/:id", async (req, res) => {
       return res
         .status(400)
         .send("Formato de datos invalido (name) debe ser una cadena texto.");
-    if (!isNaN(parseInt(state)))
+    if (isNaN(parseInt(state)))
       return res
         .status(400)
-        .send("Formato de datos invalido (state) debe ser una cadena texto.");
+        .send("Formato de datos invalido (state) debe ser un numero.");
     const category = await Category.update(
       {
         name,
-        state,
+        stateId: state,
       },
       {
         where: {
@@ -103,7 +132,7 @@ router.put("/:id", async (req, res) => {
     );
     if (category[0] !== 0) {
       console.log(category);
-      const cat = await Category.findByPk(id);
+      const cat = await Category.findByPk(id, { include: State });
       return res.status(200).send(cat);
     } else {
       return res

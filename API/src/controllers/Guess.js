@@ -1,4 +1,4 @@
-const { Product, Category, Review } = require("../db");
+const { Product, Category, Review, State } = require("../db");
 const { Router } = require("express");
 const { Op } = require("sequelize");
 const paginate = require("./Paginate");
@@ -7,13 +7,16 @@ const router = Router();
 const DB = async () => {
   try {
     return await Product.findAll({
-      include: {
+      include: [{
         model: Category,
         attributes: ["name"],
         through: {
           attributes: [],
         },
       },
+      {
+        model: State
+      }],
     });
   } catch (e) {
     return e;
@@ -55,7 +58,11 @@ router.get("/", async (req, res) => {
   try {
     const { name, page, order_direction, order_by, category, page_limit } =
       req.query;
-    let search = {};
+    let search = {
+      where: {
+        stateId: 1
+      }
+    };
     let order = [];
     let filter = {};
     if (name) {
@@ -67,11 +74,12 @@ router.get("/", async (req, res) => {
               "Formato de datos invalido (name) debe ser una cadena texto.",
           });
       search = {
+        ...search,
         where: {
+          ...search.where,
           name: {
             [Op.like]: `%${name.toLowerCase()}%`,
           },
-          state: "Activo",
         },
       };
     }
@@ -117,8 +125,8 @@ router.get("/", async (req, res) => {
     data.data.length
       ? res.status(200).json(data)
       : res
-          .status(400)
-          .send({ message: "El vino descrito no se encuentra guardado" });
+        .status(400)
+        .send({ message: "El vino descrito no se encuentra guardado" });
   } catch (e) {
     res.status(400).send({ message: "Error: " + e });
   }
@@ -139,6 +147,7 @@ router.get("/:id", async (req, res) => {
       });
       const reviewNew = r.filter((f) => f.productId == id);
       var resultado = {
+        id: id,
         name: productNew[0].name,
         description: productNew[0].description,
         price: productNew[0].price,

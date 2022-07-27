@@ -5,19 +5,9 @@ const { DataTypes } = require("sequelize");
 module.exports = (sequelize) => {
   // defino el modelo temperamento
   sequelize.define(
-    "review",
+    "car",
     {
-      id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-        allowNull: false,
-      },
-      description: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-      },
-      star: {
+      cant: {
         type: DataTypes.INTEGER,
         allowNull: false,
       }

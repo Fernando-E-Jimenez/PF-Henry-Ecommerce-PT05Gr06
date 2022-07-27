@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CartItem } from "../CartItem/CartItem";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 import { resetCart } from "../../redux/actions";
 
 export const Cart = () => {
@@ -24,7 +25,25 @@ export const Cart = () => {
   }, [cart, totalPrice, totalItems, setTotalPrice, setTotalItems]);
 
   const handleResetCart = () => {
-    dispatch(resetCart());
+    Swal.fire({
+      icon: "warning",
+      title: "¿Estas seguro?",
+      text: `Estas seguro que desea elminar el carrito completo?`,
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Cancelar",
+      confirmButtonText: "Eliminar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(resetCart());
+        Swal.fire(
+          "Eliminado!",
+          "El carrito se ha eliminado correctamente",
+          "success"
+        );
+      }
+    });
   };
 
   const precio = totalPrice.toLocaleString("es-ar", {
