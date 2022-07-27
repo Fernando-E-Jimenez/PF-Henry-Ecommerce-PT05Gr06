@@ -21,6 +21,8 @@ import {
   REMOVE_FROM_CART,
   ADD_TO_CART_DETAIL,
   RESET_CART,
+  ORDERS_SHOW,
+  DISABLE_PRODUCT,
 } from "../types";
 
 const initialState = {
@@ -38,6 +40,7 @@ const initialState = {
   cart: localStorage.getItem("cartItems")
     ? JSON.parse(localStorage.getItem("cartItems"))
     : [],
+  orders: [],
 };
 
 //console.log(initialState.productEdit);
@@ -205,6 +208,19 @@ const reducer = (state = initialState, action) => {
       }
     }
 
+    case ORDERS_SHOW: {
+      return {
+        ...state,
+        orders: action.payload,
+      }
+    }
+
+    case DISABLE_PRODUCT: {
+      return {
+        ...state,
+      }
+    }
+    
     default:
       return state;
   }

@@ -9,19 +9,22 @@ export const CardsContainer = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
   const order = useSelector((state) => state.order);
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(1);
 
   const previousPage = () => {
     if (products.previousPage) {
-      setPage(page - 1)
+      setPage(page - 1);
     }
-  }
+  };
 
   const nextPage = () => {
     if (products.nextPage) {
-      setPage(page + 1)
+      setPage(page + 1);
     }
-  }
+  };
+
+  const productsStock = products.data?.filter((product) => product.stock > 0);
+  console.log(productsStock);
 
   useEffect(() => {
     dispatch(getProducts(page, order.type, order.by, order.id));
@@ -29,10 +32,10 @@ export const CardsContainer = () => {
 
   return (
     <div className={styles.cardsContainer}>
-      {products.data ?
+      {products.data ? (
         <div>
           <div className={styles.boxContainer}>
-            {products.data.map((product) => (
+            {productsStock?.map((product) => (
               <Card
                 key={product.id}
                 id={product.id}
@@ -43,19 +46,39 @@ export const CardsContainer = () => {
             ))}
           </div>
           <div className={styles.container}>
-            {
-            products.previousPage ?
-              <button className={styles.button} onClick={() => previousPage()} > 👈 Pagina anterior </button> :
-              <button className={styles.button} onClick={() => previousPage()} disabled > 👈 Pagina anterior </button>
-            }
-            {
-            products.nextPage ?
-              <button className={styles.button} onClick={() => nextPage()}> Pagina siguiente 👉 </button>:
-              <button className={styles.button} onClick={() => nextPage()} disabled> Pagina siguiente 👉 </button>
-            }
+            {products.previousPage ? (
+              <button className={styles.button} onClick={() => previousPage()}>
+                {" "}
+                👈 Pagina anterior{" "}
+              </button>
+            ) : (
+              <button
+                className={styles.button}
+                onClick={() => previousPage()}
+                disabled
+              >
+                {" "}
+                👈 Pagina anterior{" "}
+              </button>
+            )}
+            {products.nextPage ? (
+              <button className={styles.button} onClick={() => nextPage()}>
+                {" "}
+                Pagina siguiente 👉{" "}
+              </button>
+            ) : (
+              <button
+                className={styles.button}
+                onClick={() => nextPage()}
+                disabled
+              >
+                {" "}
+                Pagina siguiente 👉{" "}
+              </button>
+            )}
           </div>
         </div>
-        :
+      ) : (
         <div className={styles.noResults}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -74,8 +97,11 @@ export const CardsContainer = () => {
             <line x1="21" y1="21" x2="15" y2="15" />
           </svg>
           <br />
-          <h3 className={styles.noResultsText}>OH... No pudimos encontrar nada</h3>
-        </div>}
+          <h3 className={styles.noResultsText}>
+            OH... No pudimos encontrar nada
+          </h3>
+        </div>
+      )}
     </div>
   );
 };

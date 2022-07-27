@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { removeProduct, productQuantity } from "../../redux/actions";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 export const CartItem = ({ product }) => {
   const dispatch = useDispatch();
@@ -9,17 +10,34 @@ export const CartItem = ({ product }) => {
 
   const handleAdd = () => {
     setQuantity(quantity + 1);
-    dispatch(productQuantity(product.id, quantity+1));
+    dispatch(productQuantity(product.id, quantity + 1));
   };
 
   const handleDecresed = () => {
     setQuantity(quantity - 1);
-    dispatch(productQuantity(product.id, quantity-1));
+    dispatch(productQuantity(product.id, quantity - 1));
   };
 
   const removeProductCart = (id) => {
-    console.log("producto eliminado", id);
-    dispatch(removeProduct(id));
+    Swal.fire({
+      icon: "warning",
+      title: "¿Estas seguro?",
+      text: `Estas seguro que desea elminar el producto ${product.name}`,
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Cancelar",
+      confirmButtonText: "Eliminar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(removeProduct(id));
+        Swal.fire(
+          "Eliminado!",
+          "El producto se ha eliminado correctamente",
+          "success"
+        );
+      }
+    });
   };
 
   const total = quantity * product.price;
