@@ -6,10 +6,16 @@ export const CardCategory = ({ category }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleDelete = (id) => {
-    dispatch(deleteCategory(id));
-    alert("Categoria Eliminada");
-    navigate("/admin");
+  const handleDelete = (id, state) => {
+    const change = state == 'inactivo'?'activo':'inactivo';
+    const response = confirm(`Esta seguro que cambiar el estado actual ${state} de la categoria seleccionada`)
+    if(response) {
+      dispatch(deleteCategory(id));
+      alert(`La categoria ahora tiene un estado ${change}`);
+      navigate("/admin");
+      return true
+    }
+    return false
   };
 
   const redirectEdit = (category) => {
@@ -28,11 +34,11 @@ export const CardCategory = ({ category }) => {
           Editar
         </button>
         <button
-          onClick={() => handleDelete(category.id)}
+          onClick={() => handleDelete(category.id, category.state.name)}
           className="bg-red-400  w-full p-3 font-bold text-white rounded cursor-pointer hover:bg-sky-700 transition-colors"
           type="submit"
         >
-          Deshabilitar
+          {category.stateId === 1? 'Deshabilitar':'Habilitar'}
         </button>
       </div>
     </div>

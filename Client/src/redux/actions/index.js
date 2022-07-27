@@ -18,6 +18,8 @@ import {
   REMOVE_FROM_CART,
   ADD_TO_CART_DETAIL,
   RESET_CART,
+  ORDERS_SHOW,
+  DISABLE_PRODUCT,
 } from "../types";
 import axios from "axios";
 
@@ -211,7 +213,6 @@ const obtainEditProduct = (producto) => {
 };
 
 const editProduct = (payload) => {
-  console.log(payload);
   return async (dispatch) => {
     try {
       const update = await axios.put(`${VITE_URL_API}/admin/product`, payload);
@@ -230,7 +231,7 @@ const viewProducts = (page, order, by) => {
   return (dispatch) => {
     try {
       return fetch(
-        `${VITE_URL_API}/guess/product?page=${page}&order_direction=${order}&order_by=${by}&page_limit=${40}`
+        `${VITE_URL_API}/admin/product?page=${page}&order_direction=${order}&order_by=${by}&page_limit=${40}`
       )
         .then((response) => response.json())
         .then((json) => {
@@ -287,6 +288,35 @@ const resetCart = () => {
   };
 };
 
+const ordersShow = () => {
+  return (dispatch) => {
+    try {
+      return fetch(
+        `${VITE_URL_API}/admin/order`
+      )
+        .then((response) => response.json())
+        .then((json) => {
+          dispatch({ type: ORDERS_SHOW, payload: json });
+        });
+    } catch (error) {
+      dispatch({ type: ORDERS_SHOW, payload: error });
+    }
+  };
+}
+
+const disableProduct = (id) => {
+  return async (dispatch) => {
+    try {
+      await axios.delete(`${VITE_URL_API}/admin/product/${id}`);
+      return dispatch({
+        type: DISABLE_PRODUCT,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export {
   getProducts,
   productDetail,
@@ -307,4 +337,6 @@ export {
   removeProduct,
   addToCartDetail,
   resetCart,
+  ordersShow,
+  disableProduct,
 };

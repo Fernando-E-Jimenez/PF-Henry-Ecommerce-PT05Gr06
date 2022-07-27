@@ -10,6 +10,7 @@ import { Home } from "./components/Home/Home";
 import { Navbar } from "./components/Navbar/Navbar";
 import { ViewCategories } from "./components/ViewCategories/ViewCategories";
 import { ViewProducts } from "./components/ViewProducts/ViewProducts";
+import { ViewOrders } from "./components/ViewOrders/ViewOrders";
 
 export const App = () => {
   return (
@@ -26,6 +27,7 @@ export const App = () => {
           <Route path="new-category" element={<AddCategory />} />
           <Route path="view-categories" element={<ViewCategories />} />
           <Route path="edit-category/:id" element={<EditCategory />} />
+          <Route path="view-orders" element={<ViewOrders />} />
         </Route>
       </Routes>
     </>
