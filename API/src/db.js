@@ -95,8 +95,8 @@ Category.belongsToMany(Product, { through: "productXcategory" });
 Product.hasMany(Review);
 
 //Order - User
-Order.hasOne(User);
 User.hasMany(Order);
+Order.belongsTo(User);
 
 // order - product
 
