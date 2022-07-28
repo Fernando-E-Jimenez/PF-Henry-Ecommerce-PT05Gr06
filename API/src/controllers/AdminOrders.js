@@ -1,4 +1,6 @@
 const { Product, Order, Review, State, User } = require("../db");
+const { transporter } = require("../utils/nodeMailer");
+const { MAILUSER } = process.env;
 const { Router } = require("express");
 const router = Router();
 
@@ -90,7 +92,8 @@ router.put("/:idOrder", async (req, res) => {
       return res
         .status(400)
         .send("Formato de datos invalido (state) debe ser un numero.");
-    const order = await Order.findByPk(idOrder);
+    const order = await Order.findByPk(idOrder,{include: User});
+    const stateData = await State.findByPk(state);
     if (!order) return res.status(200).send("No se encontro la orden.");
     const update = await Order.update(
       {
@@ -103,6 +106,13 @@ router.put("/:idOrder", async (req, res) => {
       }
     )
     if (update[0] === 1) {
+      await transporter.sendMail({
+        from: '"App Vinos" <' + MAILUSER + '>', // sender address
+        to: order.dataValues.user.email, // list of receivers
+        subject: "Estado de Orden de Compra Actualizado.", // Subject line
+        text: "AppVinos le informa que el estado de su orden de compra no. " + idOrder + " ha sido actualizado a: " + stateData.dataValues.name, // plain text body
+        // html: "<b>Hello world?</b>", // html body
+      });
       return res.status(200).send("Orden Actualizada.");
     }else{
       return res.status(400).send("Error al actualizar Orden.");
