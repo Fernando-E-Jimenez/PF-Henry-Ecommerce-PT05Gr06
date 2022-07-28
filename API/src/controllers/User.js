@@ -1,4 +1,6 @@
 const { Review, User, Product, Order, State, Car } = require("../db");
+const { transporter } = require("../utils/nodeMailer");
+const { MAILUSER } = process.env;
 const { Router } = require("express");
 const router = Router();
 
@@ -266,8 +268,15 @@ router.post("/:iduser/order", async (req, res) => {
     });
     await Car.destroy({
       where: {
-        userId:iduser
+        userId: iduser
       }
+    });
+    await transporter.sendMail({
+      from: '"App Vinos" <' + MAILUSER + '>', // sender address
+      to: user.dataValues.email, // list of receivers
+      subject: "Orden de compra Creada", // Subject line
+      text: "AppVinos le informa que su orden de compra se ha registrado satisfactoriamente.", // plain text body
+      // html: "<b>Hello world?</b>", // html body
     });
     return res.status(200).send(order);
   }
@@ -323,10 +332,10 @@ router.get("/:iduser/order/:idOrder", async (req, res) => {
         .send("Formato de datos invalido (idOrder) debe ser un numero.");
     const user = await User.findByPk(iduser);
     if (!user) return res.status(400).send("Usuario no encontrado");
-
+    
     const order = await Order.findByPk(idOrder, {
       include: [
-        {model: State},
+        { model: State },
         {
           model: Product,
           through: {
@@ -335,12 +344,67 @@ router.get("/:iduser/order/:idOrder", async (req, res) => {
         }
       ]
     })
+    await transporter.sendMail({
+      from: '"App Vinos" <' + MAILUSER + '>', // sender address
+      to: user.dataValues.email, // list of receivers
+      subject: "Orden de compra Cancelada", // Subject line
+      text: "AppVinos le informa que su orden de compra se ha registrado satisfactoriamente.", // plain text body
+      // html: "<b>Hello world?</b>", // html body
+    });
     return res.status(200).json(order);
   }
   catch (e) {
     return res.status(400).send("Error: " + e)
   }
 });
+
+
+// Ruta para Cancelar una orden del usuario
+
+router.delete("/:iduser/order/:idOrder", async (req, res) => {
+  try {
+    const { iduser, idOrder } = req.params;
+    if (!iduser) return res.status(400).send("Faltan datos necesarios (id).");
+    if (isNaN(parseInt(iduser)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (iduser) debe ser un numero.");
+    if (!idOrder) return res.status(400).send("Faltan datos necesarios (idOrder).");
+    if (isNaN(parseInt(idOrder)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (idOrder) debe ser un numero.");
+    const user = await User.findByPk(iduser);
+    if (!user) return res.status(400).send("Usuario no encontrado");
+    const order = await Order.findByPk(idOrder);
+    if (!order) return res.status(400).send("Orden no encontrado");
+    let idState = await State.findOne({
+      where: { name: "cancelada" }
+    });
+    const update = await Order.update(
+      {
+        stateId: idState.dataValues.id
+      },
+      {
+        where:{
+          id: idOrder
+        }
+      }
+    );
+    await transporter.sendMail({
+      from: '"App Vinos" <' + MAILUSER + '>', // sender address
+      to: user.dataValues.email, // list of receivers
+      subject: "Orden de compra Cancelada", // Subject line
+      text: "AppVinos le informa que su orden de compra no. " + idOrder + " ha sido cancelada.", // plain text body
+      // html: "<b>Hello world?</b>", // html body
+    });
+    return res.status(200).json("Orden Cancelada");
+  }
+  catch (e) {
+    return res.status(400).send("Error: " + e)
+  }
+});
+
 
 
 
