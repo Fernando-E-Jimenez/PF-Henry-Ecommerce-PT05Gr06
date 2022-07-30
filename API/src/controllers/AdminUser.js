@@ -308,28 +308,38 @@ router.post('/validateuser', async (req, res, next) => {
       return res
         .status(400)
         .send("Formato de datos invalido (email) debe ser una direccion de correo electronico.");
-    const idState = await State.findOne({
-      where: { name: "activo" }
-    });
-    const idRol = await Rol.findOne({
-      where: { name: "user" }
-    });
-    const user = await User.findOrCreate({
+
+    const user1 = await User.findOne({
       where: {
-        email: email,
-        name: name,
-        username: username,
-        rolId: idRol.dataValues.id,
-        stateId: idState.dataValues.id
+        email: email
       }
-    });
-    const user2 = await User.findByPk(user[0].dataValues.id, {
-      include: [
-        { model: State },
-        { model: Rol }
-      ]
     })
-    return res.status(200).json(user2);
+    if (user1) {
+      return res.status(200).json(user1);
+    }else{
+      const idState = await State.findOne({
+        where: { name: "activo" }
+      });
+      const idRol = await Rol.findOne({
+        where: { name: "user" }
+      });
+      const user = await User.findOrCreate({
+        where: {
+          email: email,
+          name: name,
+          username: username,
+          rolId: idRol.dataValues.id,
+          stateId: idState.dataValues.id
+        }
+      });
+      const user2 = await User.findByPk(user[0].dataValues.id, {
+        include: [
+          { model: State },
+          { model: Rol }
+        ]
+      })
+      return res.status(200).json(user2);
+    }
   } catch (error) {
     return res.status(400).send({ message: "Error: " + error });
   }
