@@ -224,7 +224,7 @@ const arrayProductos = [
       "https://dislicoresqa.vtexassets.com/arquivos/ids/288056-800-auto?v=637914699170970000&width=800&height=auto&aspect=true",
     price: "392600",
     stock: "8500",
-    category: [16, 11, 12],
+    category: [15, 11, 12],
   },
   {
     name: "Champagne Veuve Clicquot Brut",
@@ -234,7 +234,7 @@ const arrayProductos = [
       "https://dislicoresqa.vtexassets.com/arquivos/ids/288047-800-auto?v=637914699150770000&width=800&height=auto&aspect=true",
     price: "382700",
     stock: "3520",
-    category: [16, 11, 12],
+    category: [15, 11, 12],
   },
   {
     name: "Champagne Moet And Chandon Ice Imperial",
@@ -244,7 +244,7 @@ const arrayProductos = [
       "https://dislicoresqa.vtexassets.com/arquivos/ids/288055-800-auto?v=637914699170000000&width=800&height=auto&aspect=true",
     price: "398100",
     stock: "6324",
-    category: [16, 11, 7],
+    category: [15, 11, 7],
   },
   {
     name: "Champagne Moet And Chandon Imperial Brut",
@@ -254,7 +254,7 @@ const arrayProductos = [
       "https://dislicoresqa.vtexassets.com/arquivos/ids/288056-800-auto?v=637914699170970000&width=800&height=auto&aspect=true",
     price: "392600",
     stock: "3560",
-    category: [16, 7, 11],
+    category: [15, 7, 11],
   },
   {
     name: "Vino Espumoso Jp Chenet Brut",
@@ -274,7 +274,7 @@ const arrayProductos = [
       "https://dislicoresqa.vtexassets.com/arquivos/ids/257130-800-auto?v=637892561781800000&width=800&height=auto&aspect=true",
     price: "724000",
     stock: "3560",
-    category: [16, 14, 11],
+    category: [15, 14, 11],
   },
 ];
 
