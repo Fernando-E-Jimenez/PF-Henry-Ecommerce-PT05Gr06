@@ -10,12 +10,13 @@ router.get("/:idUser/car/", async (req, res) => {
   try {
     const { idUser } = req.params;
     if (!idUser) return res.status(400).send("Faltan datos necesarios (idUser).");
-    if (isNaN(parseInt(idUser)))
-      return res
-        .status(400)
-        .send("Formato de datos invalido (idUser) debe ser un numero.");
+    // if (isNaN(parseInt(idUser)))
+    //   return res
+    //     .status(400)
+    //     .send("Formato de datos invalido (idUser) debe ser un numero.");
 
-    const user = await User.findByPk(idUser);
+    // const user = await User.findByPk(idUser);
+    const user = await User.findOne({ where: { email: idUser } });
     if (!user) return res.status(400).send("El usuario no existe.");
 
     const car = await user.getProducts({ joinTableAttributes: ['cant'] });
@@ -41,16 +42,17 @@ router.post("/:idUser/car/", async (req, res) => {
       return res
         .status(400)
         .send("Formato de datos invalido (id) debe ser un numero.");
-    if (isNaN(parseInt(idUser)))
-      return res
-        .status(400)
-        .send("Formato de datos invalido (idUser) debe ser un numero.");
+    // if (isNaN(parseInt(idUser)))
+    //   return res
+    //     .status(400)
+    //     .send("Formato de datos invalido (idUser) debe ser un numero.");
     if (isNaN(parseInt(cant)))
       return res
         .status(400)
         .send("Formato de datos invalido (cant) debe ser un numero.");
 
-    const user = await User.findByPk(idUser);
+    // const user = await User.findByPk(idUser);
+    const user = await User.findOne({ where: { email: idUser } });
     if (!user) return res.status(400).send("El usuario no existe.");
     const product = await Product.findByPk(id);
     if (!product) return res.status(400).send("El producto no existe.");
@@ -70,16 +72,17 @@ router.post("/:idUser/cars/", async (req, res) => {
     const { products } = req.body;
     if (!products) return res.status(400).send("Faltan datos necesarios (id).");
     if (!idUser) return res.status(400).send("Faltan datos necesarios (idUser).");
-    if (isNaN(parseInt(idUser)))
-      return res
-        .status(400)
-        .send("Formato de datos invalido (idUser) debe ser un numero.");
+    // if (isNaN(parseInt(idUser)))
+    //   return res
+    //     .status(400)
+    //     .send("Formato de datos invalido (idUser) debe ser un numero.");
     if (!Array.isArray(products))
       return res
         .status(400)
         .send("Formato de datos invalido (products) debe ser un Array.");
 
-    const user = await User.findByPk(idUser);
+    // const user = await User.findByPk(idUser);
+    const user = await User.findOne({ where: { email: idUser } });
     if (!user) return res.status(400).send("El usuario no existe.");
 
     products.map(async (p) => {
@@ -104,12 +107,13 @@ router.delete("/:idUser/car/", async (req, res) => {
       return res
         .status(400)
         .send("Formato de datos invalido (id) debe ser un numero.");
-    if (isNaN(parseInt(idUser)))
-      return res
-        .status(400)
-        .send("Formato de datos invalido (idUser) debe ser un numero.");
+    // if (isNaN(parseInt(idUser)))
+    //   return res
+    //     .status(400)
+    //     .send("Formato de datos invalido (idUser) debe ser un numero.");
 
-    const user = await User.findByPk(idUser);
+    // const user = await User.findByPk(idUser);
+    const user = await User.findOne({ where: { email: idUser } });
     if (!user) return res.status(400).send("El usuario no existe.");
     const product = await Product.findByPk(id);
     if (!product) return res.status(400).send("El producto no existe.");
@@ -166,10 +170,10 @@ router.put("/:id", async (req, res) => {
     if (!id) return res.status(400).send("Faltan datos necesarios (id).");
     if (!name) return res.status(400).send("Faltan datos necesarios (name).");
     if (!email) return res.status(400).send("Faltan datos necesarios (email).");
-    if (isNaN(parseInt(id)))
-      return res
-        .status(400)
-        .send("Formato de datos invalido (id) debe ser un numero.");
+    // if (isNaN(parseInt(id)))
+    //   return res
+    //     .status(400)
+    //     .send("Formato de datos invalido (id) debe ser un numero.");
 
     const user = await User.update(
       {
@@ -180,13 +184,14 @@ router.put("/:id", async (req, res) => {
       },
       {
         where: {
-          id,
+          email: id,
         },
       }
     );
     console.log(user);
     if (user[0] === 1) {
-      let user1 = await User.findByPk(id);
+      // let user1 = await User.findByPk(id);
+      let user1 = await User.findOne({ where: { email: id } });
       return res.status(200).json(user1);
     } else if (!user) {
       return res.status(404).json({ message: "Error: El Usuario no Existe." });
@@ -206,11 +211,12 @@ router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     if (!id) return res.status(400).send("Faltan datos necesarios (id).");
-    if (isNaN(parseInt(id)))
-      return res
-        .status(400)
-        .send("Formato de datos invalido (id) debe ser un numero.");
-    const user = await User.findByPk(id);
+    // if (isNaN(parseInt(id)))
+    //   return res
+    //     .status(400)
+    //     .send("Formato de datos invalido (id) debe ser un numero.");
+    // const user = await User.findByPk(id);
+    const user = await User.findOne({ where: { email: id } });
     if (!user) return res.status(400).send("Usuario no encontrado");
     return res.status(200).json(user);
   } catch (error) {
@@ -235,7 +241,8 @@ router.post("/:iduser/order", async (req, res) => {
     if (!dni) return res.status(400).send("Faltan datos necesarios (dni).");
     if (!address) return res.status(400).send("Faltan datos necesarios (address).");
 
-    const user = await User.findByPk(parseInt(iduser));
+    // const user = await User.findByPk(parseInt(iduser));
+    const user = await User.findOne({ where: { email: id } });
     let projects = await user.getProducts();
     let idState = await State.findOne({
       where: { name: "creada" }
@@ -291,12 +298,13 @@ router.post("/:iduser/order", async (req, res) => {
 router.get("/:iduser/order", async (req, res) => {
   try {
     const { iduser } = req.params;
-    if (!iduser) return res.status(400).send("Faltan datos necesarios (id).");
-    if (isNaN(parseInt(iduser)))
-      return res
-        .status(400)
-        .send("Formato de datos invalido (id) debe ser un numero.");
-    const user = await User.findByPk(iduser);
+    if (!iduser) return res.status(400).send("Faltan datos necesarios (iduser).");
+    // if (isNaN(parseInt(iduser)))
+    //   return res
+    //     .status(400)
+    //     .send("Formato de datos invalido (iduser) debe ser un numero.");
+    // const user = await User.findByPk(iduser);
+    const user = await User.findOne({ where: { email: iduser } });
     if (!user) return res.status(400).send("Usuario no encontrado");
     const orders = await user.getOrders({
       include: [
@@ -320,11 +328,11 @@ router.get("/:iduser/order", async (req, res) => {
 router.get("/:iduser/order/:idOrder", async (req, res) => {
   try {
     const { iduser, idOrder } = req.params;
-    if (!iduser) return res.status(400).send("Faltan datos necesarios (id).");
-    if (isNaN(parseInt(iduser)))
-      return res
-        .status(400)
-        .send("Formato de datos invalido (iduser) debe ser un numero.");
+    if (!iduser) return res.status(400).send("Faltan datos necesarios (iduser).");
+    // if (isNaN(parseInt(iduser)))
+    //   return res
+    //     .status(400)
+    //     .send("Formato de datos invalido (iduser) debe ser un numero.");
     if (!idOrder) return res.status(400).send("Faltan datos necesarios (idOrder).");
     if (isNaN(parseInt(idOrder)))
       return res
@@ -332,7 +340,7 @@ router.get("/:iduser/order/:idOrder", async (req, res) => {
         .send("Formato de datos invalido (idOrder) debe ser un numero.");
     const user = await User.findByPk(iduser);
     if (!user) return res.status(400).send("Usuario no encontrado");
-    
+
     const order = await Order.findByPk(idOrder, {
       include: [
         { model: State },
@@ -364,17 +372,18 @@ router.get("/:iduser/order/:idOrder", async (req, res) => {
 router.delete("/:iduser/order/:idOrder", async (req, res) => {
   try {
     const { iduser, idOrder } = req.params;
-    if (!iduser) return res.status(400).send("Faltan datos necesarios (id).");
-    if (isNaN(parseInt(iduser)))
-      return res
-        .status(400)
-        .send("Formato de datos invalido (iduser) debe ser un numero.");
+    if (!iduser) return res.status(400).send("Faltan datos necesarios (iduser).");
+    // if (isNaN(parseInt(iduser)))
+    //   return res
+    //     .status(400)
+    //     .send("Formato de datos invalido (iduser) debe ser un numero.");
     if (!idOrder) return res.status(400).send("Faltan datos necesarios (idOrder).");
     if (isNaN(parseInt(idOrder)))
       return res
         .status(400)
         .send("Formato de datos invalido (idOrder) debe ser un numero.");
-    const user = await User.findByPk(iduser);
+    // const user = await User.findByPk(iduser);
+    const user = await User.findOne({ where: { email: id } });    
     if (!user) return res.status(400).send("Usuario no encontrado");
     const order = await Order.findByPk(idOrder);
     if (!order) return res.status(400).send("Orden no encontrado");
@@ -386,7 +395,7 @@ router.delete("/:iduser/order/:idOrder", async (req, res) => {
         stateId: idState.dataValues.id
       },
       {
-        where:{
+        where: {
           id: idOrder
         }
       }
