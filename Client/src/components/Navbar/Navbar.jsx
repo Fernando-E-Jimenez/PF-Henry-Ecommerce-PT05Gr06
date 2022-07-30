@@ -5,29 +5,30 @@ import { User } from "../User/User";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./Navbar.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
+import axios from "axios";
+const { VITE_URL_API } = import.meta.env;
 
-function Profile() {
+
+async function Profile() {
   const { user, isAuthenticated, isLoading } = useAuth0();
-
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (isAuthenticated) {
+    const { name, email, nickname } = user;
+    let data = {
+      name,
+      email,
+      username: nickname
+    }
+    const user1 = await axios.post(`${VITE_URL_API}/admin/user/validateuser`, data);
+    console.log(user1)
+    return user1;
   }
-  return (
-    isAuthenticated && (
-      <div>
-        <img src={user.picture} alt={user.name} />
-        <h2>{user.name}</h2>
-        <p>Email: {user.email}</p>
-      </div>
-    )
-  );
 }
 
 export const Navbar = () => {
+  Profile();
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.length);
   const { user, isAuthenticated, isLoading } = useAuth0();
-
   return (
     <div className={styles.navbarContainer}>
       {/* <Profile /> */}

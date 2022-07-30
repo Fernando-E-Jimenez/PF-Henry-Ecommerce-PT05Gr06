@@ -289,5 +289,50 @@ router.post("/mail", async (req, res, next) => {
   }
 });
 
+router.post('/validateuser', async (req, res, next) => {
+  try {
+    const { name, email, username } = req.body;
+    if (!name) return res.status(400).send("Faltan datos necesarios (name).");
+    if (!email) return res.status(400).send("Faltan datos necesarios (email).");
+    if (!username) return res.status(400).send("Faltan datos necesarios (username).");
+    if (!isNaN(parseInt(name)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (name) debe ser una cadena de texto.");
+    if (!isNaN(parseInt(username)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (username) debe ser una cadena de texto.");
+    const emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+    if (!emailRegex.test(email))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (email) debe ser una direccion de correo electronico.");
+    const idState = await State.findOne({
+      where: { name: "activo" }
+    });
+    const idRol = await Rol.findOne({
+      where: { name: "user" }
+    });
+    const user = await User.findOrCreate({
+      where: {
+        email: email,
+        name: name,
+        username: username,
+        rolId: idRol.dataValues.id,
+        stateId: idState.dataValues.id
+      }
+    });
+    const user2 = await User.findByPk(user[0].dataValues.id, {
+      include: [
+        { model: State },
+        { model: Rol }
+      ]
+    })
+    return res.status(200).json(user2);
+  } catch (error) {
+    return res.status(400).send({ message: "Error: " + error });
+  }
+});
 
 module.exports = router;
