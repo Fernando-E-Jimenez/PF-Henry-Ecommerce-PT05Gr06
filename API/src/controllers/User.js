@@ -96,6 +96,30 @@ router.post("/:idUser/cars/", async (req, res) => {
   }
 });
 
+// Ruta para Remover lo Productos del carrito del usuario
+
+router.delete("/:idUser/car/reset", async (req, res) => {
+  try {
+    const { idUser } = req.params;
+    if (!idUser) return res.status(400).send("Faltan datos necesarios (idUser).");
+    if (isNaN(parseInt(idUser)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (idUser) debe ser un numero.");
+
+    const user = await User.findByPk(idUser);
+    if (!user) return res.status(400).send("El usuario no existe.");
+    const car = await user.getProducts();
+    car.map( async (p) => {
+      await user.removeProduct(p.dataValues.id);
+    })
+    return res.status(200).send("Productos Removidos del Carrito.");
+  } catch (error) {
+    return res.status(400).send({ message: "Error: " + error });
+  }
+});
+
+
 // Ruta para Remover un Producto del carrito del usuario
 
 router.delete("/:idUser/car/", async (req, res) => {
