@@ -280,7 +280,7 @@ router.get("/carga", async (req, res, next) => {
 
     await arrayStates.map(async (s) => {
       await ejecutar(
-        State.findOrCreate({
+        await State.findOrCreate({
           where: { name: s.name.toLowerCase() },
         })
       )
@@ -288,7 +288,7 @@ router.get("/carga", async (req, res, next) => {
 
     await arrayRols.map(async (r) => {
       await ejecutar(
-        Rol.findOrCreate({
+        await Rol.findOrCreate({
           where: { name: r.name.toLowerCase(), stateId: 1 },
         })
       )
