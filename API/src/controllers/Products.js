@@ -270,13 +270,13 @@ router.get("/carga", async (req, res, next) => {
     const ejecutar = async (promesa) => {
       await promesa;
     }
-    const ejecutar2 = async (array) => {
-      await Promise.all(array.map(async s => {
-        await State.findOrCreate({
-          where: { name: s.name.toLowerCase() },
-        })
-      }));
-    }
+    // const ejecutar2 = async (array) => {
+    //   await Promise.all(array.map(async s => {
+    //     await State.findOrCreate({
+    //       where: { name: s.name.toLowerCase() },
+    //     })
+    //   }));
+    // }
 
     await arrayStates.map(async (s) => {
       await ejecutar(
