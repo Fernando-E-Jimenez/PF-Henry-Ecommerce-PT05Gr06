@@ -101,8 +101,8 @@ router.post("/", upload.array("image"), async (req, res, next) => {
         })
       );
     }
-    
-    
+
+
     const catego = await product.getCategories();
 
     return res.status(201).json({ ...product.dataValues, category: catego });
@@ -268,19 +268,25 @@ router.get("/carga", async (req, res, next) => {
   if (id) return next();
   try {
     const ejecutar = async (promesa) => {
-      return await promesa;
+      await promesa;
     }
     const ejecutar2 = async (array) => {
-      return await Promise.all(array.map(async s => {
+      await Promise.all(array.map(async s => {
         await State.findOrCreate({
           where: { name: s.name.toLowerCase() },
         })
       }));
     }
 
-    await ejecutar2(arrayStates);
+    await arrayStates.map(async (s) => {
+      await ejecutar(
+        State.findOrCreate({
+          where: { name: s.name.toLowerCase() },
+        })
+      )
+    })
 
-    arrayRols.map(async (r) => {
+    await arrayRols.map(async (r) => {
       await ejecutar(
         Rol.findOrCreate({
           where: { name: r.name.toLowerCase(), stateId: 1 },
