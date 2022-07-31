@@ -316,7 +316,7 @@ router.post('/validateuser', async (req, res, next) => {
     })
     if (user1) {
       return res.status(200).json(user1);
-    }else{
+    } else {
       const idState = await State.findOne({
         where: { name: "activo" }
       });
@@ -344,5 +344,63 @@ router.post('/validateuser', async (req, res, next) => {
     return res.status(400).send({ message: "Error: " + error });
   }
 });
+
+
+
+// Ruta para cambiar el Rol de un Usuario
+
+router.put("/:idUser/rol/:idRol", async (req, res) => {
+  try {
+    const { idUser, idRol } = req.params;
+    if (!idUser) return res.status(400).send("Faltan datos necesarios (idUser).");
+    if (!idRol) return res.status(400).send("Faltan datos necesarios (idRol).");
+    if (isNaN(parseInt(idUser)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (idUser) debe ser un numero.");
+    if (isNaN(parseInt(idRol)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (idRol) debe ser un numero.");
+    const user = await User.findByPk(idUser);
+    if(!user) return res.status(400).send("Error Usuario no encontrado.");
+    const rol = await Rol.findByPk(idRol);
+    if(!rol) return res.status(400).send("Error Rol no encontrado.");
+    const update = await User.update(
+      {
+        rolId: idRol
+      },
+      {
+        where: {
+          id: idUser
+        }
+      }
+    );
+    // console.log(user);
+    if (update[0] === 1) {
+      let user1 = await User.findByPk(idUser, {
+        include: [
+          {
+            model: State
+          },
+          {
+            model: Rol
+          }
+        ]
+      });
+      return res.status(200).json(user1);
+    } else if (!user) {
+      return res.status(404).json({ message: "Error: El Usuario no Existe." });
+    } else {
+      return res
+        .status(404)
+        .json({ message: "Error: Usuario no Actualizado." });
+    }
+  } catch (e) {
+    return res.status(400).send({ message: "Error: " + e });
+  }
+});
+
+
 
 module.exports = router;
