@@ -58,7 +58,8 @@ router.post("/:idUser/car/", async (req, res) => {
     if (!product) return res.status(400).send("El producto no existe.");
 
     await user.addProduct(id, { through: { cant: cant } });
-    return res.status(200).send("Producto Agregado al Carrito");
+    const car = await user.getProducts({ joinTableAttributes: ['cant'] });
+    return res.status(200).send(car);
   } catch (error) {
     return res.status(400).send({ message: "Error: " + error });
   }
@@ -88,8 +89,8 @@ router.post("/:idUser/cars/", async (req, res) => {
     products.map(async (p) => {
       await user.addProduct(p.id, { through: { cant: p.cant } });
     })
-
-    return res.status(200).send("Productos Agregados al Carrito");
+    const car = await user.getProducts({ joinTableAttributes: ['cant'] });
+    return res.status(200).send(car);
   } catch (error) {
     return res.status(400).send({ message: "Error: " + error });
   }
