@@ -278,14 +278,32 @@ router.get("/carga", async (req, res, next) => {
     //   }));
     // }
 
-    await arrayStates.map(async (s) => {
-      await ejecutar(
-        await State.findOrCreate({
-          where: { name: s.name.toLowerCase() },
-        })
-      )
-    })
+    // await arrayStates.map(async (s) => {
+    //   await ejecutar(
+    //     await State.findOrCreate({
+    //       where: { name: s.name.toLowerCase() },
+    //     })
+    //   )
+    // })
 
+    await State.findOrCreate({
+      where: { name: "activo" },
+    })
+    await State.findOrCreate({
+      where: { name: "inactivo" },
+    })
+    await State.findOrCreate({
+      where: { name: "creada" },
+    })
+    await State.findOrCreate({
+      where: { name: "procesando" },
+    })
+    await State.findOrCreate({
+      where: { name: "cancelada" },
+    })
+    await State.findOrCreate({
+      where: { name: "completa" },
+    })
     await arrayRols.map(async (r) => {
       await ejecutar(
         await Rol.findOrCreate({
