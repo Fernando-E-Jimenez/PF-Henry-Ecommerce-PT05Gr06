@@ -1,39 +1,65 @@
-.navbarContainer {
-  background-color: #3f4e4f;
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid #bbb7ae;
+  background-color: #fff;
 }
 
-.navbarBox {
+.container {
   display: flex;
   width: 120rem;
   height: 6rem;
   margin: auto;
-  color: white;
   align-items: center;
   justify-content: space-between;
 }
 
-.logoContainer {
-  width: 30rem;
-  text-decoration: none;
-  color: white;
-}
-
-.searchBarContainer {
-  width: 40rem;
-}
-
-.userContainer {
-  width: 30rem;
+.buttonUser {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: var(--primaryColor);
+  color: var(--white);
+  padding: 1rem 1rem;
+  margin-left: 1rem;
+}
+
+.logo {
+  width: 40rem;
+  font-size: 3rem;
+  font-weight: 800;
+  text-transform: unset;
+  color: var(--primaryColor);
+  transition: all ease-in-out 300ms;
+}
+
+.logoContainer:hover {
+  color: var(--primaryColor);
+}
+
+.search {
+  width: 40rem;
+  border-bottom: 1px solid #bbb7ae;
+  background-color: #fff;
+}
+
+.user {
+  width: 40rem;
+  display: flex;
+  justify-content: flex-end;
   align-items: center;
 }
 
-.cartContainer {
+.cart {
   display: flex;
 }
 
-.cartQuantity {
+.quantity {
   display: flex;
   position: relative;
   right: 12px;

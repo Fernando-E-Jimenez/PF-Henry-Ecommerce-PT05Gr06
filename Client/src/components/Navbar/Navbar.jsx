@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { SearchBar } from "../SearchBar/SearchBar";
 import { User } from "../User/User";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,41 +9,41 @@ import { changeProfile, cartShow } from "../../redux/actions";
 
 export const Navbar = () => {
   const dispatch = useDispatch();
-  const { user, isAuthenticated } = useAuth0();
   const profile = useSelector((state) => state.profile);
+  const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
 
   useEffect(() => {
-    if(isAuthenticated) {
+    if (isAuthenticated) {
       const { name, email, nickname } = user;
       let data = {
         name,
         email,
-        username: nickname
-      }
-      dispatch(changeProfile(data))
+        username: nickname,
+      };
+      dispatch(changeProfile(data));
     }
-  }, [dispatch, changeProfile, isAuthenticated])
+  }, [dispatch, changeProfile, isAuthenticated]);
 
   const cart = useSelector((state) => state.cart.length);
-  if(profile.id) {
-    dispatch(cartShow(profile.id))
+  if (profile.id) {
+    dispatch(cartShow(profile.id));
   }
   return (
-    <div className={styles.navbarContainer}>
+    <nav>
       {/* <Profile /> */}
-      <div className={styles.navbarBox}>
-        <Link
+      <div className={styles.container}>
+        <NavLink
           to="/"
-          className={styles.logoContainer}
+          className={styles.logo}
           onClick={() => dispatch(getProducts())}
         >
-          <h1>Logo</h1>
-        </Link>
-        <div className={styles.searchBarContainer}>
+          Vite Wines
+        </NavLink>
+        <div className={styles.search}>
           <SearchBar />
         </div>
-        <div className={styles.userContainer}>
-          <Link to="/cart" className={styles.cartContainer}>
+        <div className={styles.user}>
+          <Link to="/cart" className={styles.cart}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="icon icon-tabler icon-tabler-shopping-cart"
@@ -51,7 +51,7 @@ export const Navbar = () => {
               height="33"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
-              stroke="#ffffff"
+              stroke="#7e52a0"
               fill="none"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -63,26 +63,25 @@ export const Navbar = () => {
               <path d="M6 5l14 1l-1 7h-13" />
             </svg>
             {cart > 0 ? (
-              <p className={styles.cartQuantity}>{cart > 9 ? "9+" : cart}</p>
+              <p className={styles.quantity}>{cart > 9 ? "9+" : cart}</p>
             ) : (
               ""
             )}
           </Link>
 
-          <User />
           {isAuthenticated ? (
-            <div className="w-20 h-20">
-              <img
-                className="rounded-full"
-                src={user.picture}
-                alt={user.name}
-              />
-            </div>
+            <User />
           ) : (
-            <div></div>
+            <a
+              href="#"
+              className={styles.buttonUser}
+              onClick={loginWithRedirect}
+            >
+              Iniciar Sesion
+            </a>
           )}
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
