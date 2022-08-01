@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Admin from "../Admin/Admin";
 import styles from "./User.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useSelector } from "react-redux";
 
 export const User = () => {
   const [open, setOpen] = useState(false);
   const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
+  const profile = useSelector((state) => state.profile);
 
   const handleClick = () => {
     setOpen(!open);
@@ -63,6 +64,7 @@ export const User = () => {
             tabndex="-1"
           >
             <div className="py-1" role="none">
+              {profile.rolId == 1?
               <Link
                 to="/admin"
                 className="text-gray-700 block px-4 py-2 text-md"
@@ -71,7 +73,8 @@ export const User = () => {
                 id="menu-item-0"
               >
                 Cuenta
-              </Link>
+              </Link>:
+                ''}
               <p className="text-gray-700 block px-4 py-2 text-md">
                 {user.email}
               </p>

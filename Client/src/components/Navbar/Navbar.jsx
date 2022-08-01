@@ -1,34 +1,33 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Cart } from "../Cart/Cart";
 import { SearchBar } from "../SearchBar/SearchBar";
 import { User } from "../User/User";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./Navbar.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
-import axios from "axios";
-const { VITE_URL_API } = import.meta.env;
-
-
-async function Profile() {
-  const { user, isAuthenticated, isLoading } = useAuth0();
-  if (isAuthenticated) {
-    const { name, email, nickname } = user;
-    let data = {
-      name,
-      email,
-      username: nickname
-    }
-    const user1 = await axios.post(`${VITE_URL_API}/admin/user/validateuser`, data);
-    console.log(user1)
-    return user1;
-  }
-}
+import { changeProfile, cartShow } from "../../redux/actions";
 
 export const Navbar = () => {
-  Profile();
   const dispatch = useDispatch();
+  const { user, isAuthenticated } = useAuth0();
+  const profile = useSelector((state) => state.profile);
+
+  useEffect(() => {
+    if(isAuthenticated) {
+      const { name, email, nickname } = user;
+      let data = {
+        name,
+        email,
+        username: nickname
+      }
+      dispatch(changeProfile(data))
+    }
+  }, [dispatch, changeProfile, isAuthenticated])
+
   const cart = useSelector((state) => state.cart.length);
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  if(profile.id) {
+    dispatch(cartShow(profile.id))
+  }
   return (
     <div className={styles.navbarContainer}>
       {/* <Profile /> */}

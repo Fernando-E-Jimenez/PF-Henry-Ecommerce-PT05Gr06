@@ -1,21 +1,27 @@
 import { useDispatch, useSelector } from "react-redux";
-import { removeProduct, productQuantity } from "../../redux/actions";
+import { removeProduct, productQuantity, addToCartDetailUser, removeProductUser } from "../../redux/actions";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const CartItem = ({ product }) => {
   const dispatch = useDispatch();
-
-  const [quantity, setQuantity] = useState(product.qty);
+  const [quantity, setQuantity] = useState(product.car.cant);
+  const profile = useSelector((state) => state.profile);
+  const { isAuthenticated } = useAuth0();
 
   const handleAdd = () => {
     setQuantity(quantity + 1);
-    dispatch(productQuantity(product.id, quantity + 1));
+    isAuthenticated?
+      dispatch(addToCartDetailUser(profile.id, product.id, quantity + 1))
+      :dispatch(productQuantity(product.id, quantity + 1));
   };
 
   const handleDecresed = () => {
     setQuantity(quantity - 1);
-    dispatch(productQuantity(product.id, quantity - 1));
+    isAuthenticated?
+      dispatch(addToCartDetailUser(profile.id, product.id, quantity - 1))
+      :dispatch(productQuantity(product.id, quantity - 1));
   };
 
   const removeProductCart = (id) => {
@@ -30,7 +36,9 @@ export const CartItem = ({ product }) => {
       confirmButtonText: "Eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(removeProduct(id));
+        isAuthenticated?
+          dispatch(removeProductUser(profile.id, id))
+          :dispatch(removeProduct(id));
         Swal.fire(
           "Eliminado!",
           "El producto se ha eliminado correctamente",

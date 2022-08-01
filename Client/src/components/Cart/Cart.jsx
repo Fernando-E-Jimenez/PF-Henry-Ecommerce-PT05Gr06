@@ -1,25 +1,28 @@
-import { useEffect, useState } from "react";
+import { Profiler, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CartItem } from "../CartItem/CartItem";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import { resetCart } from "../../redux/actions";
+import { resetCart, resetCartUser } from "../../redux/actions";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const Cart = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
+  const { isAuthenticated } = useAuth0();
+  const profile = useSelector((state) => state.profile);
 
   useEffect(() => {
     let items = 0;
     let price = 0;
-
-    cart.forEach((item) => {
-      items += cart.qty;
-      price += item.qty * item.price;
-    });
-
+    if(cart.length > 0) {
+      cart.forEach((item) => {
+        items += item.car.cant;
+        price += item.car.cant * item.price;
+      });
+    }
     setTotalItems(items);
     setTotalPrice(price);
   }, [cart, totalPrice, totalItems, setTotalPrice, setTotalItems]);
@@ -36,7 +39,9 @@ export const Cart = () => {
       confirmButtonText: "Eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(resetCart());
+        isAuthenticated?
+          dispatch(resetCartUser(profile.id))
+          :dispatch(resetCart());
         Swal.fire(
           "Eliminado!",
           "El carrito se ha eliminado correctamente",
@@ -78,9 +83,10 @@ export const Cart = () => {
             </div>
             <div className="mb-20">
               {/* Products */}
-              {cart.map((product) => (
-                <CartItem key={product.id} product={product} />
-              ))}
+              {cart.length > 0?
+                cart.map((product) => (
+                  <CartItem key={product.id} product={product} />
+              )): 'Aun no tienes productos en el carrito'}
             </div>
             <div className="flex justify-around">
               <Link
