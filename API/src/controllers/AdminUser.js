@@ -349,23 +349,19 @@ router.post('/validateuser', async (req, res, next) => {
 
 // Ruta para cambiar el Rol de un Usuario
 
-router.put("/:idUser/rol/:idRol", async (req, res) => {
+router.put("/:idUser/rol", async (req, res) => {
   try {
-    const { idUser, idRol } = req.params;
+    const { idUser } = req.params;
     if (!idUser) return res.status(400).send("Faltan datos necesarios (idUser).");
-    if (!idRol) return res.status(400).send("Faltan datos necesarios (idRol).");
     if (isNaN(parseInt(idUser)))
       return res
         .status(400)
         .send("Formato de datos invalido (idUser) debe ser un numero.");
-    if (isNaN(parseInt(idRol)))
-      return res
-        .status(400)
-        .send("Formato de datos invalido (idRol) debe ser un numero.");
     const user = await User.findByPk(idUser);
     if(!user) return res.status(400).send("Error Usuario no encontrado.");
-    const rol = await Rol.findByPk(idRol);
-    if(!rol) return res.status(400).send("Error Rol no encontrado.");
+    let idRol = 1;
+    const { rolId } = user.dataValues;
+    rolId === 2 ? idRol = 1 : idRol = 2;
     const update = await User.update(
       {
         rolId: idRol
