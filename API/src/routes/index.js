@@ -30,7 +30,7 @@ router.use("/guess/order", guesOrder);
 router.use("/guess/product", guesProductOrder);
 router.use("/user/product", userReview);
 router.use("/user", users);
-router.use("/mercadopag", mercadopa);
+router.use("/mercadopago", mercadopa);
 
 
 module.exports = router;
