@@ -11,6 +11,7 @@ import { Navbar } from "./components/Navbar/Navbar";
 import { ViewCategories } from "./components/ViewCategories/ViewCategories";
 import { ViewProducts } from "./components/ViewProducts/ViewProducts";
 import { ViewOrders } from "./components/ViewOrders/ViewOrders";
+import { ViewRoles } from "./components/ViewRoles/ViewRoles"
 
 export const App = () => {
   return (
@@ -28,6 +29,7 @@ export const App = () => {
           <Route path="view-categories" element={<ViewCategories />} />
           <Route path="edit-category/:id" element={<EditCategory />} />
           <Route path="view-orders" element={<ViewOrders />} />
+          <Route path="view-roles" element={<ViewRoles />} />
         </Route>
       </Routes>
     </>

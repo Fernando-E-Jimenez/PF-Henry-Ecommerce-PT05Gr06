@@ -1,4 +1,3 @@
-import react from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { obtainEditProduct, disableProduct, viewProducts } from "../../redux/actions";
