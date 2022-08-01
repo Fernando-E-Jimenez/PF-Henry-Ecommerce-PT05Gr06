@@ -144,7 +144,9 @@ router.delete("/:idUser/car/", async (req, res) => {
     if (!product) return res.status(400).send("El producto no existe.");
 
     await user.removeProduct(id);
-    return res.status(200).send("Producto Removido del Carrito.");
+    const car2 = await user.getProducts({ joinTableAttributes: ['cant'] });
+
+    return res.status(200).send(car2);
   } catch (error) {
     return res.status(400).send({ message: "Error: " + error });
   }
