@@ -425,8 +425,11 @@ const removeProductUser = (user, id) => {
   return async(dispatch) => {
     try {
       const data = {
-        id,
+        data: {
+          id
+        }
       }
+      console.log(data)
       const update = await axios.delete(`${VITE_URL_API}/user/${user}/car`,data);
       return dispatch({
         type: ADD_TO_CART_USER,

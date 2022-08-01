@@ -20,7 +20,7 @@ router.get("/:idUser/car/", async (req, res) => {
     if (!user) return res.status(400).send("El usuario no existe.");
 
     const car = await user.getProducts({ joinTableAttributes: ['cant'] });
-    if (!car || car.length === 0) return res.status(400).send("El Usuario no tiene productos en el carrito.");
+    if (!car || car.length === 0) return res.status(200).send("El Usuario no tiene productos en el carrito.");
 
     return res.status(200).json(car);
   } catch (error) {
