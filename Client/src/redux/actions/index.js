@@ -524,6 +524,33 @@ const changeRolUser = (user) => {
   };
 }
 
+const addToFavoriteUser = (user, id) => {
+  return async(dispatch) => {
+    try {
+      const data = {
+        id,
+        cant: 1,
+      }
+      const update = await axios.post(`${VITE_URL_API}/user/${user}/car`,data);
+      return dispatch({
+        type: ADD_TO_CART_USER,
+        payload: update.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+const addToFavorite = (itemID) => {
+  return {
+    type: ADD_TO_CART,
+    payload: {
+      id: itemID,
+    },
+  };
+};
+
 export {
   getProducts,
   productDetail,
@@ -559,4 +586,6 @@ export {
   viewRoles,
   deleteUser,
   changeRolUser,
+  addToFavoriteUser,
+  addToFavorite
 };
