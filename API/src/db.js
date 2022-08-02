@@ -43,9 +43,9 @@ const { Category, Order, Product, Review, Rol, User, State, Car } = sequelize.mo
 // Aca vendrian las relaciones
 
 //State - User
-State.hasMany(User,{
-    foreignKey: 'stateId'
-  });
+State.hasMany(User, {
+  foreignKey: 'stateId'
+});
 User.belongsTo(State);
 
 //State - Category
@@ -98,15 +98,23 @@ Product.hasMany(Review);
 User.hasMany(Order);
 Order.belongsTo(User);
 
-// order - product
+// productXorder -> Tabla intermedia para las ordenes
 
 const productXorder = sequelize.define("productXorder", {
   cant: Sequelize.INTEGER,
 });
 
+// Product - User -> Carrito
 
 Product.belongsToMany(User, { through: Car });
 User.belongsToMany(Product, { through: Car });
+
+// Product - user  -> Favoritos;
+
+Product.belongsToMany(User, { as: 'Favorite', through: "favorites" });
+User.belongsToMany(Product, { as: 'Favorite', through: "favorites" });
+
+// Product - Order;
 
 Product.belongsToMany(Order, { through: productXorder });
 Order.belongsToMany(Product, { through: productXorder });

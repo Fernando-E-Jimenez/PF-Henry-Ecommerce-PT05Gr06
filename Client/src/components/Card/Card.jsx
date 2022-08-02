@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "./Card.css";
-import { addToCart, addToCartUser } from "../../redux/actions";
+import { addToCart, addToCartUser, addToFavoriteUser, addToFavorite  } from "../../redux/actions";
 import Swal from "sweetalert2";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -11,9 +11,19 @@ export const Card = ({ id, name, price, image }) => {
   const { isAuthenticated } = useAuth0();
 
   const handleAddCart = (id) => {
-    isAuthenticated
-      ? dispatch(addToCartUser(profile.id, id))
+    isAuthenticated ?
+      dispatch(addToCartUser(profile.id, id))
       : dispatch(addToCart(id));
+    Swal.fire({
+      icon: "success",
+      title: "Producto agregado con exito",
+    });
+  };
+
+  const handleAddFavorite = (id) => {
+    isAuthenticated ?
+      dispatch(addToFavoriteUser(profile.id, id))
+      : dispatch(addToFavorite(id));
     Swal.fire({
       icon: "success",
       title: "Producto agregado con exito",
@@ -28,6 +38,11 @@ export const Card = ({ id, name, price, image }) => {
 
   return (
     <div className="cardContainer">
+      <button className="cardFavorite" onClick={(e) => handleAddFavorite(id)}>
+        {
+          "❤"
+        }
+      </button>
       <Link to={`/product/${id}`}>
         <img className="imagen" src={image} alt="imagen" />
       </Link>

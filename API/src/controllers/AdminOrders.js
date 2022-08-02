@@ -113,7 +113,23 @@ router.put("/:idOrder", async (req, res) => {
         text: "AppVinos le informa que el estado de su orden de compra no. " + idOrder + " ha sido actualizado a: " + stateData.dataValues.name, // plain text body
         // html: "<b>Hello world?</b>", // html body
       });
-      return res.status(200).send("Orden Actualizada.");
+      const order2 = await Order.findByPk(idOrder, {
+        include: [
+          {
+            model: User
+          },
+          {
+            model: State
+          },
+          {
+            model: Product,
+            through: {
+              attributes: ['cant']
+            }
+          }
+        ]
+      });
+      return res.status(200).send(order2);
     }else{
       return res.status(400).send("Error al actualizar Orden.");
     }
