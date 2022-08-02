@@ -5,7 +5,10 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { resetCart, resetCartUser } from "../../redux/actions";
 import { useAuth0 } from "@auth0/auth0-react";
+
 import "./Cart.css";
+
+import { Checkout } from "../Mercadopago/Checkout.jsx";
 
 export const Cart = () => {
   const dispatch = useDispatch();
@@ -92,7 +95,7 @@ export const Cart = () => {
             </div>
             <div className="flex justify-around cartButtons">
               <Link
-                className="bg-primary-color font-semibold py-3 px-2 rounded-md text-2xl text-white w-3/4 text-center mb-4 sm:mb-0 sm:w-56"
+                className="bg-primary-color hover:bg-secondary-color font-semibold py-3 px-2 rounded-md text-2xl text-white w-3/4 text-center mb-4 sm:mb-0 sm:w-56"
                 to="/"
               >
                 Seguir Comprando
@@ -135,9 +138,15 @@ export const Cart = () => {
                 <span>Total cost</span>
                 <span>{precio}</span>
               </div>
+              {/* <<<<<<< HEAD
               <div className="w-full flex justify-center my-6">
                 <button className="secondaryButton h-20">Checkout</button>
               </div>
+======= */}
+              <button className="bg-primary-color font-semibold hover:bg-secondary-color py-3 text-2xl text-white w-full">
+                Checkout
+              </button>
+              <Checkout />
             </div>
           </div>
         </div>
