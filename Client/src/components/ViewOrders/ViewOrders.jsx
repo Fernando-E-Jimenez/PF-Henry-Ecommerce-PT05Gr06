@@ -19,7 +19,7 @@ export const ViewOrders = () => {
       <div className={styles.searchViewOrders}>
         <button onClick={() => dispatch(changeOrder('ASC', 'name'))}>⏫ Ordenar de la A-Z</button>
         <button onClick={() => dispatch(changeOrder('DESC', 'name'))}>⏬ Ordenar de la Z-A</button>
-        <button onClick={() => dispatch(changeOrder('ASC', 'price'))}>🧐 Ver solo las ordenes en estado pendiente</button>
+        <button onClick={() => dispatch(changeOrder('ASC', 'price'))}>🧐 Ver solo las ordenes en estado creada</button>
         <form className={styles.searchContainer} onSubmit={(e) => {
           e.preventDefault();
           dispatch(getProductsFilter(order))
@@ -35,15 +35,15 @@ export const ViewOrders = () => {
         </form>
       </div>
       <div className="border bg-gray-300 my-1 rounded-lg text-xl p-5 flex align-middle justify-between">
-        <p className="flex w-3/5 align-center text-2xl">Name</p>
-        <p className="flex w-1/5 align-middle text-2xl">State</p>
-        <p className="flex w-1/5 align-middle text-2xl">Cant</p>
+        <p className="flex w-3/5 align-center text-2xl">Usuario</p>
+        <p className="flex w-1/5 align-middle text-2xl">Estado</p>
+        <p className="flex w-1/5 align-middle text-2xl">Productos</p>
         <p className="flex w-1/5 align-middle text-2xl">Acciones</p>
       </div>
       <div className="rounded-lg">
         {orders?.length
           ? orders.map((order) => (
-              <CardOrder key={order.id} product={order} />
+              <CardOrder key={order.id} order={order} />
             ))
           : ""}
       </div>

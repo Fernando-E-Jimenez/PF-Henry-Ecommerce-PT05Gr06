@@ -1,7 +1,7 @@
 import { Profiler, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CartItem } from "../CartItem/CartItem";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { resetCart, resetCartUser } from "../../redux/actions";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -12,6 +12,7 @@ import { Checkout } from "../Mercadopago/Checkout.jsx";
 
 export const Cart = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
@@ -138,15 +139,9 @@ export const Cart = () => {
                 <span>Total cost</span>
                 <span>{precio}</span>
               </div>
-              {/* <<<<<<< HEAD
-              <div className="w-full flex justify-center my-6">
-                <button className="secondaryButton h-20">Checkout</button>
-              </div>
-======= */}
-              <button className="bg-primary-color font-semibold hover:bg-secondary-color py-3 text-2xl text-white w-full">
+              <button onClick={() => navigate("/payment")} className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-2xl text-white w-full">
                 Checkout
               </button>
-              <Checkout />
             </div>
           </div>
         </div>

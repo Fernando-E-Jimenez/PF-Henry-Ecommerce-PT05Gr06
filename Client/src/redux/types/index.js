@@ -17,11 +17,13 @@ export const EDIT_STATE = "EDIT_STATE";
 export const DELETE_STATE = "DELETE_STATE";
 export const ORDERS_SHOW = "ORDERS_SHOW";
 export const DISABLE_PRODUCT= "DISABLE_PRODUCT";
-export const ADD_TO_CART_USER = "ADD_TO_CART_USER";
+export const CHANGE_CART_USER = "CHANGE_CART_USER";
 export const CHANGE_PROFILE = "CHANGE_PROFILE";
 export const CART_SHOW = "CART_SHOW";
 export const VIEW_ROLES = "VIEW_ROLES";
 export const CHANGE_USER = "CHANGE_USER";
+export const CONFIRM_PURCHASE = 'CONFIRM_PURCHASE';
+export const SHOW_PURCHASES = 'SHOW_PURCHASES';
 export const GET_ORDER = "GET_ORDER";
 
 // SHOPPING CART
