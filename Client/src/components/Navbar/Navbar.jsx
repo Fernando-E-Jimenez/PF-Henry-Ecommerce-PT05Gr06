@@ -193,7 +193,12 @@ export const Navbar = () => {
                   </svg>{" "}
                   <p className="linksNavTitle">{user?.email}</p>
                 </div>
-                <Link to="/" className="linksNav">
+                <a
+                  onClick={() => {
+                    logout({ returnTo: window.location.origin });
+                  }}
+                  className="linksNav"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="icon icon-tabler icon-tabler-logout"
@@ -211,7 +216,7 @@ export const Navbar = () => {
                     <path d="M7 12h14l-3 -3m0 6l3 -3" />
                   </svg>{" "}
                   <p className="linksNavTitle">Salir</p>
-                </Link>
+                </a>
               </div>
             </div>
           </div>
