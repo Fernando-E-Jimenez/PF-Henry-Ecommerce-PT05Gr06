@@ -1,0 +1,20 @@
+@media only screen and (max-width: 480px) {
+  .cartContainer {
+    width: 100vw;
+    margin-top: 0.5rem;
+  }
+  .cartFlex {
+    flex-direction: column;
+    width: calc(100vw - 1rem);
+    margin: 0 auto;
+    box-shadow: none;
+  }
+  .cartItems {
+    width: 95%;
+    margin: 0 auto;
+  }
+
+  .titles {
+    display: none;
+  }
+}
