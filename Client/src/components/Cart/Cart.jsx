@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { resetCart, resetCartUser } from "../../redux/actions";
 import { useAuth0 } from "@auth0/auth0-react";
+
+import "./Cart.css";
+
 import { Checkout } from "../Mercadopago/Checkout.jsx";
 
 export const Cart = () => {
@@ -18,7 +21,7 @@ export const Cart = () => {
   useEffect(() => {
     let items = 0;
     let price = 0;
-    if(cart.length > 0) {
+    if (cart.length > 0) {
       cart.forEach((item) => {
         items += item.car.cant;
         price += item.car.cant * item.price;
@@ -40,9 +43,9 @@ export const Cart = () => {
       confirmButtonText: "Eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        isAuthenticated?
-          dispatch(resetCartUser(profile.id))
-          :dispatch(resetCart());
+        isAuthenticated
+          ? dispatch(resetCartUser(profile.id))
+          : dispatch(resetCart());
         Swal.fire(
           "Eliminado!",
           "El carrito se ha eliminado correctamente",
@@ -62,13 +65,13 @@ export const Cart = () => {
 
   return (
     <>
-      <div className="container mx-auto mt-10 bg-gray-200">
-        <div className="flex shadow-md my-10">
-          <div className="w-3/4 bg-white px-10 py-10">
-            <div className="flex justify-between border-b pb-8">
+      <div className="container mx-auto w-full h-full cartContainer">
+        <div className="flex shadow-md my-2 w-full h-full cartFlex">
+          <div className="md:w-3/4 bg-white px-10 py-10 cartItems">
+            <div className="flex justify-center border-b pb-8">
               <h1 className="font-semibold text-4xl">Shopping Cart</h1>
             </div>
-            <div className="flex mt-10 mb-5">
+            <div className="sm:flex mt-10 mb-5 titles hidden">
               <h3 className="font-semibold text-gray-600 text-3xl w-2/5">
                 Product Details
               </h3>
@@ -82,29 +85,30 @@ export const Cart = () => {
                 Total
               </h3>
             </div>
-            <div className="mb-20">
+            <div className="mb-10">
               {/* Products */}
-              {cart.length > 0?
-                cart.map((product) => (
-                  <CartItem key={product.id} product={product} />
-              )): 'Aun no tienes productos en el carrito'}
+              {cart.length > 0
+                ? cart.map((product) => (
+                    <CartItem key={product.id} product={product} />
+                  ))
+                : "Aun no tienes productos en el carrito"}
             </div>
-            <div className="flex justify-around">
+            <div className="flex justify-around cartButtons">
               <Link
-                className="bg-primary-color font-semibold py-3 px-2 rounded-md text-2xl text-white w-56"
+                className="bg-primary-color hover:bg-secondary-color font-semibold py-3 px-2 rounded-md text-2xl text-white w-3/4 text-center mb-4 sm:mb-0 sm:w-56"
                 to="/"
               >
                 Seguir Comprando
               </Link>
               <button
                 onClick={handleResetCart}
-                className="bg-red-500 font-semibold hover:bg-red-600 py-3 px-2 rounded-md text-2xl text-white w-56 "
+                className="bg-red-400 font-semibold hover:bg-red-600 py-3 px-2 rounded-md text-2xl text-white w-3/4 text-center mb-4 sm:mb-0 sm:w-56"
               >
                 Reset Cart
               </button>
             </div>
           </div>
-          <div className="w-1/4 px-8 py-10">
+          <div className="sm:w-1/4 px-8 py-10">
             <h1 className="font-semibold text-4xl text-center border-b pb-8">
               Order Total
             </h1>
@@ -126,7 +130,7 @@ export const Cart = () => {
                 className="p-2 text-lg w-full"
               />
             </div>
-            <button className="bg-red-500 hover:bg-red-600 px-5 py-2 text-xl text-white">
+            <button className="bg-red-400 hover:bg-red-600 px-5 py-2 text-xl text-white">
               Apply
             </button>
             <div className="border-t mt-8">
@@ -134,10 +138,15 @@ export const Cart = () => {
                 <span>Total cost</span>
                 <span>{precio}</span>
               </div>
-              <button className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-2xl text-white w-full">
+              {/* <<<<<<< HEAD
+              <div className="w-full flex justify-center my-6">
+                <button className="secondaryButton h-20">Checkout</button>
+              </div>
+======= */}
+              <button className="bg-primary-color font-semibold hover:bg-secondary-color py-3 text-2xl text-white w-full">
                 Checkout
               </button>
-                  <Checkout/>
+              <Checkout />
             </div>
           </div>
         </div>
