@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./CardDetail.module.css";
 import {
   productDetail,
-  productQuantity,
+  addToCartDetailUser,
   addToCartDetail,
 } from "../../redux/actions";
 import { useEffect, useState } from "react";
 import { Reviews } from "../Reviews/Reviews";
+import { useAuth0 } from "@auth0/auth0-react";
 import Swal from "sweetalert2";
 
 export const CardDetail = () => {
@@ -15,6 +16,8 @@ export const CardDetail = () => {
   const dispatch = useDispatch();
   const product = useSelector((state) => state.detail);
   const cart = useSelector((state) => state.cart);
+  const profile = useSelector((state) => state.profile);
+  const { isAuthenticated } = useAuth0();
   localStorage.setItem("cartItems", JSON.stringify(cart));
 
   const [quantity, setQuantity] = useState(1);
@@ -30,7 +33,9 @@ export const CardDetail = () => {
   };
 
   const handleAddCart = (id, quantity) => {
-    dispatch(addToCartDetail(id, quantity));
+    isAuthenticated?
+      dispatch(addToCartDetailUser(profile.id, id, quantity))
+      :dispatch(addToCartDetail(id, quantity));
     Swal.fire({
       icon: "success",
       title: "Producto agregado con exito",

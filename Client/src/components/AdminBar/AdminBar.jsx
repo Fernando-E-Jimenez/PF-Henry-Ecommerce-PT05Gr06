@@ -34,6 +34,12 @@ export const AdminBar = () => {
       >
         New Category
       </Link>
+      <Link
+        to="view-roles"
+        className="bg-primary-color w-full text-white font-bold block p-3 mt-5 text-center rounded-lg text-2xl"
+      >
+        View Roles
+      </Link>
     </aside>
   );
 };

@@ -24,7 +24,6 @@ export const CardsContainer = () => {
   };
 
   const productsStock = products.data?.filter((product) => product.stock > 0);
-  console.log(productsStock);
 
   useEffect(() => {
     dispatch(getProducts(page, order.type, order.by, order.id));

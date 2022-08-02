@@ -81,17 +81,17 @@ const arrayProductos = [
     description:
       "El vino tinto Navarro Correas Colección Privada es un vino argentino que viene por botella de 750 ML. El tipo de unva es Malbec 100%. ¡Prueba una copa de vino tinto con tu familia!.",
     image:
-      "https://dislicoresqa.vtexassets.com/arquivos/ids/280550-1200-auto?v=637900848318330000&width=1200&height=auto&aspect=true",
+      "https://dislicoresqa.vtexassets.com/arquivos/ids/291933-1200-auto?v=637935435327970000&width=1200&height=auto&aspect=true",
     price: "75900",
     stock: "2500",
     category: [1, 5, 7],
   },
   {
-    name: "Vino Rosado Cousiño Gris Macul Varietal Cabernet Sauvignon",
+    name: "Vino Rosado Jaume Serra Ice Rosado Demi- Sec",
     description:
-      "El vino rosado Cousiño Gris Macul es un vino chileno varietal. El tipo de uva es 100% Cabernet Sauvignon. ¡En Dislicores te acompañamos con una variedad de vinos rosados chilenos! Debe consumirse a una temperatura de 10-12 °C. - Dislicores no garantiza la añada de los productos, si su decisión de compra está motivada por la añada del producto, por favor comunicarse directamente con servicio al cliente.",
+      "El vino rosado Jaume Sierra es un espumoso español que viene 750 ML. El tipo de uva es trepat y pinot noir. ¡Disfruta de un espumoso rosado con tus amigos! Debe consumirse a una temperatura de 4° C. - Dislicores no garantiza la añada de los productos, si su decisión de compra está motivada por la añada del producto, por favor comunicarse directamente con servicio al cliente.",
     image:
-      "https://dislicoresqa.vtexassets.com/arquivos/ids/285221-800-auto?v=637905195350900000&width=800&height=auto&aspect=true",
+      "https://dislicoresqa.vtexassets.com/arquivos/ids/285233-800-auto?v=637905195400030000&width=800&height=auto&aspect=true",
     price: "51900",
     stock: "1000",
     category: [3, 9, 10],

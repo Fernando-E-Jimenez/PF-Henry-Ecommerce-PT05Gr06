@@ -23,6 +23,11 @@ import {
   RESET_CART,
   ORDERS_SHOW,
   DISABLE_PRODUCT,
+  ADD_TO_CART_USER,
+  CHANGE_PROFILE,
+  CART_SHOW,
+  VIEW_ROLES,
+  CHANGE_USER,
 } from "../types";
 
 const initialState = {
@@ -37,10 +42,13 @@ const initialState = {
     by: "",
     id: "",
   },
-  cart: localStorage.getItem("cartItems")
+  /* cart: localStorage.getItem("cartItems")
     ? JSON.parse(localStorage.getItem("cartItems"))
-    : [],
+    : [], */
+  cart: [],
   orders: [],
+  profile: {},
+  roles: {},
 };
 
 //console.log(initialState.productEdit);
@@ -142,19 +150,22 @@ const reducer = (state = initialState, action) => {
       const product = state.products.data.find(
         (product) => product.id === action.payload.id
       );
-      const inCart = state.cart.find((product) =>
-        product.id === action.payload.id ? true : false
-      );
+      const inCart = 
+        state.cart.length > 0? 
+          state.cart.find((product) =>
+            product.id === action.payload.id ? true : false
+          )
+        :false;
 
       return {
         ...state,
         cart: inCart
           ? state.cart.map((product) =>
               product.id === action.payload.id
-                ? { ...product, qty: product.qty + 1 }
+                ? { ...product, car: {cant : product.car.cant + 1 }}
                 : product
             )
-          : [...state.cart, { ...product, qty: 1 }],
+          : [...state.cart, { ...product, car:{ cant: 1 } }],
       };
     }
 
@@ -169,10 +180,10 @@ const reducer = (state = initialState, action) => {
         cart: inCart
           ? state.cart.map((product) =>
               product.id === action.payload.id
-                ? { ...product, qty: product.qty + 1 }
+                ? { ...product, car: {cant: product.car.cant + 1 } }
                 : product
             )
-          : [...state.cart, { ...product, qty: action.payload.qty }],
+          : [...state.cart, { ...product, car: {cant: action.payload.qty} }],
       };
     }
 
@@ -181,7 +192,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         cart: state.cart.map((item) =>
           item.id === action.payload.id
-            ? { ...item, qty: action.payload.qty }
+            ? { ...item, car: {cant: action.payload.qty} }
             : item
         ),
       };
@@ -220,7 +231,42 @@ const reducer = (state = initialState, action) => {
         ...state,
       }
     }
+
+    case ADD_TO_CART_USER: {
+      return {
+        ...state,
+        cart: action.payload,
+      }
+    }
     
+    case CHANGE_PROFILE: {
+      return {
+        ...state,
+        profile: action.payload,
+      }
+    }
+
+    case CART_SHOW: {
+      return {
+        ...state,
+        cart: typeof(action.payload) == 'string' ? [] : action.payload,
+      }
+    }
+
+    case VIEW_ROLES: {
+      return {
+        ...state,
+        roles: action.payload,
+      }
+    }
+
+    case CHANGE_USER: {
+      return {
+        ...state,
+        resultPost: action.payload
+      }
+    }
+
     default:
       return state;
   }

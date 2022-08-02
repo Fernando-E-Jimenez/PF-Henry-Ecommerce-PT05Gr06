@@ -1,0 +1,7 @@
+.homeContainer {
+  display: flex;
+  justify-content: center;
+  max-width: 120rem;
+  background-color: #e2e2e2;
+  margin: auto;
+}

@@ -1,14 +1,19 @@
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./Card.module.css";
-import { addToCart } from "../../redux/actions";
+import { addToCart, addToCartUser } from "../../redux/actions";
 import Swal from "sweetalert2";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const Card = ({ id, name, price, image }) => {
   const dispatch = useDispatch();
+  const profile = useSelector((state) => state.profile);
+  const { isAuthenticated } = useAuth0();
 
   const handleAddCart = (id) => {
-    dispatch(addToCart(id));
+    isAuthenticated?
+      dispatch(addToCartUser(profile.id, id))
+      :dispatch(addToCart(id));
     Swal.fire({
       icon: "success",
       title: "Producto agregado con exito",

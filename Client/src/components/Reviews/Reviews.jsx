@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { postReview } from "../../redux/actions";
 import { productDetail } from "../../redux/actions";
 import { FaStar } from "react-icons/fa"; //probando a ver si puedo ingresar las estrellas
+import { useAuth0 } from "@auth0/auth0-react";
 
 /* Variables para los colores de las estrellas */
 const colors = {
@@ -17,6 +18,7 @@ export const Reviews = () => {
   const [currentValue, setCurrentValue] = useState(0);
   const [hoverValue, setHoverValue] = useState(undefined);
   const stars = Array(5).fill(0);
+  const { isAuthenticated } = useAuth0();
 
   const handleClick = (value) => {
     setComment({
@@ -74,6 +76,7 @@ export const Reviews = () => {
               :'Este producto no cuenta con Reviews'
             :'Cargando...'}
           </div>
+        {isAuthenticated?
         <div className={styles.newReviewContainer}>
           <h4 className={styles.title}>New Review</h4>
           <form
@@ -114,7 +117,7 @@ export const Reviews = () => {
               Post
             </button>
           </form>
-        </div>
+        </div>:""}
       </div>
     
   );

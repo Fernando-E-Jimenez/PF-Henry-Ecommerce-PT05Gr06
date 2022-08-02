@@ -24,6 +24,11 @@ import {
   RESET_CART,
   ORDERS_SHOW,
   DISABLE_PRODUCT,
+  ADD_TO_CART_USER,
+  CHANGE_PROFILE,
+  CART_SHOW,
+  VIEW_ROLES,
+  CHANGE_USER,
 } from "../types";
 import axios from "axios";
 
@@ -220,7 +225,6 @@ const editProduct = (payload) => {
   return async (dispatch) => {
     try {
       const update = await axios.put(`${VITE_URL_API}/admin/product`, payload);
-      console.log(update);
       return dispatch({
         type: EDIT_PRODUCT,
         payload: update,
@@ -277,7 +281,6 @@ const productQuantity = (itemID, qty) => {
 };
 
 const removeProduct = (itemID) => {
-  console.log(itemID);
   return {
     type: REMOVE_FROM_CART,
     payload: {
@@ -354,7 +357,7 @@ const createState = (payload) => {
 };
 
 const ordersShow = () => {
-  return (dispatch) => {
+  return async (dispatch) => {
     try {
       return fetch(
         `${VITE_URL_API}/admin/order`
@@ -369,13 +372,152 @@ const ordersShow = () => {
   };
 }
 
-const disableProduct = (id) => {
+const disableProduct = (idProduct) => {
   return async (dispatch) => {
     try {
-      await axios.delete(`${VITE_URL_API}/admin/product/${id}`);
+      await axios.delete(`${VITE_URL_API}/admin/product/${idProduct}`);
       return dispatch({
         type: DISABLE_PRODUCT,
         });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+const addToCartUser = (user, id) => {
+  return async(dispatch) => {
+    try {
+      const data = {
+        id,
+        cant: 1,
+      }
+      const update = await axios.post(`${VITE_URL_API}/user/${user}/car`,data);
+      return dispatch({
+        type: ADD_TO_CART_USER,
+        payload: update.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+const addToCartDetailUser = (user, id, cant) => {
+  return async(dispatch) => {
+    try {
+      const data = {
+        id,
+        cant,
+      }
+      const update = await axios.post(`${VITE_URL_API}/user/${user}/car`,data);
+      return dispatch({
+        type: ADD_TO_CART_USER,
+        payload: update.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+const removeProductUser = (user, id) => {
+  return async(dispatch) => {
+    try {
+      const data = {
+        data: {
+          id
+        }
+      }
+      console.log(data)
+      const update = await axios.delete(`${VITE_URL_API}/user/${user}/car`,data);
+      return dispatch({
+        type: ADD_TO_CART_USER,
+        payload: update.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+const resetCartUser = (user) => {
+  return async(dispatch) => {
+    try {
+      await axios.delete(`${VITE_URL_API}/user/${user}/car/reset`);
+      return dispatch({
+        type: RESET_CART,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+const cartShow = (user) => {
+  return async(dispatch) => {
+    try {
+      const cart = await axios.get(`${VITE_URL_API}/user/${user}/car`);
+      return dispatch({
+        type: CART_SHOW,
+        payload: cart.data,
+      });
+    } catch (error) {
+      dispatch({ type: CART_SHOW, payload: 'Error' });
+    }
+  };
+}
+
+const changeProfile = (data) => {
+  return async(dispatch) => {
+    try {
+      const user = await axios.post(`${VITE_URL_API}/admin/user/validateuser`, data);
+      return dispatch({
+        type: CHANGE_PROFILE,
+        payload: user.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+const viewRoles = () => {
+  return async(dispatch) => {
+    try {
+      const roles = await axios.get(`${VITE_URL_API}/admin/user`);
+      return dispatch({
+        type: VIEW_ROLES,
+        payload: roles.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+const deleteUser = (user) => {
+  return async(dispatch) => {
+    try {
+      const changeUser = await axios.delete(`${VITE_URL_API}/admin/user/${user}`);
+      return dispatch({
+        type: CHANGE_USER,
+        payload: changeUser,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+const changeRolUser = (user) => {
+  return async(dispatch) => {
+    try {
+      const changeUser = await axios.put(`${VITE_URL_API}/admin/user/${user}/rol`);
+      return dispatch({
+        type: CHANGE_USER,
+        payload: changeUser,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -408,4 +550,13 @@ export {
   deleteState,
   ordersShow,
   disableProduct,
+  addToCartUser,
+  changeProfile,
+  addToCartDetailUser,
+  cartShow,
+  removeProductUser,
+  resetCartUser,
+  viewRoles,
+  deleteUser,
+  changeRolUser,
 };
