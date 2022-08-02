@@ -1,6 +1,7 @@
 import { products } from "../../../dbPrueba";
 import {
   GET_STATES,
+  GET_ORDER,
   NEW_STATE,
   EDIT_STATE,
   DELETE_STATE,
@@ -31,6 +32,10 @@ import {
   CHANGE_USER,
   CONFIRM_PURCHASE,
   SHOW_PURCHASES,
+  FAVORITE_SHOW,
+  ADD_TO_FAVORITE,
+  ADD_TO_FAVORITE_USER,
+  REMOVE_FROM_FAVORITE,
 } from "../types";
 import axios from "axios";
 
@@ -374,6 +379,22 @@ const ordersShow = () => {
   };
 }
 
+const getOrder = (iduser, idorder) => {
+  return (dispatch) => {
+    try {
+      return fetch(
+        `${VITE_URL_API}/mercadopag/${iduser}/${idorder}`
+      )
+        .then((response) => response.json())
+        .then((json) => {
+          dispatch({ type: GET_ORDER, payload: json });
+        });
+    } catch (error) {
+      dispatch({ type: GET_ORDER, payload: error });
+    }
+  };
+};
+
 const disableProduct = (idProduct) => {
   return async (dispatch) => {
     try {
@@ -533,7 +554,24 @@ const corfirmPurchase = (user, data) => {
       return dispatch({
         type: CONFIRM_PURCHASE,
         payload: order,
-      });
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+const addToFavoriteUser = (user, id) => {
+  return async(dispatch) => {
+    try {
+      const data = {
+        id,
+      }
+      const update = await axios.post(`${VITE_URL_API}/user/${user}/favorite`,data);
+      return dispatch({
+        type: ADD_TO_FAVORITE_USER,
+        payload: update.data,
+       });
     } catch (error) {
       console.log(error);
     }
@@ -547,6 +585,35 @@ const showPurchases = (user) => {
       return dispatch({
         type: SHOW_PURCHASES,
         payload: purchase.data,
+         });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+const addToFavorite = (itemID) => {
+  return {
+    type: ADD_TO_FAVORITE,
+    payload: {
+      id: itemID,
+    },
+  };
+};
+
+const removeFromFavoriteUser = (user, id) => {
+  return async(dispatch) => {
+    try {
+      const data = {
+        data: {
+          id
+        }
+      }
+      console.log(data)
+      const update = await axios.delete(`${VITE_URL_API}/user/${user}/favorite`,data);
+      return dispatch({
+        type: ADD_TO_FAVORITE_USER,
+        payload: update.data,
       });
     } catch (error) {
       console.log(error);
@@ -567,6 +634,20 @@ const changeOrderStatus = (idOrder, id) => {
       });
     } catch (error) {
       console.log(error);
+     }
+  };
+}
+
+const favoriteShow = (user) => {
+  return async(dispatch) => {
+    try {
+      const cart = await axios.get(`${VITE_URL_API}/user/${user}/favorite`);
+      return dispatch({
+        type: FAVORITE_SHOW,
+        payload: cart.data,
+      });
+    } catch (error) {
+      dispatch({ type: FAVORITE_SHOW, payload: 'Error' });
     }
   };
 }
@@ -609,4 +690,9 @@ export {
   corfirmPurchase,
   showPurchases,
   changeOrderStatus,
+  addToFavoriteUser,
+  addToFavorite,
+  getOrder,
+  favoriteShow,
+  removeFromFavoriteUser,
 };

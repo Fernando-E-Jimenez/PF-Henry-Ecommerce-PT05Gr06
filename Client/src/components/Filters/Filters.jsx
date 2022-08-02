@@ -1,4 +1,4 @@
-import styles from "./Filters.module.css";
+import "./Filters.css";
 import { useDispatch, useSelector } from "react-redux";
 import { changeOrder } from "../../redux/actions";
 import React, { useEffect } from "react";
@@ -15,8 +15,8 @@ export const Filters = () => {
 
   const handleChange = (e) => {
     e.preventDefault();
-    dispatch(changeOrder('', '', e.target.value))
-  }
+    dispatch(changeOrder("", "", e.target.value));
+  };
 
   return (
     <div className={styles.filtersContainer}>

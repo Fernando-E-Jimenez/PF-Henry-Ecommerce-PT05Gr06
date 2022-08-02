@@ -1,7 +1,7 @@
 import { useEffect} from 'react' 
 //import axios from 'axios'
 
-export default function Comprar({courses, data }){
+const mercadopago = ({ data }) => {
  useEffect(()=>{
   const script = document.createElement('script');
   const attr_data_preference = document.createAttribute('data-preference-id')
@@ -9,7 +9,7 @@ export default function Comprar({courses, data }){
 
   attr_data_preference.value = data.id
   //attr_nonce.value = 'abcdefg'
-  script.src="https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js";
+  script.src="https://www.mercadopago.com.pe/integrations/v1/web-payment-checkout.js";
   script.setAttributeNode(attr_data_preference)
  // script.setAttributeNode(attr_nonce)
 console.log(data, " data")
@@ -21,10 +21,9 @@ console.log(data, " data")
  },[data])
 return(
   <div>
-  
-  
       <form id='form1'></form>
-
      </div>
     )
 }
+
+export default mercadopago;

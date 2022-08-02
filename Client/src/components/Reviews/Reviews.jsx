@@ -1,4 +1,4 @@
-import styles from "./Reviews.module.css";
+import "./Reviews.css";
 import { useParams } from "react-router-dom";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,9 +23,9 @@ export const Reviews = () => {
   const handleClick = (value) => {
     setComment({
       ...comment,
-      star: value
-    })
-    setCurrentValue(value)
+      star: value,
+    });
+    setCurrentValue(value);
   };
 
   const handleMouseOver = (newHoverValue) => {
@@ -52,39 +52,44 @@ export const Reviews = () => {
       star: 0,
     });
     alert("Comentario agregado con exito");
-    dispatch(productDetail(id))
+    dispatch(productDetail(id));
   }
 
   return (
-      <div className={styles.reviewsPage}>
-          <div className={styles.reviewsContainer}>
-            <div>
-              <h4 className={styles.title}>Reviews</h4>
+    <div className="reviewsPage">
+      <hr />
+      <div className="reviewsContainer">
+        <div className="w-full">
+          <h4 className="title text-3xl text-center">Reviews</h4>
+        </div>
+        {product.review ? (
+          product.review.length > 0 ? (
+            <div className="boxReviews">
+              {product.review.map((r, id) => {
+                return (
+                  <div key={id} className="cardReview">
+                    <div style={{ fontSize: "large" }}>{r.star} ⭐</div>
+                    <p style={{ fontSize: "large" }}>{r.description}</p>
+                    <hr />
+                  </div>
+                );
+              })}
             </div>
-            {product.review?
-              product.review.length>0?
-                <div className={styles.boxReviews}>
-                  {product.review.map((r, id) => {
-                    return (
-                      <div key={id} className={styles.cardReview} >
-                        <p style={{"fontSize":'large'}}>{r.description}</p>
-                        <div style={{"fontSize":'large'}}>{r.star} ⭐</div>
-                      </div>
-                    );
-                  })}
-                </div>
-              :'Este producto no cuenta con Reviews'
-            :'Cargando...'}
-          </div>
-        {isAuthenticated?
-        <div className={styles.newReviewContainer}>
-          <h4 className={styles.title}>New Review</h4>
-          <form
-              onSubmit={(e) => handleSubmit(e)}>
+          ) : (
+            "Este producto no cuenta con Reviews"
+          )
+        ) : (
+          "Cargando..."
+        )}
+      </div>
+      {isAuthenticated ? (
+        <div className="newReviewContainer">
+          <h4 className="title text-3xl text-center">New Review</h4>
+          <form onSubmit={(e) => handleSubmit(e)}>
             <input
-              style={{"fontSize":'large'}}
+              style={{ fontSize: "large" }}
               type="text"
-              className={styles.input}
+              className="input text-xl"
               placeholder="What do you think about this product?"
               value={comment.description}
               onChange={(e) =>
@@ -94,7 +99,7 @@ export const Reviews = () => {
                 })
               }
             />
-            <div className={styles.starts}>
+            <div className="starts justify-center">
               {stars.map((_, index) => {
                 return (
                   <FaStar
@@ -103,7 +108,7 @@ export const Reviews = () => {
                     onClick={() => handleClick(index + 1)}
                     onMouseOver={() => handleMouseOver(index + 1)}
                     onMouseLeave={handleMouseLeave}
-                    className={styles.colorEstrellas}
+                    className="colorEstrellas"
                     color={
                       (hoverValue || currentValue) > index
                         ? colors.orange
@@ -113,12 +118,16 @@ export const Reviews = () => {
                 );
               })}
             </div>
-            <button type="submit" className={styles.postButton}>
-              Post
-            </button>
+            <div className="flex justify-center mt-6">
+              <button type="submit" className="secondaryButton mt-4">
+                Post
+              </button>
+            </div>
           </form>
-        </div>:""}
-      </div>
-    
+        </div>
+      ) : (
+        ""
+      )}
+    </div>
   );
 };

@@ -1,5 +1,6 @@
 import {
   GET_STATES,
+  GET_ORDER,
   NEW_STATE,
   EDIT_STATE,
   DELETE_STATE,
@@ -30,6 +31,10 @@ import {
   CHANGE_USER,
   CONFIRM_PURCHASE,
   SHOW_PURCHASES,
+  FAVORITE_SHOW,
+  ADD_TO_FAVORITE,
+  ADD_TO_FAVORITE_USER,
+  REMOVE_FROM_FAVORITE,
 } from "../types";
 
 const initialState = {
@@ -48,6 +53,7 @@ const initialState = {
     ? JSON.parse(localStorage.getItem("cartItems"))
     : [], */
   cart: [],
+  favorite: [],
   orders: [],
   profile: {},
   roles: {},
@@ -72,6 +78,11 @@ const reducer = (state = initialState, action) => {
       };
     }
 
+    case GET_ORDER: {
+      return {
+        ...state,
+      };
+    }
     case CHANGE_ORDER: {
       return {
         ...state,
@@ -242,6 +253,27 @@ const reducer = (state = initialState, action) => {
       }
     }
     
+    case ADD_TO_FAVORITE_USER: {
+      return {
+        ...state,
+        favorite: action.payload,
+      }
+    }
+
+    case FAVORITE_SHOW: {
+      return {
+        ...state,
+        favorite: typeof(action.payload) == 'string' ? [] : action.payload,
+      }
+    }
+
+    case REMOVE_FROM_FAVORITE: {
+      return {
+        ...state,
+        favorite: state.favorite.filter((product) => product.id !== action.payload.id),
+      };
+    }
+
     case CHANGE_PROFILE: {
       return {
         ...state,

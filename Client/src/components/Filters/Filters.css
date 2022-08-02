@@ -1,0 +1,41 @@
+.filterContainer {
+  width: 25rem;
+  height: 50rem;
+  display: grid;
+  padding-right: 6rem;
+}
+
+@media only screen and (max-width: 480px) {
+  .filterContainer {
+    display: none;
+  }
+}
+
+.selectContainer {
+  margin-top: 3rem;
+}
+.select {
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-bottom: 1px solid var(--darkGray);
+  outline: none;
+  background-color: transparent;
+  font-size: 1.4rem;
+}
+
+.title {
+  color: var(--tintColor);
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.option {
+  font-size: 1.4rem;
+  text-transform: capitalize;
+  padding: 0.2rem 0.5rem;
+}
+
+.detailName {
+  height: 4.5rem;
+}
