@@ -61,7 +61,7 @@ export const Filters = () => {
           <p className="title">Ordenar del mayor al menor precio</p>
         </button>
       </div>
-      <button className="secondaryButton button">Limpiar filtros</button>
+      <button className="secondaryButton">Limpiar filtros</button>
     </div>
   );
 };

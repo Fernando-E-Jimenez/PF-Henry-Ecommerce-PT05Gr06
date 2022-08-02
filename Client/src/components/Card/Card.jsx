@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import styles from "./Card.module.css";
+import "./Card.css";
 import { addToCart, addToCartUser } from "../../redux/actions";
 import Swal from "sweetalert2";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -11,9 +11,9 @@ export const Card = ({ id, name, price, image }) => {
   const { isAuthenticated } = useAuth0();
 
   const handleAddCart = (id) => {
-    isAuthenticated?
-      dispatch(addToCartUser(profile.id, id))
-      :dispatch(addToCart(id));
+    isAuthenticated
+      ? dispatch(addToCartUser(profile.id, id))
+      : dispatch(addToCart(id));
     Swal.fire({
       icon: "success",
       title: "Producto agregado con exito",
@@ -27,15 +27,18 @@ export const Card = ({ id, name, price, image }) => {
   });
 
   return (
-    <div className={styles.cardContainer}>
+    <div className="cardContainer">
       <Link to={`/product/${id}`}>
-        <img className={styles.imagen} src={image} alt="imagen" />
+        <img className="imagen" src={image} alt="imagen" />
       </Link>
-      <div className={styles.detail}>
-        <p>{name}</p>
+      <div className="detail">
+        <p className="detailName">{name}</p>
         <p>{precio}</p>
 
-        <button onClick={() => handleAddCart(id)} className={styles.button}>
+        <button
+          onClick={() => handleAddCart(id)}
+          className="secondaryButton button"
+        >
           Agregar Carrito
         </button>
       </div>

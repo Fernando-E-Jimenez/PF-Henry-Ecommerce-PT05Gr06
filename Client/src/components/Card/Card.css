@@ -1,8 +1,11 @@
 .cardContainer {
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  position: relative;
   background-color: white;
-  width: 30rem;
+  height: 44rem;
   margin: auto;
   border-radius: 1rem;
   text-decoration: none;
@@ -12,6 +15,15 @@
   cursor: pointer;
   transition: ease-in-out 300ms;
   box-shadow: rgb(0 0 0 / 15%) 5px 5px 5px;
+}
+
+@media only screen and (max-width: 480px) {
+  .cardContainer {
+    height: 28rem;
+    width: calc((100vw / 2) - 0.5rem);
+    border-radius: 0;
+    border: 1px solid #e2e2e2;
+  }
 }
 
 .imagen {
@@ -25,6 +37,14 @@
   background-size: cover;
   object-fit: contain;
   background: white;
+  margin: auto;
+}
+
+@media only screen and (max-width: 480px) {
+  .imagen {
+    max-width: 15rem;
+    max-height: 15rem;
+  }
 }
 
 .detail {
@@ -37,6 +57,13 @@
   color: gray;
   text-align: center;
   text-transform: capitalize;
+  height: 30rem;
+}
+
+@media only screen and (max-width: 480px) {
+  .detail {
+    font-size: 1.2rem;
+  }
 }
 
 .count {
@@ -49,13 +76,8 @@
   color: gray;
 }
 
-.button {
-  margin: 0.5rem 0rem;
-  width: 15rem;
-  border: none;
-  border-radius: 10px;
-  padding: 0.8rem 0.5rem;
-  background: #3f4e4f;
-  color: white;
-  margin-bottom: 1rem;
+@media only screen and (max-width: 480px) {
+  .button {
+    width: 15rem !important;
+  }
 }

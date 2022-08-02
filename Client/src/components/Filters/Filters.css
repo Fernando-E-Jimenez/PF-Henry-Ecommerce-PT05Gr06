@@ -1,8 +1,14 @@
 .filterContainer {
-  width: 30rem;
+  width: 25rem;
   height: 50rem;
   display: grid;
   padding-right: 6rem;
+}
+
+@media only screen and (max-width: 480px) {
+  .filterContainer {
+    display: none;
+  }
 }
 
 .selectContainer {
@@ -30,5 +36,6 @@
   padding: 0.2rem 0.5rem;
 }
 
-.button {
+.detailName {
+  height: 4.5rem;
 }
