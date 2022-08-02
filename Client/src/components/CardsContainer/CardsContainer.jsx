@@ -1,6 +1,6 @@
 import React from "react";
 import { Card } from "../Card/Card";
-import styles from "./CardsContainer.module.css";
+import "./CardsContainer.css";
 import { getProducts } from "../../redux/actions";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,10 +30,10 @@ export const CardsContainer = () => {
   }, [dispatch, page, order]);
 
   return (
-    <div className={styles.cardsContainer}>
+    <div className="cardsContainer">
       {products.data ? (
         <div>
-          <div className={styles.boxContainer}>
+          <div className="boxContainer">
             {productsStock?.map((product) => (
               <Card
                 key={product.id}
@@ -44,41 +44,65 @@ export const CardsContainer = () => {
               />
             ))}
           </div>
-          <div className={styles.container}>
-            {products.previousPage ? (
-              <button className={styles.button} onClick={() => previousPage()}>
-                {" "}
-                👈 Pagina anterior{" "}
-              </button>
-            ) : (
-              <button
-                className={styles.button}
-                onClick={() => previousPage()}
-                disabled
-              >
-                {" "}
-                👈 Pagina anterior{" "}
-              </button>
-            )}
-            {products.nextPage ? (
-              <button className={styles.button} onClick={() => nextPage()}>
-                {" "}
-                Pagina siguiente 👉{" "}
-              </button>
-            ) : (
-              <button
-                className={styles.button}
-                onClick={() => nextPage()}
-                disabled
-              >
-                {" "}
-                Pagina siguiente 👉{" "}
-              </button>
-            )}
+          <div className="containerPagination">
+            <button
+              className={
+                page <= 1
+                  ? "secondaryButtonPag disabled:opacity-25"
+                  : "secondaryButtonPag"
+              }
+              disabled={page <= 1 ? true : false}
+              onClick={previousPage}
+            >
+              <div>
+                <p className="paginationTitle">Pagina anterior</p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 svgPagination"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
+                </svg>
+              </div>
+            </button>
+            <button
+              className={
+                products.nextPage <= 1
+                  ? "secondaryButtonPag disabled:opacity-25"
+                  : "secondaryButtonPag"
+              }
+              onClick={nextPage}
+              disabled={products.nextPage ? false : true}
+            >
+              <div>
+                <p className="paginationTitle">Pagina siguiente</p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 svgPagination"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </div>
+            </button>
           </div>
         </div>
       ) : (
-        <div className={styles.noResults}>
+        <div className="noResults">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="icon icon-tabler icon-tabler-search"
@@ -96,9 +120,7 @@ export const CardsContainer = () => {
             <line x1="21" y1="21" x2="15" y2="15" />
           </svg>
           <br />
-          <h3 className={styles.noResultsText}>
-            OH... No pudimos encontrar nada
-          </h3>
+          <h3 className="noResultsText">OH... No pudimos encontrar nada</h3>
         </div>
       )}
     </div>

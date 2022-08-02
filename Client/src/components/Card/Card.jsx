@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import styles from "./Card.module.css";
-import { addToCart, addToCartUser, addToFavoriteUser, addToFavorite } from "../../redux/actions";
+import "./Card.css";
+import { addToCart, addToCartUser, addToFavoriteUser, addToFavorite  } from "../../redux/actions";
 import Swal from "sweetalert2";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -37,20 +37,23 @@ export const Card = ({ id, name, price, image }) => {
   });
 
   return (
-    <div className={styles.cardContainer}>
+    <div className="cardContainer">
       <button className={styles.cardFavorite} onClick={(e) => handleAddFavorite(id)}>
         {
           "❤"
         }
       </button>
       <Link to={`/product/${id}`}>
-        <img className={styles.imagen} src={image} alt="imagen" />
+        <img className="imagen" src={image} alt="imagen" />
       </Link>
-      <div className={styles.detail}>
-        <p>{name}</p>
+      <div className="detail">
+        <p className="detailName">{name}</p>
         <p>{precio}</p>
 
-        <button onClick={() => handleAddCart(id)} className={styles.button}>
+        <button
+          onClick={() => handleAddCart(id)}
+          className="secondaryButton button"
+        >
           Agregar Carrito
         </button>
       </div>

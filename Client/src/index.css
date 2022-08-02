@@ -116,7 +116,7 @@ button {
   cursor: pointer;
   border: 1px solid #7e52a0;
   border-radius: 6px;
-  color: var(--shadowColor);
+  color: var(--tintColor);
   font-weight: 600;
   transition: ease-in-out 200ms;
   background-color: transparent;

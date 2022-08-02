@@ -1,0 +1,162 @@
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border-bottom: 1px solid #bbb7ae;
+  background-color: #fff;
+}
+
+.container {
+  display: flex;
+  width: 120rem;
+  height: 6rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media only screen and (max-width: 480px) {
+  .container {
+    width: 37.5rem;
+  }
+}
+
+.logo {
+  width: 40rem;
+  font-size: 3rem;
+  font-weight: 800;
+  text-transform: unset;
+  color: var(--primaryColor);
+  transition: all ease-in-out 300ms;
+}
+
+.logoContainer:hover {
+  color: var(--primaryColor);
+}
+
+.logoImg {
+  display: none;
+}
+
+.burger {
+  display: none;
+}
+
+@media only screen and (max-width: 480px) {
+  .logo {
+    display: none;
+  }
+  .logoImg {
+    display: block;
+    width: 3rem;
+  }
+  .burger {
+    display: block;
+  }
+}
+
+.buttonUser {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: var(--primaryColor);
+  color: var(--white);
+  padding: 1rem 1rem;
+  margin-left: 1rem;
+}
+
+@media only screen and (max-width: 480px) {
+  .buttonUser {
+    display: none;
+  }
+}
+
+.search {
+  width: 40rem;
+  border-bottom: 1px solid #bbb7ae;
+  background-color: #fff;
+}
+
+@media only screen and (max-width: 480px) {
+  .search {
+    width: 22rem;
+    margin-left: 1rem;
+  }
+}
+
+.user {
+  width: 40rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+@media only screen and (max-width: 480px) {
+  .user {
+    width: 8rem;
+    justify-content: space-between;
+  }
+}
+
+.cart {
+  display: flex;
+}
+
+.quantity {
+  display: flex;
+  position: relative;
+  right: 12px;
+  background-color: #e9725a;
+  border-radius: 50%;
+  color: #fff;
+  width: 15px;
+  height: 15px;
+  padding: 5px 5px;
+  font-size: 0.9rem;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 480px) {
+  .menu-container {
+    position: relative;
+    display: flex;
+  }
+  .menu {
+    background: #ffffff;
+    position: absolute;
+    top: 6rem;
+    right: 0;
+    width: 90vw;
+    height: auto;
+    border: 1px solid #bbb7ae;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: opacity 0.1s ease, transform 0.2s ease, visibility 0.1s;
+    z-index: 999;
+  }
+
+  .menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .linksNav {
+    display: flex;
+    padding: 1rem 1rem;
+  }
+
+  .linksNavTitle {
+    font-size: 1.5rem;
+    margin-left: 1rem;
+  }
+
+  .userNav {
+    margin-top: 2rem;
+  }
+}

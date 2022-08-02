@@ -1,10 +1,8 @@
 .detailContainer {
-  display: flex;
-  flex-flow: column;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
   background-color: white;
-  width: 120rem;
+  width: 90rem;
   height: max-content;
   margin: auto;
   margin-top: 5rem;
@@ -13,30 +11,34 @@
   align-items: center;
 }
 
+.card {
+  display: flex;
+  justify-content: space-around;
+}
+
 .imgContainer {
   display: flex;
   background-repeat: no-repeat;
   background-size: cover;
-  width: 40rem;
-  height: 40rem;
-  margin: auto;
+  width: 30rem;
+  height: 30rem;
+  margin: 5rem;
 }
 
 .detailBox {
-  width: 60rem;
-  height: 50rem;
+  width: 30rem;
+  height: 30rem;
+  margin: 5rem;
   display: flex;
   flex-direction: column;
   text-align: center;
   justify-content: center;
-  border-top: dotted 1px gray;
 }
 
 .count {
   display: flex;
   align-items: center;
   width: 15rem;
-  margin: 5rem auto;
   justify-content: space-evenly;
   font-size: 1.5rem;
   color: gray;
@@ -45,6 +47,7 @@
 .buttonContainer {
   display: flex;
   justify-content: center;
+  height: 4rem;
 }
 
 .button {
@@ -59,7 +62,6 @@
 }
 
 .title {
-  font-size: 3rem;
   margin-bottom: 2rem;
   text-transform: capitalize;
 }
@@ -75,4 +77,38 @@
 .stock {
   font-size: 1.5rem;
   margin-top: 3rem;
+}
+
+@media only screen and (max-width: 480px) {
+  .detailContainer {
+    width: calc(100vw - 2rem);
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  .card {
+    flex-direction: column;
+    width: 30rem;
+    margin: auto;
+    padding-top: 2rem;
+  }
+
+  .imgContainer {
+    margin: auto;
+  }
+
+  .detailBox {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+  }
+  .count {
+    margin: 2rem auto !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    font-size: 1.5rem;
+    color: gray;
+  }
 }
