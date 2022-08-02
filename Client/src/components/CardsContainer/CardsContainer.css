@@ -1,0 +1,82 @@
+.cardsContainer {
+  background-color: #e2e2e2;
+  padding: 2rem 0rem;
+}
+
+.boxContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 90rem;
+  margin: auto;
+}
+
+@media only screen and (max-width: 480px) {
+  .boxContainer {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+
+    gap: 0;
+  }
+}
+
+.secondaryButtonPag {
+  width: 20rem;
+  padding: 0.2rem 0.4rem;
+  border: none;
+  cursor: pointer;
+  border: 1px solid #7e52a0;
+  border-radius: 6px;
+  color: var(--tintColor);
+  font-weight: 600;
+  transition: ease-in-out 200ms;
+  background-color: transparent;
+  font-size: 1.4rem;
+}
+
+.containerPagination {
+  text-align: center;
+
+  display: flex;
+  justify-content: space-between;
+  width: 50rem;
+  align-items: center;
+  margin: 3rem auto 0 auto;
+}
+
+.svgPagination {
+  display: none;
+}
+
+@media only screen and (max-width: 480px) {
+  .containerPagination {
+    width: 10rem;
+  }
+  .paginationTitle {
+    display: none;
+  }
+  .svgPagination {
+    display: block;
+    transform: scale(1.6);
+  }
+  .secondaryButtonPag {
+    width: auto;
+    border: none;
+  }
+}
+
+.noResults {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #e2e2e2;
+  padding: 2rem 0rem;
+}
+
+.noResultsText {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: large;
+  font-style: italic;
+  font-weight: bold;
+}
