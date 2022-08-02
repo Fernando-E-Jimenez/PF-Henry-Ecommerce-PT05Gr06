@@ -1,0 +1,75 @@
+.reviewsPage {
+  width: 100%;
+}
+
+.reviewsContainer {
+  margin: 2rem 2rem;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+}
+
+.newReviewContainer {
+  margin: 2rem 2rem;
+  width: 40rem;
+}
+
+.boxReviews {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.cardReview {
+  background-color: white;
+  width: 100%;
+  border-radius: 1rem;
+  text-decoration: none;
+  padding: 1rem 0.5rem;
+  /* border: 1px solid red; */
+}
+
+.title {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+}
+
+.postButton {
+  margin: 1rem 0.5rem;
+  margin-bottom: 1rem;
+  width: 20rem;
+  border: none;
+  border-radius: 10px;
+  padding: 0.8rem 0.5rem;
+  background-color: #3f4e4f !important;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.input {
+  margin: 0;
+  width: 40rem;
+  padding: 0.8rem 0.5rem 0.8rem 0;
+  border-bottom: 1px solid #e2e2e2;
+  margin-bottom: 1rem;
+}
+
+.starts {
+  display: flex;
+}
+
+@media only screen and (max-width: 480px) {
+  .reviewsPage {
+    width: 100%;
+  }
+
+  .input {
+    width: 100%;
+  }
+
+  .newReviewContainer {
+    width: auto;
+  }
+}
+
+/* ---------- */

@@ -38,6 +38,10 @@ nav {
   display: none;
 }
 
+.burger {
+  display: none;
+}
+
 @media only screen and (max-width: 480px) {
   .logo {
     display: none;
@@ -45,6 +49,9 @@ nav {
   .logoImg {
     display: block;
     width: 3rem;
+  }
+  .burger {
+    display: block;
   }
 }
 
@@ -89,7 +96,8 @@ nav {
 
 @media only screen and (max-width: 480px) {
   .user {
-    width: auto;
+    width: 8rem;
+    justify-content: space-between;
   }
 }
 
@@ -116,13 +124,14 @@ nav {
 @media only screen and (max-width: 480px) {
   .menu-container {
     position: relative;
+    display: flex;
   }
   .menu {
     background: #ffffff;
     position: absolute;
     top: 6rem;
     right: 0;
-    width: 95vw;
+    width: 90vw;
     height: auto;
     border: 1px solid #bbb7ae;
     visibility: hidden;
