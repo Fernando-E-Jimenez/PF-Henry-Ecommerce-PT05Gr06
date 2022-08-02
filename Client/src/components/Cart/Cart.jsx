@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { resetCart, resetCartUser } from "../../redux/actions";
 import { useAuth0 } from "@auth0/auth0-react";
+import { Checkout } from "../Mercadopago/Checkout.jsx";
 
 export const Cart = () => {
   const dispatch = useDispatch();
@@ -136,6 +137,7 @@ export const Cart = () => {
               <button className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-2xl text-white w-full">
                 Checkout
               </button>
+                  <Checkout/>
             </div>
           </div>
         </div>
