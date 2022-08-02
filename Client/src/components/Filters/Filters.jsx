@@ -19,19 +19,19 @@ export const Filters = () => {
   };
 
   return (
-    <div className={styles.filtersContainer}>
-      <div className={styles.filterBox}>
-        <select defaultValue={'DEFAULT'} className={styles.categoriesContainer}>
+    <div className="filterContainer">
+      <div className="selectContainer">
+        <select defaultValue='DEFAULT' className="select">
           <option value={'DEFAULT'} disabled >Nombre</option>
           <option onClick={() => dispatch(changeOrder('ASC', 'name', ''))}>⏫ Ordenar de la A-Z</option>
           <option onClick={() => dispatch(changeOrder('DESC', 'name', ''))}>⏬ Ordenar de la Z-A</option>
         </select>
-        <select defaultValue={'DEFAULT'} className={styles.categoriesContainer}>
+        <select defaultValue={'DEFAULT'} className="select">
           <option value={'DEFAULT'} disabled >Precio</option>
           <option onClick={() => dispatch(changeOrder('ASC', 'price', ''))}>➖ Ordenar del menor al mayor precio</option>
           <option onClick={() => dispatch(changeOrder('DESC', 'price', ''))}>➕ Ordenar del mayor al menor precio</option>
         </select>
-        <select defaultValue={'DEFAULT'} className={styles.categoriesContainer} onChange={handleChange}>
+        <select defaultValue={'DEFAULT'} className="select" onChange={handleChange}>
           <option value={'DEFAULT'} disabled >Categorias</option>
           {categories.map(c => {
             return <option key={c.id} value={c.id}>{c.name}</option>
