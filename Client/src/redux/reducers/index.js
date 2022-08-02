@@ -29,6 +29,10 @@ import {
   CART_SHOW,
   VIEW_ROLES,
   CHANGE_USER,
+  FAVORITE_SHOW,
+  ADD_TO_FAVORITE,
+  ADD_TO_FAVORITE_USER,
+  REMOVE_FROM_FAVORITE,
 } from "../types";
 
 const initialState = {
@@ -47,6 +51,7 @@ const initialState = {
     ? JSON.parse(localStorage.getItem("cartItems"))
     : [], */
   cart: [],
+  favorite: [],
   orders: [],
   profile: {},
   roles: {},
@@ -245,6 +250,27 @@ const reducer = (state = initialState, action) => {
       }
     }
     
+    case ADD_TO_FAVORITE_USER: {
+      return {
+        ...state,
+        favorite: action.payload,
+      }
+    }
+
+    case FAVORITE_SHOW: {
+      return {
+        ...state,
+        favorite: typeof(action.payload) == 'string' ? [] : action.payload,
+      }
+    }
+
+    case REMOVE_FROM_FAVORITE: {
+      return {
+        ...state,
+        favorite: state.favorite.filter((product) => product.id !== action.payload.id),
+      };
+    }
+
     case CHANGE_PROFILE: {
       return {
         ...state,

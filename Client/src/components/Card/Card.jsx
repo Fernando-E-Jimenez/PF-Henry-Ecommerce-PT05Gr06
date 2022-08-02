@@ -38,7 +38,7 @@ export const Card = ({ id, name, price, image }) => {
 
   return (
     <div className="cardContainer">
-      <button className={styles.cardFavorite} onClick={(e) => handleAddFavorite(id)}>
+      <button className="cardFavorite" onClick={(e) => handleAddFavorite(id)}>
         {
           "❤"
         }
