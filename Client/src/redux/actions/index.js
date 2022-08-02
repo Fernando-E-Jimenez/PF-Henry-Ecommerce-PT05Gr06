@@ -30,6 +30,10 @@ import {
   CART_SHOW,
   VIEW_ROLES,
   CHANGE_USER,
+  FAVORITE_SHOW,
+  ADD_TO_FAVORITE,
+  ADD_TO_FAVORITE_USER,
+  REMOVE_FROM_FAVORITE,
 } from "../types";
 import axios from "axios";
 
@@ -546,11 +550,10 @@ const addToFavoriteUser = (user, id) => {
     try {
       const data = {
         id,
-        cant: 1,
       }
-      const update = await axios.post(`${VITE_URL_API}/user/${user}/car`,data);
+      const update = await axios.post(`${VITE_URL_API}/user/${user}/favorite`,data);
       return dispatch({
-        type: ADD_TO_CART_USER,
+        type: ADD_TO_FAVORITE_USER,
         payload: update.data,
       });
     } catch (error) {
@@ -561,12 +564,46 @@ const addToFavoriteUser = (user, id) => {
 
 const addToFavorite = (itemID) => {
   return {
-    type: ADD_TO_CART,
+    type: ADD_TO_FAVORITE,
     payload: {
       id: itemID,
     },
   };
 };
+
+const removeFromFavoriteUser = (user, id) => {
+  return async(dispatch) => {
+    try {
+      const data = {
+        data: {
+          id
+        }
+      }
+      console.log(data)
+      const update = await axios.delete(`${VITE_URL_API}/user/${user}/favorite`,data);
+      return dispatch({
+        type: ADD_TO_FAVORITE_USER,
+        payload: update.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+const favoriteShow = (user) => {
+  return async(dispatch) => {
+    try {
+      const cart = await axios.get(`${VITE_URL_API}/user/${user}/favorite`);
+      return dispatch({
+        type: FAVORITE_SHOW,
+        payload: cart.data,
+      });
+    } catch (error) {
+      dispatch({ type: FAVORITE_SHOW, payload: 'Error' });
+    }
+  };
+}
 
 export {
   getProducts,
@@ -606,4 +643,6 @@ export {
   addToFavoriteUser,
   addToFavorite,
   getOrder,
+  favoriteShow,
+  removeFromFavoriteUser,
 };

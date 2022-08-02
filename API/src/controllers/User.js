@@ -444,6 +444,26 @@ router.delete("/:iduser/order/:idOrder", async (req, res) => {
 
 // Ruta agregar un Producto a Favoritos
 
+router.get("/:idUser/favorite", async (req, res) => {
+  try {
+    const { idUser } = req.params;
+    if (!idUser) return res.status(400).send("Faltan datos necesarios (idUser).");
+    if (isNaN(parseInt(idUser)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (idUser) debe ser un numero.");
+
+    const user = await User.findByPk(idUser);
+    if (!user) return res.status(400).send("El usuario no existe.");
+    const Favorites = await user.getFavorite();
+    return res.status(200).send(Favorites);
+  } catch (error) {
+    return res.status(400).send({ message: "Error: " + error });
+  }
+});
+
+// Ruta agregar un Producto a Favoritos
+
 router.post("/:idUser/favorite", async (req, res) => {
   try {
     const { idUser } = req.params;
