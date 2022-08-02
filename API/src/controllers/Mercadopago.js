@@ -15,13 +15,14 @@ const BASE_URL2 =
         access_token: ACCES_TOKEN
     })
 
-    router.get("/:iduser", async (req, res) => {
+    router.get("/:iduser/:idorder", async (req, res) => {
         
         try{
             let mont=0;
-            const { iduser } = req.params;
+            const { iduser, idorder } = req.params;
             const user = await User.findByPk(parseInt(iduser));
-            let projects = await user.getProducts(); // -
+            const order = await Order.findByPk(parseInt(idorder))
+            let projects = await order.getProducts(); // -
             let productsClient = await Promise.all(projects.map( async (f)=>{
               return{
                 id: f.dataValues.id,
@@ -42,13 +43,13 @@ const BASE_URL2 =
         }
         
               let productsCar = projects.map( e=> {
-                let mont1 = e.dataValues.price * e.dataValues.car.cant;
+                let mont1 = e.dataValues.price * e.dataValues.productXorder.cant;
                 mont = mont + mont1
                 
                 return{
                   id: e.dataValues.id,
                   title: e.dataValues.name,
-                  quantity: e.dataValues.car.cant,
+                  quantity:  e.dataValues.productXorder.cant,
                   description: e.dataValues.description,
                 //   category_id: array,
                   unit_price: e.dataValues.price,
@@ -70,7 +71,7 @@ const BASE_URL2 =
                 external_reference: `${user.dataValues.id}`,
                 payer: users,
                 back_urls: {
-                  success: 'http://localhost:5000/home',
+                  success: 'http://localhost:5000/mercadopag/pagos',
                   failure: 'http://localhost:5000/home',
                   pending: 'http://localhost:5000/home',
                 }
@@ -91,5 +92,10 @@ const BASE_URL2 =
     }
     })
     
+    router.get("/pagos", async (req, res) => {
+      console.info("EN LA RUTA PAGOS", req)
+      const external_reference = req.query.external_reference
+      console.log("EXTERNAL REFERENCE", external_reference)
+  })
+
       module.exports = router
-    
