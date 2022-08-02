@@ -1,5 +1,6 @@
 import {
   GET_STATES,
+  GET_ORDER,
   NEW_STATE,
   EDIT_STATE,
   DELETE_STATE,
@@ -69,6 +70,11 @@ const reducer = (state = initialState, action) => {
       };
     }
 
+    case GET_ORDER: {
+      return {
+        ...state,
+      };
+    }
     case CHANGE_ORDER: {
       return {
         ...state,
