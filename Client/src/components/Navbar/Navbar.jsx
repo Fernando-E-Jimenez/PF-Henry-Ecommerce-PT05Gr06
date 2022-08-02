@@ -172,7 +172,7 @@ export const Navbar = () => {
                     <circle cx="12" cy="7" r="4" />
                     <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
                   </svg>{" "}
-                  <p className="linksNavTitle">{user?.name}</p>
+                  <p className="linksNavTitle">{user.name}</p>
                 </div>
                 <div className="linksNav">
                   <svg
@@ -191,14 +191,9 @@ export const Navbar = () => {
                     <circle cx="12" cy="12" r="4" />
                     <path d="M16 12v1.5a2.5 2.5 0 0 0 5 0v-1.5a9 9 0 1 0 -5.5 8.28" />
                   </svg>{" "}
-                  <p className="linksNavTitle">{user?.email}</p>
+                  <p className="linksNavTitle">{user.email}</p>
                 </div>
-                <a
-                  onClick={() => {
-                    logout({ returnTo: window.location.origin });
-                  }}
-                  className="linksNav"
-                >
+                <Link to="/" className="linksNav">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="icon icon-tabler icon-tabler-logout"
@@ -216,7 +211,7 @@ export const Navbar = () => {
                     <path d="M7 12h14l-3 -3m0 6l3 -3" />
                   </svg>{" "}
                   <p className="linksNavTitle">Salir</p>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
