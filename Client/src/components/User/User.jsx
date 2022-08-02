@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./User.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useSelector } from "react-redux";
@@ -8,6 +8,7 @@ export const User = () => {
   const [open, setOpen] = useState(false);
   const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
   const profile = useSelector((state) => state.profile);
+  const navigate = useNavigate();
 
   const handleClick = () => {
     setOpen(!open);
@@ -91,18 +92,30 @@ export const User = () => {
                   Iniciar Sesion
                 </a>
               ) : (
-                <a
-                  href="#"
-                  className="text-gray-700 block px-4 py-2 text-md"
-                  role="menuitem"
-                  tabIndex="-1"
-                  id="menu-item-2"
-                  onClick={() => {
-                    logout({ returnTo: window.location.origin });
-                  }}
-                >
-                  Salir
-                </a>
+                <>
+                  <a
+                    href="#"
+                    className="text-gray-700 block px-4 py-2 text-md"
+                    role="menuitem"
+                    tabIndex="-1"
+                    id="menu-item-2"
+                    onClick={() => navigate("/purchases") }
+                  >
+                    Compras
+                  </a>
+                  <a
+                    href="#"
+                    className="text-gray-700 block px-4 py-2 text-md"
+                    role="menuitem"
+                    tabIndex="-1"
+                    id="menu-item-2"
+                    onClick={() => {
+                      logout({ returnTo: window.location.origin });
+                    }}
+                  >
+                    Salir
+                  </a>
+                </>
               )}
               {/* <a
                 href="#"

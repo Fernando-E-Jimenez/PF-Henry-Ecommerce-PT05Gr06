@@ -23,11 +23,13 @@ import {
   RESET_CART,
   ORDERS_SHOW,
   DISABLE_PRODUCT,
-  ADD_TO_CART_USER,
+  CHANGE_CART_USER,
   CHANGE_PROFILE,
   CART_SHOW,
   VIEW_ROLES,
   CHANGE_USER,
+  CONFIRM_PURCHASE,
+  SHOW_PURCHASES,
 } from "../types";
 
 const initialState = {
@@ -49,6 +51,7 @@ const initialState = {
   orders: [],
   profile: {},
   roles: {},
+  purchases: {},
 };
 
 //console.log(initialState.productEdit);
@@ -232,7 +235,7 @@ const reducer = (state = initialState, action) => {
       }
     }
 
-    case ADD_TO_CART_USER: {
+    case CHANGE_CART_USER: {
       return {
         ...state,
         cart: action.payload,
@@ -264,6 +267,20 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         resultPost: action.payload
+      }
+    }
+
+    case CONFIRM_PURCHASE: {
+      return {
+        ...state,
+        resultPost: action.payload
+      }
+    }
+
+    case SHOW_PURCHASES: {
+      return {
+        ...state,
+        purchases: action.payload
       }
     }
 

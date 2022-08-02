@@ -24,11 +24,13 @@ import {
   RESET_CART,
   ORDERS_SHOW,
   DISABLE_PRODUCT,
-  ADD_TO_CART_USER,
+  CHANGE_CART_USER,
   CHANGE_PROFILE,
   CART_SHOW,
   VIEW_ROLES,
   CHANGE_USER,
+  CONFIRM_PURCHASE,
+  SHOW_PURCHASES,
 } from "../types";
 import axios from "axios";
 
@@ -394,7 +396,7 @@ const addToCartUser = (user, id) => {
       }
       const update = await axios.post(`${VITE_URL_API}/user/${user}/car`,data);
       return dispatch({
-        type: ADD_TO_CART_USER,
+        type: CHANGE_CART_USER,
         payload: update.data,
       });
     } catch (error) {
@@ -412,7 +414,7 @@ const addToCartDetailUser = (user, id, cant) => {
       }
       const update = await axios.post(`${VITE_URL_API}/user/${user}/car`,data);
       return dispatch({
-        type: ADD_TO_CART_USER,
+        type: CHANGE_CART_USER,
         payload: update.data,
       });
     } catch (error) {
@@ -432,7 +434,7 @@ const removeProductUser = (user, id) => {
       console.log(data)
       const update = await axios.delete(`${VITE_URL_API}/user/${user}/car`,data);
       return dispatch({
-        type: ADD_TO_CART_USER,
+        type: CHANGE_CART_USER,
         payload: update.data,
       });
     } catch (error) {
@@ -524,6 +526,51 @@ const changeRolUser = (user) => {
   };
 }
 
+const corfirmPurchase = (user, data) => {
+  return async(dispatch) => {
+    try {
+      const order = await axios.post(`${VITE_URL_API}/user/${user}/order`, data);
+      return dispatch({
+        type: CONFIRM_PURCHASE,
+        payload: order,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+const showPurchases = (user) => {
+  return async(dispatch) => {
+    try {
+      const purchase = await axios.get(`${VITE_URL_API}/user/${user}/order`);
+      return dispatch({
+        type: SHOW_PURCHASES,
+        payload: purchase.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+const changeOrderStatus = (idOrder, id) => {
+  return async(dispatch) => {
+    try {
+      const data = {
+        state: id
+      }
+      const changeStatus = await axios.put(`${VITE_URL_API}/admin/order/${idOrder}`, data);
+      return dispatch({
+        type: ORDERS_SHOW,
+        payload: changeStatus,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export {
   getProducts,
   productDetail,
@@ -559,4 +606,7 @@ export {
   viewRoles,
   deleteUser,
   changeRolUser,
+  corfirmPurchase,
+  showPurchases,
+  changeOrderStatus,
 };
