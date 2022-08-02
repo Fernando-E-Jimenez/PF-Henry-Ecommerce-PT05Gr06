@@ -22,6 +22,7 @@ export const CHANGE_PROFILE = "CHANGE_PROFILE";
 export const CART_SHOW = "CART_SHOW";
 export const VIEW_ROLES = "VIEW_ROLES";
 export const CHANGE_USER = "CHANGE_USER";
+export const GET_ORDER = "GET_ORDER";
 
 // SHOPPING CART
 export const ADD_TO_CART = "ADD_TO_CART";

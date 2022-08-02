@@ -1,6 +1,7 @@
 import { products } from "../../../dbPrueba";
 import {
   GET_STATES,
+  GET_ORDER,
   NEW_STATE,
   EDIT_STATE,
   DELETE_STATE,
@@ -372,6 +373,22 @@ const ordersShow = () => {
   };
 }
 
+const getOrder = (iduser, idorder) => {
+  return (dispatch) => {
+    try {
+      return fetch(
+        `${VITE_URL_API}/mercadopag/${iduser}/${idorder}`
+      )
+        .then((response) => response.json())
+        .then((json) => {
+          dispatch({ type: GET_ORDER, payload: json });
+        });
+    } catch (error) {
+      dispatch({ type: GET_ORDER, payload: error });
+    }
+  };
+};
+
 const disableProduct = (idProduct) => {
   return async (dispatch) => {
     try {
@@ -587,5 +604,6 @@ export {
   deleteUser,
   changeRolUser,
   addToFavoriteUser,
-  addToFavorite
+  addToFavorite,
+  getOrder,
 };
