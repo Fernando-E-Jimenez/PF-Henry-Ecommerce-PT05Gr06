@@ -42,7 +42,7 @@ export const Navbar = () => {
         >
           Vite Wines
         </NavLink>
-        <img src="../drink.svg" alt="logo" className="logoImg" />
+        <img src="./drink.svg" alt="logo" className="logoImg" />
         <div className="search">
           <SearchBar />
         </div>
