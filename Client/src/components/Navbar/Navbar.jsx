@@ -46,7 +46,7 @@ export const Navbar = () => {
           Vite Wines
         </NavLink>
         <NavLink to="/" onClick={() => dispatch(getProducts())}>
-          <img src="../src/drink.svg" alt="logo" className="logoImg" />
+          <img src="../src/drink.jpg" alt="logo" className="logoImg" />
         </NavLink>
         <div className="search">
           <SearchBar />
@@ -75,8 +75,9 @@ export const Navbar = () => {
                 ""
               )}
             </Link>
-          )
-            : ("")}
+          ) : (
+            ""
+          )}
 
           <Link to="/cart" className="cart w-20">
             <svg
@@ -194,7 +195,7 @@ export const Navbar = () => {
               )}
 
               {profile.rolId === 2 ? (
-                <Link to="/" className="linksNav">
+                <Link to="/purchases" className="linksNav">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="icon icon-tabler icon-tabler-building-store"
