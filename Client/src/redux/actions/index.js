@@ -36,7 +36,7 @@ import {
   FAVORITE_SHOW,
   ADD_TO_FAVORITE,
   ADD_TO_FAVORITE_USER,
-  REMOVE_FROM_FAVORITE,
+  RESET_FAVORITE,
 } from "../types";
 import axios from "axios";
 
@@ -668,6 +668,20 @@ const favoriteShow = (user) => {
   };
 }
 
+const resetFavorite = (user) => {
+  return async(dispatch) => {
+    try {
+      await axios.delete(`${VITE_URL_API}/user/${user}/favorite/reset`);
+      return dispatch({
+        type: RESET_FAVORITE,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+
 const filterOrderStatus = (id) => {
   return async(dispatch) => {
     try {
@@ -731,4 +745,5 @@ export {
   removeFromFavoriteUser,
   confirmPayment,
   filterOrderStatus,
+  resetFavorite,
 };

@@ -209,7 +209,7 @@ router.put("/:id", async (req, res) => {
       try {
         const user = await User.update(
           {
-            name,
+            name: name.toLowerCase(),
             password: hash1,
             email,
             dni,
@@ -300,7 +300,7 @@ router.post("/:iduser/order", async (req, res) => {
       userId: user.dataValues.id
     });
     let userNew = await User.update({
-      name,
+      name: name.toLowerCase(),
       dni,
       orderId: order.dataValues.id
     },
@@ -534,6 +534,28 @@ router.delete("/:idUser/favorite", async (req, res) => {
   }
 });
 
+// Ruta Sacar todos los Productos de Favoritos
+
+router.delete("/:idUser/favorite/reset", async (req, res) => {
+  try {
+    const { idUser } = req.params;
+    if (!idUser) return res.status(400).send("Faltan datos necesarios (idUser).");    
+    if (isNaN(parseInt(idUser)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (idUser) debe ser un numero.");
+    const user = await User.findByPk(idUser);
+    // const user = await User.findOne({ where: { email: idUser } });
+    if (!user) return res.status(400).send("El usuario no existe.");
+    const Favorites = await user.getFavorite();
+    Favorites.map( async (f) => {
+      await user.removeFavorite(f.dataValues.id);      
+    })
+    return res.status(200).send("Favoritos Vaciado.");
+  } catch (error) {
+    return res.status(400).send({ message: "Error: " + error });
+  }
+});
 
 
 module.exports = router;

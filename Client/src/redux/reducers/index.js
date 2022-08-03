@@ -35,7 +35,8 @@ import {
   ADD_TO_FAVORITE,
   ADD_TO_FAVORITE_USER,
   REMOVE_FROM_FAVORITE,
-  GET_ALL_PAYMENTS
+  GET_ALL_PAYMENTS,
+  RESET_FAVORITE,
 } from "../types";
 
 const initialState = {
@@ -172,22 +173,22 @@ const reducer = (state = initialState, action) => {
       const product = state.products.data.find(
         (product) => product.id === action.payload.id
       );
-      const inCart = 
-        state.cart.length > 0? 
+      const inCart =
+        state.cart.length > 0 ?
           state.cart.find((product) =>
             product.id === action.payload.id ? true : false
           )
-        :false;
+          : false;
 
       return {
         ...state,
         cart: inCart
           ? state.cart.map((product) =>
-              product.id === action.payload.id
-                ? { ...product, car: {cant : product.car.cant + 1 }}
-                : product
-            )
-          : [...state.cart, { ...product, car:{ cant: 1 } }],
+            product.id === action.payload.id
+              ? { ...product, car: { cant: product.car.cant + 1 } }
+              : product
+          )
+          : [...state.cart, { ...product, car: { cant: 1 } }],
       };
     }
 
@@ -201,11 +202,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         cart: inCart
           ? state.cart.map((product) =>
-              product.id === action.payload.id
-                ? { ...product, car: {cant: product.car.cant + 1 } }
-                : product
-            )
-          : [...state.cart, { ...product, car: {cant: action.payload.qty} }],
+            product.id === action.payload.id
+              ? { ...product, car: { cant: product.car.cant + 1 } }
+              : product
+          )
+          : [...state.cart, { ...product, car: { cant: action.payload.qty } }],
       };
     }
 
@@ -214,7 +215,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         cart: state.cart.map((item) =>
           item.id === action.payload.id
-            ? { ...item, car: {cant: action.payload.qty} }
+            ? { ...item, car: { cant: action.payload.qty } }
             : item
         ),
       };
@@ -260,7 +261,7 @@ const reducer = (state = initialState, action) => {
         cart: action.payload,
       }
     }
-    
+
     case ADD_TO_FAVORITE_USER: {
       return {
         ...state,
@@ -271,7 +272,7 @@ const reducer = (state = initialState, action) => {
     case FAVORITE_SHOW: {
       return {
         ...state,
-        favorite: typeof(action.payload) == 'string' ? [] : action.payload,
+        favorite: typeof (action.payload) == 'string' ? [] : action.payload,
       }
     }
 
@@ -279,6 +280,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         favorite: state.favorite.filter((product) => product.id !== action.payload.id),
+      };
+    }
+
+    case RESET_FAVORITE: {
+      return {
+        ...state,
+        favorite: [],
       };
     }
 
@@ -292,7 +300,7 @@ const reducer = (state = initialState, action) => {
     case CART_SHOW: {
       return {
         ...state,
-        cart: typeof(action.payload) == 'string' ? [] : action.payload,
+        cart: typeof (action.payload) == 'string' ? [] : action.payload,
       }
     }
 

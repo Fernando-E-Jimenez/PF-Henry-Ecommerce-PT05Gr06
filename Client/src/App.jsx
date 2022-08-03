@@ -16,11 +16,14 @@ import { ViewRoles } from "./components/ViewRoles/ViewRoles"
 import { PaymentForm } from "./components/PaymentForm/PaymentForm";
 import {UserPurchases } from './components/UserPurchases/UserPurchases'
 import { Checkout } from "./components/Mercadopago/Checkout";
+import {Chat} from './components/ChatBot/Chat';
+
 
 export const App = () => {
   return (
     <>
       <Navbar />
+      
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product/:id" element={<CardDetail />} />
@@ -40,6 +43,7 @@ export const App = () => {
           <Route path="view-roles" element={<ViewRoles />} />
         </Route>
       </Routes>
+      <Chat />
     </>
   );
 };
