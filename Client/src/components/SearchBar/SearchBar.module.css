@@ -19,3 +19,19 @@
 svg:hover {
   cursor: pointer;
 }
+
+.autocomplete {
+  width: unset;
+  position: absolute;
+  z-index: 1;
+  background-color: white;
+  margin-top: 1.7rem;
+}
+
+.autocompleteItem {
+  border: 1px solid darkolivegreen;
+}
+
+.autocompleteItem:hover {
+  background-color: #9d71bf;
+}

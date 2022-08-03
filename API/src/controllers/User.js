@@ -3,6 +3,9 @@ const { transporter } = require("../utils/nodeMailer");
 const { MAILUSER } = process.env;
 const { Router } = require("express");
 const router = Router();
+const bcrypt = require('bcrypt');
+
+
 
 // Ruta para Consultar los productos en el carrito del usuario
 
@@ -110,7 +113,7 @@ router.delete("/:idUser/car/reset", async (req, res) => {
     const user = await User.findByPk(idUser);
     if (!user) return res.status(400).send("El usuario no existe.");
     const car = await user.getProducts();
-    car.map( async (p) => {
+    car.map(async (p) => {
       await user.removeProduct(p.dataValues.id);
     })
     return res.status(200).send("Productos Removidos del Carrito.");
@@ -202,31 +205,37 @@ router.put("/:id", async (req, res) => {
         .status(400)
         .send("Formato de datos invalido (id) debe ser un numero.");
 
-    const user = await User.update(
-      {
-        name,
-        password,
-        email,
-        dni,
-      },
-      {
-        where: {
-          id: id,
-        },
+    await bcrypt.hash(password, 10, async function (err, hash) {
+      try {
+        const user = await User.update(
+          {
+            name,
+            password: hash1,
+            email,
+            dni,
+          },
+          {
+            where: {
+              id: id,
+            },
+          }
+        );
+        console.log(user);
+        if (user[0] === 1) {
+          let user1 = await User.findByPk(id);
+          // let user1 = await User.findOne({ where: { email: id } });
+          return res.status(200).json(user1);
+        } else if (!user) {
+          return res.status(404).json({ message: "Error: El Usuario no Existe." });
+        } else {
+          return res
+            .status(404)
+            .json({ message: "Error: Usuario no Actualizado." });
+        }
+      } catch (e) {
+        return res.status(400).send({ message: "Error: " + e });
       }
-    );
-    console.log(user);
-    if (user[0] === 1) {
-      let user1 = await User.findByPk(id);
-      // let user1 = await User.findOne({ where: { email: id } });
-      return res.status(200).json(user1);
-    } else if (!user) {
-      return res.status(404).json({ message: "Error: El Usuario no Existe." });
-    } else {
-      return res
-        .status(404)
-        .json({ message: "Error: Usuario no Actualizado." });
-    }
+    });
   } catch (e) {
     return res.status(400).send({ message: "Error: " + e });
   }

@@ -86,3 +86,8 @@
   margin: 1rem 1rem;
   position: absolute;
 }
+
+.btnFavorite:hover {
+  transform: scale(1.1);
+  
+}
