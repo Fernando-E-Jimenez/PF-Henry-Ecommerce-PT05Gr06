@@ -17,7 +17,6 @@ export const ViewOrders = () => {
 
   const handleChangeFilter = (e) => {
     e.preventDefault();
-    console.log(e.target.value)
     dispatch(filterOrderStatus(e.target.value));
   }
 
