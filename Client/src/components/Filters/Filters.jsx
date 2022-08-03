@@ -6,7 +6,6 @@ import { getCategory } from "../../redux/actions";
 
 export const Filters = () => {
   const dispatch = useDispatch();
-
   const categories = useSelector((state) => state.categories);
 
   useEffect(() => {
@@ -18,18 +17,36 @@ export const Filters = () => {
     dispatch(changeOrder("", "", e.target.value));
   };
 
+  const handleChangeOrder = (e) => {
+    if(e == 5) {
+      dispatch(changeOrder('','',''))
+    }else {
+      e.preventDefault();
+      console.log(e.target.value);
+      if(e.target.value == 1) {
+        dispatch(changeOrder('ASC', 'name', ''))
+      } else if(e.target.value == 2) {
+        dispatch(changeOrder('DESC', 'name', ''))
+      } else if(e.target.value == 3) {
+        dispatch(changeOrder('ASC', 'price', ''))
+      } else if(e.target.value == 4) {
+        dispatch(changeOrder('DESC', 'price', ''))
+      }
+    }
+  }
+
   return (
     <div className="filterContainer">
       <div className="selectContainer">
-        <select defaultValue='DEFAULT' className="select">
+        <select defaultValue='DEFAULT' className="select" onChange={handleChangeOrder}>
           <option value={'DEFAULT'} disabled >Nombre</option>
-          <option onClick={() => dispatch(changeOrder('ASC', 'name', ''))}>⏫ Ordenar de la A-Z</option>
-          <option onClick={() => dispatch(changeOrder('DESC', 'name', ''))}>⏬ Ordenar de la Z-A</option>
+          <option onSelect={() => dispatch(changeOrder('ASC', 'name', ''))} value={1}>⏫ Ordenar de la A-Z</option>
+          <option onSelect={() => dispatch(changeOrder('DESC', 'name', ''))} value={2}>⏬ Ordenar de la Z-A</option>
         </select>
-        <select defaultValue={'DEFAULT'} className="select">
+        <select defaultValue={'DEFAULT'} className="select" onChange={handleChangeOrder}>
           <option value={'DEFAULT'} disabled >Precio</option>
-          <option onClick={() => dispatch(changeOrder('ASC', 'price', ''))}>➖ Ordenar del menor al mayor precio</option>
-          <option onClick={() => dispatch(changeOrder('DESC', 'price', ''))}>➕ Ordenar del mayor al menor precio</option>
+          <option onClick={() => dispatch(changeOrder('ASC', 'price', ''))} value={3}>➖ Ordenar del menor al mayor precio</option>
+          <option onClick={() => dispatch(changeOrder('DESC', 'price', ''))} value={4}>➕ Ordenar del mayor al menor precio</option>
         </select>
         <select defaultValue={'DEFAULT'} className="select" onChange={handleChange}>
           <option value={'DEFAULT'} disabled >Categorias</option>
@@ -37,6 +54,7 @@ export const Filters = () => {
             return <option key={c.id} value={c.id}>{c.name}</option>
           })}
         </select>
+        <button className="secondaryButton" onClick={() => handleChangeOrder(5)}>Limpiar Filtros</button>
       </div>
     </div>
   );
