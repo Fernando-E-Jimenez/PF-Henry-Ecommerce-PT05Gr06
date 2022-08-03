@@ -2,13 +2,14 @@ const { Product, Order, Review, State, User } = require("../db");
 const { transporter } = require("../utils/nodeMailer");
 const { MAILUSER } = process.env;
 const { Router } = require("express");
+const { Op } = require("sequelize");
 const router = Router();
 
 
 // Admin ...poder ver una lista de todas las ordenes, para poder ver y revisar las ordenes.
 router.get("/", async (req, res) => {
   try {
-    const { state } = req.query;
+    const { state, name } = req.query;
     let options = {
       include: [
         {
@@ -32,10 +33,24 @@ router.get("/", async (req, res) => {
           .json({
             message: "Formato de datos invalido (state) debe ser un numero.",
           });
-      options.include[1].where = { id : state};
+      options.include[1].where = { id: state };
+    }
+    if (name) {
+      if (!isNaN(parseInt(name)))
+        return res
+          .status(400)
+          .json({
+            message: "Formato de datos invalido (name) debe ser una cadena texto.",
+          });
+      options.include[0].where = {
+        name: {
+          [Op.like]: `%${name.toLowerCase()}%`,
+        }
+      };
+      console.log(options.include[0]);
     }
     const total = await Order.findAll(options);
-    if(total.length === 0) return res.status(200).send("No se encontraron Ordenes.");
+    // if (total.length === 0) return res.status(200).send("No se encontraron Ordenes.");
     return res.status(200).send(total);
   } catch (e) {
     return res.status(400).send("Error: " + e);
@@ -92,7 +107,7 @@ router.put("/:idOrder", async (req, res) => {
       return res
         .status(400)
         .send("Formato de datos invalido (state) debe ser un numero.");
-    const order = await Order.findByPk(idOrder,{include: User});
+    const order = await Order.findByPk(idOrder, { include: User });
     const stateData = await State.findByPk(state);
     if (!order) return res.status(200).send("No se encontro la orden.");
     const update = await Order.update(
@@ -130,7 +145,7 @@ router.put("/:idOrder", async (req, res) => {
         ]
       });
       return res.status(200).send(order2);
-    }else{
+    } else {
       return res.status(400).send("Error al actualizar Orden.");
     }
   } catch (e) {
