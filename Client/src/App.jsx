@@ -15,7 +15,7 @@ import { ViewOrders } from "./components/ViewOrders/ViewOrders";
 import { ViewRoles } from "./components/ViewRoles/ViewRoles"
 import { PaymentForm } from "./components/PaymentForm/PaymentForm";
 import {UserPurchases } from './components/UserPurchases/UserPurchases';
-import {Chat} from './components/ChatBot';
+import {Chat} from './components/ChatBot/Chat';
 
 export const App = () => {
   return (
