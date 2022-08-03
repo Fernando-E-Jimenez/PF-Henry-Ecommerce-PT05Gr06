@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
-import { removeProduct, removeFromFavoriteUser } from "../../redux/actions";
+import { removeFromFavoriteUser } from "../../redux/actions";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { useAuth0 } from "@auth0/auth0-react";
+import "./FavoriteItem.css";
 
-export const CartItem = ({ product }) => {
+export const FavoriteItem = ({ product }) => {
   const dispatch = useDispatch();
-  const [quantity, setQuantity] = useState(product.favorite.cant);
+  // const [quantity, setQuantity] = useState(product.favorite.length);
   const profile = useSelector((state) => state.profile);
   const { isAuthenticated } = useAuth0();
 
@@ -25,7 +26,7 @@ export const CartItem = ({ product }) => {
       if (result.isConfirmed) {
         isAuthenticated?
           dispatch(removeFromFavoriteUser(profile.id, id))
-          :dispatch(removeProduct(id));
+          :null;
         Swal.fire(
           "Eliminado!",
           "El producto se ha eliminado correctamente",
@@ -35,11 +36,11 @@ export const CartItem = ({ product }) => {
     });
   };
 
-  const total = quantity * product.price;
+  // const total = quantity * product.price;
 
-  useEffect(() => {
-    total;
-  }, [total]);
+  // useEffect(() => {
+  //   total;
+  // }, [total]);
 
   const priceUnit = product.price.toLocaleString("es-ar", {
     style: "currency",
@@ -48,22 +49,22 @@ export const CartItem = ({ product }) => {
   });
 
   return (
-    <div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
-      <div className="flex w-2/5">
+    <div className="itemContainer -mx-8 px-6 py-5">
+      <div className="md:w-4/5 itemImgTitle">
         <div className="w-28">
           <img className="h-36" src={product.image} alt="" />
         </div>
-        <div className="flex flex-col justify-between ml-4 flex-grow">
+        <div className="flex justify-between ml-4 flex-grow itemTitle">
           <span className=" text-2xl">{product.name}</span>
           <button
             onClick={() => removeProductCart(product.id)}
-            className="font-semibold hover:text-red-500 text-gray-500 text-xl"
+            className="font-bold hover:text-red-500 text-gray-500 text-xl"
           >
             Remove
           </button>
         </div>
       </div>
-      <span className="text-center w-1/5 text-xl">{priceUnit}</span>
+      <span className="text-center w-1/5 text-xl font-bold">{priceUnit}</span>
     </div>
   );
 };

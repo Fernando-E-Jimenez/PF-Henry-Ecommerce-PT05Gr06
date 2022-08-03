@@ -5,7 +5,7 @@ import { User } from "../User/User";
 import { useDispatch, useSelector } from "react-redux";
 import "./Navbar.css";
 import { useAuth0 } from "@auth0/auth0-react";
-import { changeProfile, cartShow } from "../../redux/actions";
+import { changeProfile, cartShow, favoriteShow } from "../../redux/actions";
 
 export const Navbar = () => {
   const dispatch = useDispatch();
@@ -27,6 +27,7 @@ export const Navbar = () => {
   const cart = useSelector((state) => state.cart.length);
   if (profile.id) {
     dispatch(cartShow(profile.id));
+    dispatch(favoriteShow(profile.id));
   }
 
   const [isActive, setIsActive] = useState(false);
@@ -142,7 +143,7 @@ export const Navbar = () => {
                 ""
               )}
               {profile.rolId === 2 ? (
-                <Link to="/" className="linksNav">
+                <Link to="/favorite" className="linksNav">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="icon icon-tabler icon-tabler-heart"
