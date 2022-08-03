@@ -15,12 +15,13 @@ mercadopago.configure({
   access_token: ACCES_TOKEN
 })
 
-router.get("/:iduser/:idorder", async (req, res) => {
+router.get("/:idorder", async (req, res) => {
   try {
     let mont = 0;
-    const { iduser, idorder } = req.params;
-    const user = await User.findByPk(parseInt(iduser));
+    const {idorder} = req.params;
     const order = await Order.findByPk(parseInt(idorder))
+    console.log(order)
+    const user = await User.findByPk(parseInt(order.dataValues.userId));
     let projects = await order.getProducts(); // -
     let productsClient = await Promise.all(projects.map(async (f) => {
       return {
@@ -70,9 +71,9 @@ router.get("/:iduser/:idorder", async (req, res) => {
       external_reference: `${user.dataValues.id}`,
       payer: users,
       back_urls: {
-        success: 'http://localhost:5000/mercadopag/pagos',
-        failure: 'http://localhost:5000/home',
-        pending: 'http://localhost:5000/home',
+        success: `${VITE_URL_API}`,
+        failure: `${VITE_URL_API}`,
+        pending: `${VITE_URL_API}`,
       }
     }
     mercadopago.preferences
@@ -92,9 +93,16 @@ router.get("/:iduser/:idorder", async (req, res) => {
 })
 
 router.get("/pagos", async (req, res) => {
+  const mp = new mercadopago(ACCES_TOKEN);
+  console.log(mp)
   console.info("EN LA RUTA PAGOS", req)
   const external_reference = req.query.external_reference
+  const payment_status= req.query.payment_status
+  const merchant_order_id= req.query.merchant_order_id
   console.log("EXTERNAL REFERENCE", external_reference)
+
+  
+  res.json({ status: "approved" });
 })
 
 module.exports = router;
