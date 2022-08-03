@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { corfirmPurchase } from "../../redux/actions/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import { resetCartUser } from "../../redux/actions";
+import {Checkout} from '../Mercadopago/Checkout'
 
 function validate(post) {
   let errors = {};
@@ -111,6 +112,7 @@ export const PaymentForm = () => {
             Volver
           </button>
         </Link>
+        {/* <Checkout/> */}
       </div>
     </div>
   );

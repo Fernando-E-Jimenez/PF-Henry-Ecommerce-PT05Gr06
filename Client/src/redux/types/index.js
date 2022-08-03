@@ -25,6 +25,7 @@ export const CHANGE_USER = "CHANGE_USER";
 export const CONFIRM_PURCHASE = 'CONFIRM_PURCHASE';
 export const SHOW_PURCHASES = 'SHOW_PURCHASES';
 export const GET_ORDER = "GET_ORDER";
+export const GET_ALL_PAYMENTS = "GET_ALL_PAYMENTS";
 
 // SHOPPING CART
 export const ADD_TO_CART = "ADD_TO_CART";

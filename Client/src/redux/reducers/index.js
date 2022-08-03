@@ -35,6 +35,7 @@ import {
   ADD_TO_FAVORITE,
   ADD_TO_FAVORITE_USER,
   REMOVE_FROM_FAVORITE,
+  GET_ALL_PAYMENTS
 } from "../types";
 
 const initialState = {
@@ -75,6 +76,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         detail: action.payload,
+      };
+    }
+
+
+    case GET_ALL_PAYMENTS: {
+      return {
+        ...state,
       };
     }
 
