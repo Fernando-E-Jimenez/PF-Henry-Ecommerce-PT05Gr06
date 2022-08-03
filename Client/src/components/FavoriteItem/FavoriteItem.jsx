@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { useAuth0 } from "@auth0/auth0-react";
 import "./FavoriteItem.css";
+import { Link } from "react-router-dom";
 
 export const FavoriteItem = ({ product }) => {
   const dispatch = useDispatch();
   // const [quantity, setQuantity] = useState(product.favorite.length);
   const profile = useSelector((state) => state.profile);
   const { isAuthenticated } = useAuth0();
-
 
   const removeProductCart = (id) => {
     Swal.fire({
@@ -24,9 +24,9 @@ export const FavoriteItem = ({ product }) => {
       confirmButtonText: "Eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        isAuthenticated?
-          dispatch(removeFromFavoriteUser(profile.id, id))
-          :null;
+        isAuthenticated
+          ? dispatch(removeFromFavoriteUser(profile.id, id))
+          : null;
         Swal.fire(
           "Eliminado!",
           "El producto se ha eliminado correctamente",
@@ -49,22 +49,28 @@ export const FavoriteItem = ({ product }) => {
   });
 
   return (
-    <div className="itemContainer -mx-8 px-6 py-5">
-      <div className="md:w-4/5 itemImgTitle">
-        <div className="w-28">
-          <img className="h-36" src={product.image} alt="" />
-        </div>
-        <div className="flex justify-between ml-4 flex-grow itemTitle">
-          <span className=" text-2xl">{product.name}</span>
-          <button
-            onClick={() => removeProductCart(product.id)}
-            className="font-bold hover:text-red-500 text-gray-500 text-xl"
-          >
-            Remove
-          </button>
-        </div>
+    <>
+      <div className="itemContainer -mx-8 px-6 py-5">
+        <Link to={`/product/${product.id}`} className="md:w-4/5 itemImgTitle">
+          <div className="w-28 h-full">
+            <img className="h-36" src={product.image} alt="" />
+          </div>
+          <div className="flex justify-between ml-4 flex-grow itemTitle">
+            <span className=" text-2xl">{product.name}</span>
+          </div>
+        </Link>
+
+        <button
+          onClick={() => removeProductCart(product.id)}
+          className="font-bold hover:text-red-500 text-gray-500 text-xl"
+        >
+          Remove
+        </button>
+        <span className="text-center w-full text-xl font-bold">
+          {priceUnit}
+        </span>
       </div>
-      <span className="text-center w-1/5 text-xl font-bold">{priceUnit}</span>
-    </div>
+      <hr />
+    </>
   );
 };

@@ -40,8 +40,8 @@ export const Favorite = () => {
       confirmButtonText: "Eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        isAuthenticated ?
-          dispatch(resetCartUser(profile.id))
+        isAuthenticated
+          ? dispatch(resetCartUser(profile.id))
           : dispatch(resetCart());
         Swal.fire(
           "Eliminado!",
@@ -69,29 +69,33 @@ export const Favorite = () => {
               <h1 className="font-semibold text-4xl">Favorite Products</h1>
             </div>
             <div className="flex mt-10 mb-5">
-              <h3 className="font-semibold text-gray-600 text-3xl w-4/5">
+              <h3 className="font-semibold text-gray-600 text-3xl w-4/5 hidden sm:block">
                 Product Details
               </h3>
-              <h3 className="font-semibold text-center text-gray-600 text-3xl w-1/5">
+              <h3 className="font-semibold text-center text-gray-600 text-3xl w-1/5 hidden sm:block">
                 Price
               </h3>
             </div>
             <div className="mb-20">
               {/* Products */}
-              {favorite.length > 0 ?
-                favorite.map((product) => (
-                  <FavoriteItem key={product.id} product={product} />
-                )) : 'Aun no tienes productos en el carrito'}
+              {favorite.length > 0
+                ? favorite.map((product) => (
+                    <FavoriteItem key={product.id} product={product} />
+                  ))
+                : "Aun no tienes productos en el carrito"}
             </div>
-            <div className="flex justify-around">
+            <div className="flex justify-around cartButtons">
               <Link
-                className="bg-primary-color font-bold py-3 px-2 rounded-md text-2xl text-white w-56 text-center"
+                className="bg-primary-color hover:bg-secondary-color font-semibold py-3 px-2 rounded-md text-2xl text-white w-3/4 text-center mb-4 sm:mb-0 sm:w-56"
                 to="/"
               >
                 Seguir Comprando
               </Link>
+              <button className="bg-red-400 font-semibold hover:bg-red-600 py-3 px-2 rounded-md text-2xl text-white w-3/4 text-center mb-4 sm:mb-0 sm:w-56">
+                Reset Favorites
+              </button>
             </div>
-          </div>          
+          </div>
         </div>
       </div>
     </>

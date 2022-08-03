@@ -25,13 +25,28 @@ svg:hover {
   position: absolute;
   z-index: 1;
   background-color: white;
-  margin-top: 1.7rem;
+  margin-top: 2rem;
+  box-shadow: 0 0 1rem #00000025 inset;
+  border-radius: 10px;
 }
 
 .autocompleteItem {
-  border: 1px solid darkolivegreen;
+  padding: 1rem 1rem;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.autocompleteItem:last-child {
+  border-bottom: none;
 }
 
 .autocompleteItem:hover {
   background-color: #9d71bf;
+}
+
+@media only screen and (max-width: 480px) {
+  .autocomplete {
+    width: 95%;
+    left: 1rem;
+    margin-top: 4rem;
+  }
 }
