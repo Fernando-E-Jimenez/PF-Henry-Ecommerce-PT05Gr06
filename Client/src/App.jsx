@@ -14,8 +14,10 @@ import { ViewProducts } from "./components/ViewProducts/ViewProducts";
 import { ViewOrders } from "./components/ViewOrders/ViewOrders";
 import { ViewRoles } from "./components/ViewRoles/ViewRoles"
 import { PaymentForm } from "./components/PaymentForm/PaymentForm";
-import {UserPurchases } from './components/UserPurchases/UserPurchases';
+import {UserPurchases } from './components/UserPurchases/UserPurchases'
+import { Checkout } from "./components/Mercadopago/Checkout";
 import {Chat} from './components/ChatBot/Chat';
+
 
 export const App = () => {
   return (
@@ -29,6 +31,7 @@ export const App = () => {
         <Route path="/favorite" element={<Favorite />} />
         <Route path="/payment" element={<PaymentForm />} />
         <Route path="/purchases" element={<UserPurchases />} />
+        <Route path="/mercadopago/:idorder" element={<Checkout />} />
         <Route path="/admin" element={<Admin />}>
           <Route path="new-product" element={<AddProduct />} />
           <Route path="view-products" element={<ViewProducts />} />

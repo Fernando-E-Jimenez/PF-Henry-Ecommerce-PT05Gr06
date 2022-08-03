@@ -2,6 +2,7 @@ import { products } from "../../../dbPrueba";
 import {
   GET_STATES,
   GET_ORDER,
+  GET_ALL_PAYMENTS,
   NEW_STATE,
   EDIT_STATE,
   DELETE_STATE,
@@ -379,11 +380,26 @@ const ordersShow = () => {
   };
 }
 
-const getOrder = (iduser, idorder) => {
+const confirmPayment = () => {
+  return async (dispatch) => {
+    try {
+      return fetch(
+        `${VITE_URL_API}/mercadopago/pagos`
+      )
+        .then((response) => response.json())
+        .then((json) => {
+          dispatch({ type: GET_ALL_PAYMENTS, payload: json });
+        });
+    } catch (error) {
+      dispatch({ type: GET_ALL_PAYMENTS, payload: error });
+    }
+  };
+}
+const getOrder = (idorder) => {
   return (dispatch) => {
     try {
       return fetch(
-        `${VITE_URL_API}/mercadopag/${iduser}/${idorder}`
+        `${VITE_URL_API}/mercadopago/${idorder}`
       )
         .then((response) => response.json())
         .then((json) => {
@@ -727,6 +743,7 @@ export {
   getOrder,
   favoriteShow,
   removeFromFavoriteUser,
+  confirmPayment,
   filterOrderStatus,
   resetFavorite,
 };
