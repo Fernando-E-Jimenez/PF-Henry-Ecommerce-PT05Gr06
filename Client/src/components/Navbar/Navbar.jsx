@@ -52,28 +52,32 @@ export const Navbar = () => {
           <SearchBar />
         </div>
         <div className="user">
-          <Link to="/favorite" className="cart w-20 hidden sm:flex">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="icon icon-tabler icon-tabler-heart"
-              width="33"
-              height="33"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="#7e52a0"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
-            </svg>
-            {favorite > 0 ? (
-              <p className="quantity">{favorite > 9 ? "9+" : favorite}</p>
-            ) : (
-              ""
-            )}
-          </Link>
+          {profile.rolId === 2 ? (
+            <Link to="/favorite" className="cart w-20 hidden sm:flex">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="icon icon-tabler icon-tabler-heart"
+                width="33"
+                height="33"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="#7e52a0"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+              </svg>
+              {favorite > 0 ? (
+                <p className="quantity">{favorite > 9 ? "9+" : favorite}</p>
+              ) : (
+                ""
+              )}
+            </Link>
+          )
+            : ("")}
+
           <Link to="/cart" className="cart w-20">
             <svg
               xmlns="http://www.w3.org/2000/svg"
