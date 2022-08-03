@@ -668,6 +668,24 @@ const favoriteShow = (user) => {
   };
 }
 
+const filterOrderStatus = (id) => {
+  return async(dispatch) => {
+    try {
+      const data = {
+        state: id
+      }
+      const changeStatus = await axios.get(`${VITE_URL_API}/admin/order`, data);
+      console.log(changeStatus);
+      return dispatch({
+        type: ORDERS_SHOW,
+        payload: changeStatus.data,
+      });
+    } catch (error) {
+      console.log(error);
+     }
+  };
+}
+
 export {
   getProducts,
   productDetail,
@@ -712,4 +730,5 @@ export {
   favoriteShow,
   removeFromFavoriteUser,
   confirmPayment,
+  filterOrderStatus,
 };

@@ -28,7 +28,7 @@ export const PaymentForm = () => {
   const [errors, setErrors] = useState({});
 
   const [post, setPost] = useState({
-    name: profile.name.length > 1?profile.name:'',
+    name: profile.name?profile.name:'',
     dni: '',
     address: '',
   });
@@ -48,7 +48,6 @@ export const PaymentForm = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    //const formData = new FormData(e.target);
     console.log(post);
     dispatch(corfirmPurchase(profile.id,post));
     alert("Compra confirmada continua con el proceso de pago");
