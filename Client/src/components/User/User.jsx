@@ -70,7 +70,7 @@ export const User = () => {
               </li>
             ) : profile.rolId == 2 ? (
               <li className="li-flex">
-                <Link to="/admin">Mis Compras</Link>
+                <Link to="/purchases">Mis Compras</Link>
               </li>
             ) : (
               ""
