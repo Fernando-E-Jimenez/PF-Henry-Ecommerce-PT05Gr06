@@ -47,6 +47,25 @@ const getCategory = async (id) => {
   }
 };
 
+router.get("/autocomplete", async (req, res) => {
+  try {
+    console.log("Aqui")
+    const products = await Product.findAll({
+      where: {
+        stateId: 1,
+        stock: {
+          [Op.gt]: 0
+        }
+      },
+      attributes: ["name"]
+    })
+    
+    return res.status(200).json(products);
+  } catch (e) {
+    return res.status(400).send({ message: "Error: " + e });
+  }
+});
+
 /*..ver la lista completa de productos (catálogo), para ver todo lo disponible para 
 comprar.
 
@@ -60,7 +79,10 @@ router.get("/", async (req, res) => {
       req.query;
     let search = {
       where: {
-        stateId: 1
+        stateId: 1,
+        stock: {
+          [Op.gt]: 0
+        }
       }
     };
     let order = [];
@@ -163,5 +185,7 @@ router.get("/:id", async (req, res) => {
     res.status(400).send({ message: "Error: " + e });
   }
 });
+
+
 
 module.exports = router;
