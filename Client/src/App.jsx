@@ -14,12 +14,14 @@ import { ViewProducts } from "./components/ViewProducts/ViewProducts";
 import { ViewOrders } from "./components/ViewOrders/ViewOrders";
 import { ViewRoles } from "./components/ViewRoles/ViewRoles"
 import { PaymentForm } from "./components/PaymentForm/PaymentForm";
-import {UserPurchases } from './components/UserPurchases/UserPurchases'
+import {UserPurchases } from './components/UserPurchases/UserPurchases';
+import {Chat} from './components/ChatBot';
 
 export const App = () => {
   return (
     <>
       <Navbar />
+      <Chat />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product/:id" element={<CardDetail />} />
