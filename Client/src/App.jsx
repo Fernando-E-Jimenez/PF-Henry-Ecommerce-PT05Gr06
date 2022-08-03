@@ -21,7 +21,7 @@ export const App = () => {
   return (
     <>
       <Navbar />
-      
+      <Chat />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product/:id" element={<CardDetail />} />
@@ -40,7 +40,7 @@ export const App = () => {
           <Route path="view-roles" element={<ViewRoles />} />
         </Route>
       </Routes>
-      <Chat />
+      
     </>
   );
 };
