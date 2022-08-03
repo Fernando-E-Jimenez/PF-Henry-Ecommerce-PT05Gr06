@@ -153,4 +153,58 @@ router.put("/:idOrder", async (req, res) => {
   }
 });
 
+// Admin ... Actualizar el Stock de los productos de una orden
+
+router.post("/:idOrder/removestock", async (req, res) => {
+  try {
+    const { idOrder } = req.params;
+    if (!idOrder) return res.status(400).send("Faltan datos necesarios (idOrder).");
+    if (isNaN(parseInt(idOrder)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (idOrder) debe ser un numero.");
+
+    const order = await Order.findByPk(idOrder, {
+      include: [
+        {
+          model: Product,
+          through: {
+            attributes: ['cant']
+          }
+        }
+      ]
+    });
+    if (!order) return res.status(200).send("No se encontro la orden.");
+    await order.dataValues.products.map(async (p) => {
+      const { id, stock } = p.dataValues;
+      const { cant } = p.dataValues.productXorder.dataValues;
+      const total = stock - cant;
+      // console.log("Id: " + id + " stock: " + stock + " cant: " + cant + " total: " + total);
+      try {
+        await Product.update(
+          {
+            stock: total
+          },
+          {
+            where: {
+              id: id
+            }
+          }
+        )
+      } catch (error) {
+        return res.status(400).send({ message: "Error: " + error });
+      }
+    })
+    // console.log(order)
+    return res.status(200).send("Stock Actualizado");
+  } catch (e) {
+    return res.status(400).send({ message: "Error: " + e });
+  }
+});
+
+
+
+
+
+
 module.exports = router;
