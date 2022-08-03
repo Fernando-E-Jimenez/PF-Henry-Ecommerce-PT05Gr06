@@ -1,0 +1,27 @@
+.filterCont {
+  width: calc(100vw - 1rem);
+}
+
+.menuContainer {
+  position: relative;
+  display: flex;
+}
+.menuFilter {
+  background: #ffffff;
+  position: absolute;
+  top: 3.5rem;
+  width: 97vw;
+  margin: auto;
+  height: auto;
+  border: 1px solid #bbb7ae;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: opacity 0.1s ease, transform 0.2s ease, visibility 0.1s;
+  z-index: 999;
+}
+
+.menuFilter.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}

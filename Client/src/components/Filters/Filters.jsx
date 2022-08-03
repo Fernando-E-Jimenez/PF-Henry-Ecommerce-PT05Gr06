@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeOrder } from "../../redux/actions";
 import React, { useEffect } from "react";
 import { getCategory } from "../../redux/actions";
+import FilterResponsive from "./FilterResponsive";
 
 export const Filters = () => {
   const dispatch = useDispatch();
@@ -36,73 +37,78 @@ export const Filters = () => {
   };
 
   return (
-    <div className="filterContainer">
-      <div className="selectContainer">
-        <select
-          defaultValue="DEFAULT"
-          className="select"
-          onChange={handleChangeOrder}
-        >
-          <option value={"DEFAULT"} disabled>
-            Nombre
-          </option>
-          <option
-            onSelect={() => dispatch(changeOrder("ASC", "name", ""))}
-            value={1}
+    <>
+      <div className="filterContainer hidden sm:grid">
+        <div className="selectContainer">
+          <select
+            defaultValue="DEFAULT"
+            className="select"
+            onChange={handleChangeOrder}
           >
-            Ordenar de la A-Z
-          </option>
-          <option
-            onSelect={() => dispatch(changeOrder("DESC", "name", ""))}
-            value={2}
+            <option value={"DEFAULT"} disabled>
+              Nombre
+            </option>
+            <option
+              onSelect={() => dispatch(changeOrder("ASC", "name", ""))}
+              value={1}
+            >
+              Ordenar de la A-Z
+            </option>
+            <option
+              onSelect={() => dispatch(changeOrder("DESC", "name", ""))}
+              value={2}
+            >
+              Ordenar de la Z-A
+            </option>
+          </select>
+          <select
+            defaultValue={"DEFAULT"}
+            className="select"
+            onChange={handleChangeOrder}
           >
-            Ordenar de la Z-A
-          </option>
-        </select>
-        <select
-          defaultValue={"DEFAULT"}
-          className="select"
-          onChange={handleChangeOrder}
-        >
-          <option value={"DEFAULT"} disabled>
-            Precio
-          </option>
-          <option
-            onClick={() => dispatch(changeOrder("ASC", "price", ""))}
-            value={3}
+            <option value={"DEFAULT"} disabled>
+              Precio
+            </option>
+            <option
+              onClick={() => dispatch(changeOrder("ASC", "price", ""))}
+              value={3}
+            >
+              Ordenar del menor al mayor precio
+            </option>
+            <option
+              onClick={() => dispatch(changeOrder("DESC", "price", ""))}
+              value={4}
+            >
+              Ordenar del mayor al menor precio
+            </option>
+          </select>
+          <select
+            defaultValue={"DEFAULT"}
+            className="select"
+            onChange={handleChange}
           >
-            Ordenar del menor al mayor precio
-          </option>
-          <option
-            onClick={() => dispatch(changeOrder("DESC", "price", ""))}
-            value={4}
+            <option value={"DEFAULT"} disabled>
+              Categorias
+            </option>
+            {categories.map((c) => {
+              return (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              );
+            })}
+          </select>
+          <button
+            className="secondaryButton mt-6"
+            onClick={() => handleChangeOrder(5)}
           >
-            Ordenar del mayor al menor precio
-          </option>
-        </select>
-        <select
-          defaultValue={"DEFAULT"}
-          className="select"
-          onChange={handleChange}
-        >
-          <option value={"DEFAULT"} disabled>
-            Categorias
-          </option>
-          {categories.map((c) => {
-            return (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            );
-          })}
-        </select>
-        <button
-          className="secondaryButton mt-6"
-          onClick={() => handleChangeOrder(5)}
-        >
-          Limpiar Filtros
-        </button>
+            Limpiar Filtros
+          </button>
+        </div>
       </div>
-    </div>
+      <div className="sm:hidden">
+        <FilterResponsive />
+      </div>
+    </>
   );
 };
