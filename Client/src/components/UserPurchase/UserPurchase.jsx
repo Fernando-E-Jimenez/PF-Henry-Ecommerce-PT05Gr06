@@ -2,6 +2,8 @@ import "./UserPurchase.css";
 import { addToCartDetailUser } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+const { VITE_URL_API } = import.meta.env;
 
 const UserPurchase = ({ purchase }) => {
   const profile = useSelector((state) => state.profile);
@@ -21,6 +23,22 @@ const UserPurchase = ({ purchase }) => {
       );
     }
     navigate("/cart");
+  };
+  const Pagar = (id) => {
+    if (profile.id) {
+      console.log(id)
+      axios
+        .get(`${VITE_URL_API}/mercadopago/${id}`)
+        .then((data) => {
+          // setDatos(data.data);
+          data = data.data
+          console.info("Contenido de data:", data.url);
+          window.location.replace(data.url);
+        })
+        .catch((err) => console.error(err));
+    }else{
+      navigate("/cart");
+    }
   };
 
   return (
@@ -42,13 +60,24 @@ const UserPurchase = ({ purchase }) => {
         </p>
 
         <div className="flex sm:w-1/5 justify-center my-auto">
-          <button
-            onClick={() => repurchase(purchase.products)}
-            className=" bg-yellow-400 w-2/3 h-14 sm:w-full sm:p-3 font-bold text-white rounded cursor-pointer hover:bg-sky-700 transition-colors"
-            type="button"
-          >
-            Volver a comprar
-          </button>
+          {
+            purchase.stateId === 3 ?
+              (<button
+                onClick={() => Pagar(purchase.id)}
+                className=" bg-yellow-400 w-2/3 h-14 sm:w-full sm:p-3 font-bold text-white rounded cursor-pointer hover:bg-sky-700 transition-colors"
+                type="button"
+              >
+                Pagar
+              </button>) :
+              (<button
+                onClick={() => repurchase(purchase.products)}
+                className=" bg-yellow-400 w-2/3 h-14 sm:w-full sm:p-3 font-bold text-white rounded cursor-pointer hover:bg-sky-700 transition-colors"
+                type="button"
+              >
+                Volver a comprar
+              </button>)
+          }
+
         </div>
       </div>
       <hr />
