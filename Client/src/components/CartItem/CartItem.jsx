@@ -74,7 +74,7 @@ export const CartItem = ({ product }) => {
 
   return (
     <>
-      <div className="itemContainer -mx-8 px-6 py-5 ">
+      <div className="itemContainer -mx-8 px-6 py-5 text-2xl">
         <div className="md:w-2/5 itemImgTitle">
           <div className="w-28">
             <img className="h-36" src={product.image} alt="" />
@@ -83,7 +83,7 @@ export const CartItem = ({ product }) => {
             <span className=" text-2xl">{product.name}</span>
           </div>
         </div>
-        <div className="itemQuantity sm:w-1/5 ">
+        <div className="itemQuantity mb-4 sm:mb-0 sm:w-1/5 ">
           <button
             className={quantity === 1 ? "disabled:opacity-25" : ""}
             disabled={quantity === 1 ? true : false}
@@ -97,7 +97,7 @@ export const CartItem = ({ product }) => {
             </svg>
           </button>
 
-          <p className="mx-2 border text-center w-8">{quantity}</p>
+          <p className="mx-2 border text-center w-8 border-none">{quantity}</p>
 
           <button onClick={handleAdd}>
             <svg
@@ -108,10 +108,8 @@ export const CartItem = ({ product }) => {
             </svg>
           </button>
         </div>
-        <span className="text-center sm:w-1/5 text-xl">Un: {priceUnit}</span>
-        <span className="text-center sm:w-1/5 text-xl font-bold">
-          Total: {precio}
-        </span>
+        <span className="text-center sm:w-1/5 ">{priceUnit}</span>
+        <span className="text-center sm:w-1/5  font-bold">Total: {precio}</span>
       </div>
       <button
         onClick={() => removeProductCart(product.id)}

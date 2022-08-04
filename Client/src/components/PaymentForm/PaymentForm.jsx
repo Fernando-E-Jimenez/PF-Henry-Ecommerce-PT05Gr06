@@ -4,8 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { corfirmPurchase } from "../../redux/actions/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import { resetCartUser } from "../../redux/actions";
-import { Checkout } from '../Mercadopago/Checkout'
-
+import { Checkout } from "../Mercadopago/Checkout";
 
 function validate(post) {
   let errors = {};
@@ -34,6 +33,11 @@ export const PaymentForm = () => {
     address: "",
   });
 
+  let disabled = false;
+  if (post.name && post.dni && post.address) {
+    disabled = true;
+  }
+
   function handleInputChange(e) {
     setPost({
       ...post,
@@ -57,16 +61,13 @@ export const PaymentForm = () => {
   }
 
   return (
-    <div className="w-4/5 sm:w-full m-auto">
+    <div className="w-11/12 sm:w-2/5 m-auto bg-white p-4 mt-6 rounded-md">
       <h1 className="text-primary-color font-bold text-center text-4xl my-10">
         Ya estamos muy cerca de completar la compra
       </h1>
       <hr />
       {isAuthenticated ? (
-        <form
-          onSubmit={(e) => handleSubmit(e)}
-          className="md:w-2/6 m-auto py-6"
-        >
+        <form onSubmit={(e) => handleSubmit(e)} className=" w-4/5 m-auto py-6">
           <div className="mb-5">
             <label className="text-gray-700 font-bold text-2xl">
               Nombre y apellido
@@ -111,7 +112,10 @@ export const PaymentForm = () => {
           </div>
           <div className="flex justify-center mt-6">
             <button
-              className="bg-primary-color hover:bg-secondary-color  w-2/5  p-3 font-bold text-white rounded cursor-pointer transition-colors"
+              disabled={disabled === false ? true : false}
+              className={`bg-primary-color hover:bg-secondary-color  w-2/5  p-3 font-bold text-white rounded cursor-pointer transition-colors ${
+                disabled === false ? "disabled:opacity-25" : ""
+              }`}
               type="submit"
             >
               Confirmar
