@@ -4,19 +4,11 @@ const { Router } = require("express");
 const { MAILUSER } = process.env;
 const router = Router();
 const bcrypt = require('bcrypt');
+const { Op } = require("sequelize");
 
 const userBD = async () => {
   try {
-    return await User.findAll({
-      include: [
-        {
-          model: State
-        },
-        {
-          model: Rol
-        }
-      ]
-    });
+    return
   } catch (e) {
     return e;
   }
@@ -26,7 +18,41 @@ const userBD = async () => {
 
 router.get("/", async (req, res) => {
   try {
-    const all = await userBD();
+    const { state, user } = req.query;
+    let options = {
+      include: [
+        {
+          model: State
+        },
+        {
+          model: Rol
+        }
+      ]
+    }
+    if (user) {
+      if (!isNaN(parseInt(user)))
+        return res
+          .status(400)
+          .json({
+            message: "Formato de datos invalido (user) debe ser una cadena texto.",
+          });
+      options.where = {
+        name: {
+          [Op.like]: `%${user.toLowerCase()}%`,
+        }
+      };
+      if (state) {
+        if (isNaN(parseInt(state)))
+          return res
+            .status(400)
+            .json({
+              message: "Formato de datos invalido (state) debe ser un numero.",
+            });
+        options.include[0].where = { id: state };
+      }
+      console.log(options);
+    }
+    const all = await User.findAll(options);
     res.status(200).send(all);
   } catch (e) {
     return res.status(400).send({ message: "Error: " + e });
@@ -105,7 +131,7 @@ router.post("/", async (req, res) => {
           username,
           password: hash,
           email,
-          name,
+          name: name.toLowerCase(),
           dni,
           stateId: state,
           rolId: rol
@@ -172,7 +198,7 @@ router.put("/:id", async (req, res) => {
             username,
             password: hash1,
             email,
-            name,
+            name: name.toLowerCase(),
             dni,
             stateId: state,
             rolId: rol
@@ -340,7 +366,7 @@ router.post('/validateuser', async (req, res, next) => {
       const user = await User.findOrCreate({
         where: {
           email: email,
-          name: name,
+          name: name.toLowerCase(),
           username: username,
           rolId: idRol.dataValues.id,
           stateId: idState.dataValues.id
