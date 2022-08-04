@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { corfirmPurchase } from "../../redux/actions/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import { resetCartUser } from "../../redux/actions";
-import {Checkout} from '../Mercadopago/Checkout'
+import { Checkout } from '../Mercadopago/Checkout'
 
 
 function validate(post) {
@@ -49,11 +49,11 @@ export const PaymentForm = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(post);
+    // console.log(post);
     dispatch(corfirmPurchase(profile.id, post));
     alert("Compra confirmada continua con el proceso de pago");
-    navigate("/purchases");
     dispatch(resetCartUser(profile.id));
+    navigate("/mercadopago/1");
   }
 
   return (

@@ -567,9 +567,10 @@ const corfirmPurchase = (user, data) => {
   return async(dispatch) => {
     try {
       const order = await axios.post(`${VITE_URL_API}/user/${user}/order`, data);
+      // console.log("Actions: "+order.data.id)
       return dispatch({
         type: CONFIRM_PURCHASE,
-        payload: order,
+        payload: order.data.id,
         });
     } catch (error) {
       console.log(error);
