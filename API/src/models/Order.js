@@ -21,6 +21,22 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      payment_id: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      payment_status: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      external_reference: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      merchant_order_id: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
     {
       timestamps: false,
