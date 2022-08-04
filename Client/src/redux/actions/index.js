@@ -644,6 +644,10 @@ const changeOrderStatus = (idOrder, id) => {
       const data = {
         state: id
       }
+      if(id == 6) {
+        const stock = await axios.post(`${VITE_URL_API}/admin/order/${idOrder}/removestock`);
+        console.log(stock);
+      }
       const changeStatus = await axios.put(`${VITE_URL_API}/admin/order/${idOrder}`, data);
       return dispatch({
         type: ORDERS_SHOW,
@@ -682,18 +686,41 @@ const resetFavorite = (user) => {
   };
 };
 
-
 const filterOrderStatus = (id) => {
   return async(dispatch) => {
     try {
-      const data = {
-        state: id
-      }
-      const changeStatus = await axios.get(`${VITE_URL_API}/admin/order`, data);
-      console.log(changeStatus);
+      const filterStatus = await axios.get(`${VITE_URL_API}/admin/order?state=${id}`);
       return dispatch({
         type: ORDERS_SHOW,
-        payload: changeStatus.data,
+        payload: filterStatus.data,
+      });
+    } catch (error) {
+      console.log(error);
+     }
+  };
+}
+
+const viewRolesFilter = (user) => {
+  return async(dispatch) => {
+    try {
+      const roles = await axios.get(`${VITE_URL_API}/admin/user?user=${user}`);
+      return dispatch({
+        type: VIEW_ROLES,
+        payload: roles.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+const filterOrderName = (user) => {
+  return async(dispatch) => {
+    try {
+      const filterStatus = await axios.get(`${VITE_URL_API}/admin/order?user=${user}`);
+      return dispatch({
+        type: ORDERS_SHOW,
+        payload: filterStatus.data,
       });
     } catch (error) {
       console.log(error);
@@ -747,4 +774,6 @@ export {
   confirmPayment,
   filterOrderStatus,
   resetFavorite,
+  viewRolesFilter,
+  filterOrderName,
 };

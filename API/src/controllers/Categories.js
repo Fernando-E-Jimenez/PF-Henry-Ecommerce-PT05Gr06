@@ -121,7 +121,7 @@ router.put("/:id", async (req, res) => {
         .send("Formato de datos invalido (state) debe ser un numero.");
     const category = await Category.update(
       {
-        name,
+        name: name.toLowerCase(),
         stateId: state,
       },
       {

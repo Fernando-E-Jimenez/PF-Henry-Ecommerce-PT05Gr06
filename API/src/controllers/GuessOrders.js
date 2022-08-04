@@ -59,7 +59,7 @@ router.put("/:idorder/product/:id", async (req, res) => {
 
 
 let userNew = await User.update({
-      name,
+      name: name.toLowerCase(),
       dni,
       orderId: order.dataValues.id
     },

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./ViewRoles.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { viewRoles } from "../../redux/actions";
+import { viewRoles, viewRolesFilter } from "../../redux/actions";
 import { CardRoles } from "../CardRoles/CardRoles";
 
 export const ViewRoles = () => {
@@ -19,14 +19,14 @@ export const ViewRoles = () => {
       <div className={styles.searchViewProducts}>
         <form className={styles.searchContainer} onSubmit={(e) => {
           e.preventDefault();
-          dispatch(getProductsFilter(rol))
+          dispatch(viewRolesFilter(rol))
           setRol('')
         }}>
           <input 
             className={styles.searchBar} 
             placeholder="Search" 
             value={rol}
-            onChange={e => setDrink(e.target.value)}
+            onChange={e => setRol(e.target.value)}
           />
           <button type='submit'>🔍</button>
         </form>

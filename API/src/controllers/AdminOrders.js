@@ -9,7 +9,7 @@ const router = Router();
 // Admin ...poder ver una lista de todas las ordenes, para poder ver y revisar las ordenes.
 router.get("/", async (req, res) => {
   try {
-    const { state, name } = req.query;
+    const { state, user } = req.query;
     let options = {
       include: [
         {
@@ -35,16 +35,16 @@ router.get("/", async (req, res) => {
           });
       options.include[1].where = { id: state };
     }
-    if (name) {
-      if (!isNaN(parseInt(name)))
+    if (user) {
+      if (!isNaN(parseInt(user)))
         return res
           .status(400)
           .json({
-            message: "Formato de datos invalido (name) debe ser una cadena texto.",
+            message: "Formato de datos invalido (user) debe ser una cadena texto.",
           });
       options.include[0].where = {
         name: {
-          [Op.like]: `%${name.toLowerCase()}%`,
+          [Op.like]: `%${user.toLowerCase()}%`,
         }
       };
       console.log(options.include[0]);
