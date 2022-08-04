@@ -1,19 +1,17 @@
 import { useEffect, useState } from "react";
 import styles from "./ViewOrders.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { ordersShow, filterOrderStatus } from "../../redux/actions";
+import { ordersShow, filterOrderStatus, filterOrderName } from "../../redux/actions";
 import { CardOrder } from "../CardOrder/CardOrder";
 
 export const ViewOrders = () => {
   const dispatch = useDispatch();
-  const [filter, setFilter] = useState(0);
   const orders = useSelector((state) => state.orders);
+  const [user, setUser] = useState('');
+  
   useEffect(() => {
     dispatch(ordersShow());
-    if(filter > 0) {
-      dispatch(filterOrderStatus(filter));
-    }
-  }, [dispatch, filter]);
+  }, [dispatch]);
 
   const handleChangeFilter = (e) => {
     e.preventDefault();
@@ -23,6 +21,19 @@ export const ViewOrders = () => {
   return (
     <>
       <div className={styles.searchViewOrders}>
+        <form className={styles.searchContainer} onSubmit={(e) => {
+            e.preventDefault();
+            dispatch(filterOrderName(user))
+            setUser('')
+          }}>
+            <input 
+              className={styles.searchBar} 
+              placeholder="Search" 
+              value={user}
+              onChange={e => setUser(e.target.value)}
+            />
+            <button type='submit'>🔍</button>
+          </form>
         <select defaultValue='DEFAULT' className="select" onChange={handleChangeFilter}>
           <option value={'DEFAULT'} disabled >Filtrar</option>
           <option value={3}>🧐 Ver solo las ordenes en estado creada</option>
