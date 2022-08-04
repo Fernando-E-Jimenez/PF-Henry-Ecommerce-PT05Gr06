@@ -51,7 +51,8 @@ export const EditProduct = () => {
     console.log(product.category);
   };
 
-  const { id, name, description, image, price, stock, category, state } = product;
+  const { id, name, description, image, price, stock, category, state } =
+    product;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -177,7 +178,6 @@ export const EditProduct = () => {
             </div>
           ))}
         </div>
-
 
         <div className="mb-5">
           <label className="text-gray-700 font-bold text-2xl">

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./Navbar.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import { changeProfile, cartShow, favoriteShow } from "../../redux/actions";
+import mainLogo from "../../public/drink.jpg";
 
 export const Navbar = () => {
   const dispatch = useDispatch();
@@ -46,11 +47,7 @@ export const Navbar = () => {
           Vite Wines
         </NavLink>
         <NavLink to="/" onClick={() => dispatch(getProducts())}>
-          <img
-            src="https://drive.google.com/file/d/1BvXaTBmKAdCQIXdVfJ9mFtNzWdXtjQet/view?usp=sharing"
-            alt="logo"
-            className="logoImg"
-          />
+          <img src={mainLogo} alt="logo" className="logoImg" />
         </NavLink>
         <div className="search">
           <SearchBar />

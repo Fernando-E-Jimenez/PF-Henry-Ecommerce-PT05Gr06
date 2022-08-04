@@ -46,7 +46,7 @@ const Admin = () => {
         <div className="md:w-1/3 lg:w-1/5 xl:w-1/6 hidden sm:block">
           <AdminBar />
         </div>
-        <main className="bg-white sm:block py-10 sm:px-5 rounded-lg shadow w-11/12 m-auto sm:w-full sm:mx-10 ">
+        <main className="bg-white sm:block py-10 sm:px-5 rounded-lg shadow w-11/12 m-auto sm:w-full sm:mx-10 mb-6 ">
           <Outlet />
         </main>
       </div>
