@@ -5,6 +5,7 @@ import { corfirmPurchase } from "../../redux/actions/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import { resetCartUser } from "../../redux/actions";
 import { Checkout } from "../Mercadopago/Checkout";
+import Swal from "sweetalert2";
 
 function validate(post) {
   let errors = {};
@@ -51,13 +52,28 @@ export const PaymentForm = () => {
     );
   }
 
+  // dispatch(corfirmPurchase(profile.id, post));
+  // dispatch(resetCartUser(profile.id));
+  // navigate("/mercadopago/1");
+
   function handleSubmit(e) {
     e.preventDefault();
     // console.log(post);
-    dispatch(corfirmPurchase(profile.id, post));
-    alert("Compra confirmada continua con el proceso de pago");
-    dispatch(resetCartUser(profile.id));
-    navigate("/mercadopago/1");
+    Swal.fire({
+      icon: "warning",
+      title: "¿Confirmar compra?",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Cancelar",
+      confirmButtonText: "Aceptar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(corfirmPurchase(profile.id, post));
+        dispatch(resetCartUser(profile.id));
+        navigate("/mercadopago/1");
+      }
+    });
   }
 
   return (
