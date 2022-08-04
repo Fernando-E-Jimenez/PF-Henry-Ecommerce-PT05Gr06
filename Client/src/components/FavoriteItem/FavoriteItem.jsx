@@ -50,8 +50,8 @@ export const FavoriteItem = ({ product }) => {
 
   return (
     <>
-      <div className="itemContainer -mx-8 px-6 py-5">
-        <Link to={`/product/${product.id}`} className="md:w-4/5 itemImgTitle">
+      <div className="itemContainer w-full">
+        <Link to={`/product/${product.id}`} className="md:w-3/5 itemImgTitle">
           <div className="w-28 h-full">
             <img className="h-36" src={product.image} alt="" />
           </div>
@@ -62,11 +62,11 @@ export const FavoriteItem = ({ product }) => {
 
         <button
           onClick={() => removeProductCart(product.id)}
-          className="font-bold hover:text-red-500 text-gray-500 text-xl"
+          className="font-bold hover:text-red-500 text-gray-500 text-xl md:w-1/5"
         >
-          Remove
+          Remover
         </button>
-        <span className="text-center w-full text-xl font-bold">
+        <span className="text-center w-full md:w-1/5 text-xl font-bold text-gray-500">
           {priceUnit}
         </span>
       </div>

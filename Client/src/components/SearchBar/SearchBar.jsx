@@ -7,65 +7,70 @@ const { VITE_URL_API } = import.meta.env;
 
 export const SearchBar = () => {
   const dispatch = useDispatch();
-  const [drink, setDrink] = useState('');
+  const [drink, setDrink] = useState("");
   const [drinks, setDrinks] = useState([]);
   const [suggestions, setsuggestions] = useState([]);
 
   useEffect(() => {
     const loadDrinks = async () => {
-      const reponse = await axios.get(`${VITE_URL_API}/guess/product/autocomplete`);
-      setDrinks(reponse.data)
-    }
+      const reponse = await axios.get(
+        `${VITE_URL_API}/guess/product/autocomplete`
+      );
+      setDrinks(reponse.data);
+    };
     loadDrinks();
-  }, [])
+  }, []);
 
   const onChangeHandler = (text) => {
     let matches = [];
     if (text.length > 0) {
-      matches = drinks.filter(p => {
+      matches = drinks.filter((p) => {
         const regex = new RegExp(`${text}`, "gi");
-        return p.name.match(regex)
-      })
+        return p.name.match(regex);
+      });
     }
-    setsuggestions(matches.slice(0,7));
+    setsuggestions(matches.slice(0, 7));
     setDrink(text);
-  }
+  };
 
   const onSuggestionHandler = (text) => {
     setDrink(text);
     setsuggestions([]);
-  }
+  };
 
   return (
-    <form className={styles.searchContainer} onSubmit={(e) => {
-      e.preventDefault();
-      dispatch(getProductsFilter(drink))
-      setDrink('')
-    }}>
+    <form
+      className={styles.searchContainer}
+      onSubmit={(e) => {
+        e.preventDefault();
+        dispatch(getProductsFilter(drink));
+        setDrink("");
+      }}
+    >
       <div className={styles.searchBar}>
         <input
           className={styles.searchBar}
-          placeholder="Search"
+          placeholder="Buscar productos"
           value={drink}
-          onChange={e => onChangeHandler(e.target.value)}
+          onChange={(e) => onChangeHandler(e.target.value)}
         />
         <div className={styles.autocomplete}>
-          {
-            suggestions && suggestions.map((s, i) => {
-              return <div
-              className={styles.autocompleteItem}
-                key={i}
-                onClick={() => onSuggestionHandler(s.name)}
-              >
-                {s.name}
-              </div>
-            })
-          }
+          {suggestions &&
+            suggestions.map((s, i) => {
+              return (
+                <div
+                  className={styles.autocompleteItem}
+                  key={i}
+                  onClick={() => onSuggestionHandler(s.name)}
+                >
+                  {s.name}
+                </div>
+              );
+            })}
         </div>
-
       </div>
 
-      <button type='submit'>
+      <button type="submit">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="icon icon-tabler icon-tabler-search"

@@ -15,7 +15,6 @@ export const Favorite = () => {
   const { isAuthenticated } = useAuth0();
   const profile = useSelector((state) => state.profile);
 
-
   const handleResetFavorite = () => {
     Swal.fire({
       icon: "warning",
@@ -28,9 +27,7 @@ export const Favorite = () => {
       confirmButtonText: "Eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        isAuthenticated
-          ? dispatch(resetFavorite(profile.id))
-          : null;
+        isAuthenticated ? dispatch(resetFavorite(profile.id)) : null;
         Swal.fire(
           "Eliminado!",
           "El carrito se ha eliminado correctamente",
@@ -51,40 +48,51 @@ export const Favorite = () => {
   return (
     <>
       <div className="container mx-auto w-full h-full favoriteContainer">
-        <div className="flex shadow-md my-2 w-full h-full favoriteFlex">
+        <div className="flex shadow-md my-2 sm:w-full w-11/12  h-full favoriteFlex">
           <div className="bg-white px-10 py-10 favoriteItems">
             <div className="flex justify-center border-b pb-8">
-              <h1 className="font-semibold text-4xl">Favorite Products</h1>
+              <h1 className="font-semibold text-4xl text-gray-500">
+                Tus productos favoritos
+              </h1>
             </div>
             <div className="flex mt-10 mb-5">
-              <h3 className="font-semibold text-gray-600 text-3xl w-4/5 hidden sm:block">
-                Product Details
+              <h3 className="font-semibold text-gray-500 text-3xl w-4/5 hidden sm:block">
+                Detalle
               </h3>
-              <h3 className="font-semibold text-center text-gray-600 text-3xl w-1/5 hidden sm:block">
-                Price
+              <h3 className="font-semibold text-center  text-gray-500 text-3xl w-1/5 hidden sm:block">
+                Precio
               </h3>
             </div>
             <div className="mb-20">
               {/* Products */}
-              {favorite.length > 0
-                ? favorite.map((product) => (
+              {favorite.length > 0 ? (
+                favorite.map((product) => (
                   <FavoriteItem key={product.id} product={product} />
                 ))
-                : "Aun no tienes productos en la lista de favoritos"}
+              ) : (
+                <p className="text-center text-2xl">
+                  Agregá acá los productos que te gustaron para poder verlos más
+                  tarde.
+                </p>
+              )}
             </div>
             <div className="flex justify-around cartButtons">
               <Link
                 className="bg-primary-color hover:bg-secondary-color font-semibold py-3 px-2 rounded-md text-2xl text-white w-3/4 text-center mb-4 sm:mb-0 sm:w-56"
                 to="/"
               >
-                Seguir Comprando
+                Volver a inicio
               </Link>
-              <button
-                onClick={() => handleResetFavorite()}
-                className="bg-red-400 font-semibold hover:bg-red-600 py-3 px-2 rounded-md text-2xl text-white w-3/4 text-center mb-4 sm:mb-0 sm:w-56"
-              >
-                Reset Favorites
-              </button>
+              {favorite.length > 0 ? (
+                <button
+                  onClick={() => handleResetFavorite()}
+                  className="bg-red-400 font-semibold hover:bg-red-600 py-3 px-2 rounded-md text-2xl text-white w-3/4 text-center mb-4 sm:mb-0 sm:w-56"
+                >
+                  Remover todo
+                </button>
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>

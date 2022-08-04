@@ -46,7 +46,11 @@ export const Navbar = () => {
           Vite Wines
         </NavLink>
         <NavLink to="/" onClick={() => dispatch(getProducts())}>
-          <img src="../src/drink.jpg" alt="logo" className="logoImg" />
+          <img
+            src="https://drive.google.com/file/d/1BvXaTBmKAdCQIXdVfJ9mFtNzWdXtjQet/view?usp=sharing"
+            alt="logo"
+            className="logoImg"
+          />
         </NavLink>
         <div className="search">
           <SearchBar />

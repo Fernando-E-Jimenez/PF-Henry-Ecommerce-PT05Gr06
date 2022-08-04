@@ -30,9 +30,9 @@ export const CardsContainer = () => {
   }, [dispatch, page, order]);
 
   return (
-    <div className="cardsContainer">
+    <div className="cardsContainer sm:my-10">
       {products.data ? (
-        <div>
+        <div className="mb-6 sm:mb-0">
           <div className="boxContainer">
             {productsStock?.map((product) => (
               <Card

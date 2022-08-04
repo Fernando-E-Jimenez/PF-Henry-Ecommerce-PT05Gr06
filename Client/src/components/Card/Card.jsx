@@ -81,7 +81,7 @@ export const Card = ({ id, name, price, image }) => {
           onClick={() => handleAddCart(id)}
           className="secondaryButton button"
         >
-          Agregar Carrito
+          Agregar al carrito
         </button>
       </div>
     </div>
