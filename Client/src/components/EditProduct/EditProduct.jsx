@@ -80,7 +80,7 @@ export const EditProduct = () => {
       </h1>
       <form
         onSubmit={handleSubmit}
-        className="md:w-1/2 m-auto py-6"
+        className="md:w-1/2 m-auto py-6 px-6 sm:px-0"
         encType="multipart/form-data"
       >
         <div className="mb-5">
