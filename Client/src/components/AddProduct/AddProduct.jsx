@@ -92,9 +92,12 @@ export default function AddProduct() {
 
   return (
     <div>
-      <h1 className="text-center text-3xl">Complete todos los campos</h1>
+      <h1 className="text-center text-3xl ">Complete todos los campos</h1>
       <hr />
-      <form onSubmit={(e) => handleSubmit(e)} className="md:w-1/2 m-auto py-6">
+      <form
+        onSubmit={(e) => handleSubmit(e)}
+        className="md:w-1/2 m-auto py-6 px-6 sm:px-0"
+      >
         <div className="mb-5">
           <label className="text-gray-700 font-bold text-2xl">Nombre</label>
           <input
@@ -207,7 +210,7 @@ export default function AddProduct() {
         </button>
       </form>
       <div className="flex w-full align-middle justify-center">
-        <Link to="/home">
+        <Link to="/">
           <button className="bg-red-400 px-20 mt-20 p-3 font-bold text-white rounded cursor-pointer hover:bg-sky-700 transition-colors">
             Volver
           </button>
