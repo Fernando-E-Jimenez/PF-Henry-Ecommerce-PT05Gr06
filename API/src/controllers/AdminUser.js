@@ -360,7 +360,6 @@ router.post('/validateuser', async (req, res, next) => {
 });
 
 
-
 // Ruta para cambiar el Rol de un Usuario
 
 router.put("/:idUser/rol", async (req, res) => {
@@ -411,6 +410,58 @@ router.put("/:idUser/rol", async (req, res) => {
   }
 });
 
+
+// Ruta para cambiar la Clave de un Usuario
+
+router.put("/:idUser/password", async (req, res) => {
+  try {
+    const { idUser } = req.params;
+    const { password } = req.body;
+    if (!idUser) return res.status(400).send("Faltan datos necesarios (idUser).");
+    if (!password) return res.status(400).send("Faltan datos necesarios (password).");
+    if (isNaN(parseInt(idUser)))
+      return res
+        .status(400)
+        .send("Formato de datos invalido (idUser) debe ser un numero.");
+    const user = await User.findByPk(idUser);
+    if (!user) return res.status(400).send("Error Usuario no encontrado.");
+
+    await bcrypt.hash(password, 10, async function (err, hash) {
+      const update = await User.update(
+        {
+          password: hash
+        },
+        {
+          where: {
+            id: idUser
+          }
+        }
+      );
+      // console.log(user);
+      if (update[0] === 1) {
+        let user1 = await User.findByPk(idUser, {
+          include: [
+            {
+              model: State
+            },
+            {
+              model: Rol
+            }
+          ]
+        });
+        return res.status(200).json(user1);
+      } else if (!user) {
+        return res.status(404).json({ message: "Error: El Usuario no Existe." });
+      } else {
+        return res
+          .status(404)
+          .json({ message: "Error: Usuario no Actualizado." });
+      }
+    })
+  } catch (e) {
+    return res.status(400).send({ message: "Error: " + e });
+  }
+});
 
 
 module.exports = router;
